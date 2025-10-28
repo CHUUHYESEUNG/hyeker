@@ -573,50 +573,96 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-[#04020c] py-24">
+        <div className="absolute inset-0">
+          <div className="absolute -left-1/4 top-0 h-[400px] w-[400px] rounded-full bg-[#7f4dff]/25 blur-[140px]" />
+          <div className="absolute right-[-20%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[#4dcfff]/15 blur-[160px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_60%)]" />
+        </div>
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 26 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center space-y-8"
+            transition={{ duration: 0.6 }}
+            className="mx-auto max-w-4xl rounded-[36px] border border-white/10 bg-white/[0.08] p-10 backdrop-blur-lg text-white shadow-[0_30px_120px_-60px_rgba(95,78,255,0.65)]"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold">Get In Touch</h2>
-            <p className="text-lg text-muted-foreground">
-              프로젝트 의뢰나 협업 제안은 언제나 환영합니다.
-            </p>
+            <div className="grid gap-8 lg:grid-cols-[1.2fr,0.8fr]">
+              <div className="space-y-6">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.45em] text-white/60">
+                  Contact
+                  <span className="h-1 w-1 rounded-full bg-[#e7defe]" />
+                </span>
+                <h2 className="text-3xl font-semibold sm:text-4xl">Let&apos;s build something bold!</h2>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild size="lg" className="gap-2">
-                <a href="mailto:heyhyeker@gmail.com">
-                  <Mail className="h-5 w-5" />
-                  heyhyeker@gmail.com
-                </a>
-              </Button>
-            </div>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="group h-12 rounded-full border border-white/20 bg-white/10 px-7 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-1 hover:bg-white/20"
+                  >
+                    <a href="mailto:heyhyeker@gmail.com">
+                      <Mail className="mr-2 h-4 w-4" />
+                      heyhyeker@gmail.com
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="group h-12 rounded-full border border-white/20 bg-transparent px-7 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-1 hover:border-white/35 hover:bg-white/10"
+                  >
+                    <Link href="/contact">
+                      제안 보내기
+                      <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
 
-            <div className="flex justify-center gap-4 pt-4">
-              {[
-                { icon: Github, href: "https://github.com/CHUUHYESEUNG", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { icon: Instagram, href: "https://instagram.com/heyhyeker", label: "Instagram" },
-                { icon: BookOpen, href: "https://brunch.co.kr/@hyeker", label: "브런치" },
-                { icon: FileText, href: "https://dalsoon-jang.tistory.com", label: "티스토리" },
-              ].map((social) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-full border border-border hover:border-primary hover:bg-primary/10 transition-all duration-300"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-6 w-6" />
-                </motion.a>
-              ))}
+              <div className="space-y-6 rounded-[28px] border border-white/10 bg-black/20 p-6 backdrop-blur">
+                <div className="space-y-3">
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Social</p>
+                  <div className="flex flex-wrap gap-3">
+                    {[
+                      { icon: Github, href: "https://github.com/CHUUHYESEUNG", label: "GitHub" },
+                      { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                      { icon: Instagram, href: "https://instagram.com/heyhyeker", label: "Instagram" },
+                      { icon: BookOpen, href: "https://brunch.co.kr/@hyeker", label: "브런치" },
+                      { icon: FileText, href: "https://dalsoon-jang.tistory.com", label: "티스토리" }
+                    ].map((social, idx) => (
+                      <motion.a
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-white/70 transition hover:-translate-y-1 hover:text-white"
+                        whileHover={{ scale: 1.08 }}
+                        whileTap={{ scale: 0.95 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.3, delay: idx * 0.05 }}
+                        aria-label={social.label}
+                      >
+                        <social.icon className="h-5 w-5" />
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-sm text-white/60">
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Next</p>
+                  <ul className="space-y-1.5">
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/45" />
+                      <span>프로젝트 성격 · 일정 · 예산 범위를 알려 주세요.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/45" />
+                      <span>필요 시 온라인 미팅을 통해 방향을 함께 맞춰요.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>

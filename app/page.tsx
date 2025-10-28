@@ -84,21 +84,21 @@ export default function Home() {
               rotateY: heroTilt.rotateY
             }}
             transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.7 }}
-            className="flex flex-col items-center gap-10 text-center"
+            className="flex flex-col items-center gap-12 mt-20 text-center"
             style={{ transformStyle: "preserve-3d" }}
           >
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <span className="h-[2px] w-16 bg-gradient-to-r from-white/65 to-transparent" />
               <span className="h-2 w-2 rounded-full bg-white/45" />
               <span className="h-[2px] w-16 bg-gradient-to-l from-white/65 to-transparent" />
-            </div>
+            </div> */}
 
             <div className="space-y-6">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-5xl font-black uppercase tracking-[0.45em] text-white/85 sm:text-[68px]"
+                className="text-6xl font-black uppercase tracking-[0.45em] text-white/85 sm:text-[68px]"
               >
                 HYEKER JANG
               </motion.h1>
@@ -108,7 +108,7 @@ export default function Home() {
                 transition={{ duration: 0.9, delay: 0.05 }}
                 className="text-3xl uppercase tracking-[0.35em] text-white/55 sm:text-[30px]"
               >
-                Design &amp; Developer
+                Designer &amp; Developer
               </motion.h2>
             </div>
 

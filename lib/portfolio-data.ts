@@ -169,7 +169,7 @@ export const portfolioItems: PortfolioItem[] = [
     platforms: [
       {
         type: "web",
-        icon: Globe,
+        icon: "globe",
         label: "내부 공장 시스템",
         url: "#",
         available: false

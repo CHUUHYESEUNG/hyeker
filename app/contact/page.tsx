@@ -10,42 +10,42 @@ const socialLinks = [
     name: "GitHub",
     href: "https://github.com/CHUUHYESEUNG",
     icon: Github,
-    description: "코드와 프로젝트를 확인하세요",
+    description: "",
     color: "hover:bg-gray-900 hover:text-white"
   },
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/hyeseung-hailey-jang-a506a7211/",
     icon: Linkedin,
-    description: "전문 경력을 확인하세요",
+    description: "",
     color: "hover:bg-blue-600 hover:text-white"
   },
   {
     name: "Instagram",
     href: "https://instagram.com/heyhyeker",
     icon: Instagram,
-    description: "일상을 공유합니다",
+    description: "일상 공유",
     color: "hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white"
   },
   {
     name: "브런치",
     href: "https://brunch.co.kr/@hyeker",
     icon: BookOpen,
-    description: "브런치에서 글을 읽어보세요",
+    description: "창업 일기",
     color: "hover:bg-green-600 hover:text-white"
   },
   {
     name: "티스토리",
     href: "https://dalsoon-jang.tistory.com",
     icon: FileText,
-    description: "기술 블로그를 운영합니다",
+    description: "가볍게 쓰는 기술 블로그",
     color: "hover:bg-orange-500 hover:text-white"
   },
   {
     name: "네이버 블로그",
     href: "https://blog.naver.com/haileychoi-world",
     icon: MessageCircle,
-    description: "네이버 블로그를 운영합니다",
+    description: "일상을 담는 공간",
     color: "hover:bg-green-500 hover:text-white"
   }
 ]
@@ -63,7 +63,7 @@ export default function ContactPage() {
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">Get In Touch</h1>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mb-8" />
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          프로젝트 의뢰나 협업 제안은 언제나 환영합니다
+          프로젝트 의뢰, 협업 제안은 언제나 환영합니다
         </p>
       </motion.div>
 
@@ -82,9 +82,9 @@ export default function ContactPage() {
                   <Mail className="h-10 w-10 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">이메일로 연락주세요</h2>
+                  <h2 className="text-2xl font-bold mb-2">Contact Email</h2>
                   <p className="text-muted-foreground mb-6">
-                    가장 빠른 연락 방법입니다
+                    편하게 연락 주세요 :)
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Button asChild size="lg" className="gap-2">
@@ -158,11 +158,11 @@ export default function ContactPage() {
                 이메일은 24시간 확인 가능하며, 보통 24시간 이내에 답변드립니다.
               </p>
               <div className="bg-muted/30 p-4 rounded-lg border border-border">
-                <h3 className="font-semibold mb-2">다음과 같은 문의를 환영합니다:</h3>
+                {/* <h3 className="font-semibold mb-2">다음과 같은 문의를 환영합니다:</h3> */}
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>
-                    <span>프로젝트 개발 의뢰</span>
+                    <span>프로젝트 개발 및 콘텐츠 디자인 의뢰</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-1">•</span>

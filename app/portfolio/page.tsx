@@ -77,14 +77,30 @@ export default function PortfolioPage() {
 
       {/* Portfolio Grid */}
       <div className="space-y-16 max-w-6xl mx-auto">
-        {visibleItems.map((item, index) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            viewport={{ once: true }}
-          >
+        {visibleItems.map((item, index) => {
+          const isImmediate = index < INITIAL_BATCH
+          const animationProps = isImmediate
+            ? {
+                initial: { opacity: 0, y: 40 },
+                animate: { opacity: 1, y: 0 }
+              }
+            : {
+                initial: { opacity: 0, y: 40 },
+                whileInView: { opacity: 1, y: 0 }
+              }
+          const transitionProps = {
+            duration: 0.6,
+            delay: isImmediate ? index * 0.15 : (index - INITIAL_BATCH) * 0.1
+          }
+          const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
+
+          return (
+            <motion.div
+              key={item.id}
+              {...animationProps}
+              transition={transitionProps}
+              viewport={viewportProps}
+            >
             <Card className="overflow-hidden hover:border-primary transition-all duration-300 hover:shadow-glow-lg">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Image Section */}
@@ -194,8 +210,9 @@ export default function PortfolioPage() {
                 </div>
               </div>
             </Card>
-          </motion.div>
-        ))}
+            </motion.div>
+          )
+        })}
       </div>
 
       <div ref={loadMoreRef} className="h-24 flex items-center justify-center">

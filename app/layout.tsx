@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   description: "보안을 고려한 풀스택 개발자 장혜승의 포트폴리오",
   keywords: ["풀스택 개발자", "Next.js", "React", "AI", "보안", "FastAPI", "Full-stack Developer"],
   authors: [{ name: "Hyeseung Jang", url: "https://hyeker.com" }],
+  icons: {
+    icon: "/hyeker-terminal-icon.svg",
+    shortcut: "/hyeker-terminal-icon.svg",
+    apple: "/hyeker-terminal-icon.svg"
+  },
   openGraph: {
     title: "hyeker - Full-stack Developer & AI Researcher",
     description: "보안을 고려한 풀스택 개발자 장혜승의 포트폴리오",
@@ -16,11 +21,20 @@ export const metadata: Metadata = {
     siteName: "hyeker",
     locale: "ko_KR",
     type: "website",
+    images: [
+      {
+        url: "/hero1.png",
+        width: 1920,
+        height: 1080,
+        alt: "Hyeker portfolio hero image"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
     title: "hyeker - Full-stack Developer",
     description: "보안을 고려한 풀스택 개발자",
+    images: ["/hero1.png"]
   },
 };
 

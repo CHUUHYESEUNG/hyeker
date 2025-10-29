@@ -7,7 +7,7 @@ import { useState, useEffect, useMemo } from "react"
 import { Menu } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -99,8 +99,12 @@ export function Header() {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] sm:w-[360px]">
-                <nav className="mt-10 flex flex-col space-y-4">
+              <SheetContent side="right" className="w-[280px] sm:w-[360px] px-6">
+                <SheetHeader className="sr-only">
+                  <SheetTitle>사이트 내비게이션</SheetTitle>
+                  <SheetDescription>Hyeker의 주요 페이지 이동 메뉴</SheetDescription>
+                </SheetHeader>
+                <nav className="mt-12 flex flex-col space-y-5">
                   {navItems.map((item) => {
                     const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
                     return (
@@ -118,7 +122,7 @@ export function Header() {
                   })}
                   <Button
                     asChild
-                    className="mt-6 rounded-full border border-foreground/10 bg-transparent text-sm uppercase tracking-[0.3em] text-foreground/70 hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/20 dark:text-white/80 dark:hover:bg-white/15 dark:hover:text-white"
+                    className="mt-6 rounded-full bg-gradient-to-r from-primary via-secondary to-accent px-5 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-lg transition hover:-translate-y-1 hover:shadow-[0_20px_60px_-40px_rgba(99,72,255,0.8)]"
                   >
                     <Link href="/contact" onClick={() => setIsOpen(false)}>
                       프로젝트 문의

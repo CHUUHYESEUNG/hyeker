@@ -202,7 +202,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="space-y-10 text-white">
+            <div className="space-y-10 text-white text-center sm:text-left">
               <div className="space-y-4">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.45em] text-white/55">
                   About
@@ -218,7 +218,7 @@ export default function Home() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur">
+                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left">
                   <p className="text-xs uppercase tracking-[0.4em] text-white/45">Design Craft</p>
                   <ul className="space-y-2 text-sm text-white/70">
                     <li>Design system &amp; brand storytelling</li>
@@ -226,7 +226,7 @@ export default function Home() {
                     <li>Creative direction &amp; prototyping</li>
                   </ul>
                 </div>
-                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur">
+                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left">
                   <p className="text-xs uppercase tracking-[0.4em] text-white/45">Engineering</p>
                   <ul className="space-y-2 text-sm text-white/70">
                     <li>Next.js 15 · React Native · TypeScript</li>
@@ -236,7 +236,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur">
+              <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur text-left">
                 <p className="uppercase tracking-[0.35em] text-white/50">Currently</p>
                 <p>
                   시니어 라이프스타일 플랫폼과 B2B 보험 서비스, 공장 자동화 시스템 등 다양한 도메인에서 사용자 경험과
@@ -245,7 +245,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
                 {["Product Strategy", "Design Systems", "AI Assisted Dev", "Motion Narrative", "Brand Tech"].map((tag) => (
                   <Badge key={tag} variant="outline" className="border-white/25 bg-transparent text-white/60">
                     #{tag}
@@ -588,14 +588,14 @@ export default function Home() {
             className="mx-auto max-w-4xl rounded-[36px] border border-white/10 bg-white/[0.08] p-10 backdrop-blur-lg text-white shadow-[0_30px_120px_-60px_rgba(95,78,255,0.65)]"
           >
             <div className="grid gap-8 lg:grid-cols-[1.2fr,0.8fr]">
-              <div className="space-y-6">
+              <div className="space-y-6 text-center sm:text-left">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.45em] text-white/60">
                   Contact
                   <span className="h-1 w-1 rounded-full bg-[#e7defe]" />
                 </span>
                 <h2 className="text-3xl font-semibold sm:text-4xl">Let&apos;s build something bold!</h2>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
                   <Button
                     asChild
                     size="lg"

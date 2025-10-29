@@ -18,7 +18,7 @@ interface BlogPostContentProps {
 
 export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentProps) {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="container mx-auto px-6 sm:px-6 lg:px-8 pb-20 pt-8">
       {/* Back Button */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -144,12 +144,12 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-lg">장혜승 (Hyeseung Hailey Jang)</h3>
+                  <h3 className="font-semibold text-lg">혜커 Hyeker</h3>
                   <p className="text-sm text-muted-foreground">
-                    풀스택 개발자 · AI 석사 · 전 콘텐츠 디자이너
+                    1인 인디 개발자
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
-                    호기심 많은 개발자입니다. 개발, 보안, AI에 대한 경험과 생각을 공유합니다.
+                    개발, 디자인, 기획 등 프로덕트를 만들며 겪은 다양한 경험과 생각을 공유합니다.
                   </p>
                 </div>
               </div>

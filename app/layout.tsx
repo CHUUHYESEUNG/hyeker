@@ -23,10 +23,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/hero1.png",
-        width: 1920,
-        height: 1080,
-        alt: "Hyeker portfolio hero image"
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Hyeker portfolio cover"
       }
     ]
   },
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "hyeker - Full-stack Developer",
     description: "보안을 고려한 풀스택 개발자",
-    images: ["/hero1.png"]
+    images: ["/og.png"]
   },
 };
 

@@ -57,11 +57,14 @@ export function Footer() {
             ))}
           </div>
 
-          {/* Right - Built with */}
+          {/* Right - Privacy Policy */}
           <div className="text-center md:text-right">
-            <p className="text-sm text-muted-foreground">
-              Built with <span className="text-primary font-semibold">Next.js</span> & <span className="text-red-500">❤️</span>
-            </p>
+            <Link
+              href="/privacy-policy"
+              className="text-sm font-semibold text-primary transition hover:text-primary/80"
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>

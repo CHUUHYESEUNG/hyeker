@@ -211,10 +211,10 @@ export default function Home() {
                 <h2 className="text-3xl font-semibold sm:text-4xl">
                   Designer & Product Engineer
                 </h2>
-                <p className="text-base leading-relaxed text-white/70">
+                {/* <p className="text-base leading-relaxed text-white/70">
                   글로벌 브랜드 캠페인을 경험한 콘텐츠 디자이너에서 개발자, AI 석사를 거쳐 프로덕트 엔지니어로 활동중입니다.
                   프로덕트 단위의 빠른 MVP로 성과를 예측하고, 사용자 경험을 최우선으로 여기는 제작 방식을 선호합니다.
-                </p>
+                </p> */}
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
@@ -239,9 +239,8 @@ export default function Home() {
               <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur text-left">
                 <p className="uppercase tracking-[0.35em] text-white/50">Currently</p>
                 <p>
-                  시니어 라이프스타일 플랫폼과 B2B 보험 서비스, 공장 자동화 시스템 등 다양한 도메인에서 사용자 경험과
-                  아키텍처를 동시에 책임졌습니다. 제품 초기 기획부터 런칭 이후 고도화까지, 팀이 공감하는 방향을 제시하고
-                  코드와 데이터를 통해 검증하는 역할을 수행합니다.
+                  글로벌 브랜드 캠페인을 경험한 콘텐츠 디자이너에서 개발자, AI 석사를 거쳐 프로덕트 엔지니어로 활동중입니다.
+                  프로덕트 단위의 빠른 MVP로 성과를 예측하고, 사용자 경험을 최우선으로 여기는 제작 방식을 선호합니다.
                 </p>
               </div>
 
@@ -295,7 +294,7 @@ export default function Home() {
                 <div className="mt-6 grid gap-4 text-sm text-white/70">
                   <div className="flex items-center gap-3">
                     <span className="h-2 w-2 rounded-full bg-[#9d88ff]" />
-                    <span>Design system · 모션 내러티브 · 마이크로 인터랙션</span>
+                    <span>Design system · 마이크로 인터랙션</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="h-2 w-2 rounded-full bg-[#7ecbff]" />
@@ -408,35 +407,38 @@ export default function Home() {
                 id: "maedup",
                 title: "매듭 (Maedup)",
                 tagline: "시니어 프리미엄 라이프스타일 커뮤니티",
-                description: "시니어가 인연을 만들고 다양한 액티비티를 즐기는 라이프스타일 플랫폼.",
+                description: "시니어끼리 인연을 만들고 다양한 활동을 유도하여 사회 참여를 독려하는 라이프스타일 플랫폼",
                 tech: ["Next.js 15", "Supabase", "TypeScript", "Vercel"],
                 links: [
                   { label: "웹사이트", type: "web", available: true, url: "https://maedup.co.kr" },
-                  { label: "App Store", type: "ios", available: false, url: "https://apps.apple.com" },
-                  { label: "Google Play", type: "android", available: false, url: "https://play.google.com" }
                 ],
-                detail: "/portfolio/app/1"
+                detail: "/portfolio/app/1",
+                image: "/app_1_maedup.png",
+                type: "mobile"
               },
               {
-                id: "catchpick",
-                title: "캐치픽 (Catchpick)",
-                tagline: "중장년 액티비티 예약 네이티브 앱",
-                description: "취향이 맞는 사람들과 액티비티를 예약하고 커뮤니티를 형성하는 모바일 앱.",
-                tech: ["React Native", "Expo", "Supabase", "TypeScript"],
+                id: "onyu",
+                title: "온유.ai (Onyu.ai)",
+                tagline: "음성 데이터 기반 AI 오디오북 제작 플랫폼",
+                description: "글쓰기에 어려움을 느끼는 중·장년층과 시니어 세대를 위해 음성 인터뷰를 기반으로 AI가 자서전을 자동 생성하는 플랫폼",
+                tech: ["Next.js 15", "AI/ML", "TypeScript", "Python", "Supabase", "Vercel"],
                 links: [
-                  { label: "App Store", type: "ios", available: false, url: "https://apps.apple.com" },
-                  { label: "Google Play", type: "android", available: false, url: "https://play.google.com" }
+                  { label: "웹사이트", type: "web", available: true, url: "https://onyu.ai" },
                 ],
-                detail: "/portfolio/app/2"
+                detail: "/portfolio/app/3",
+                image: "/app_3_onyu.png",
+                type: "web"
               },
               {
-                id: "medical",
-                title: "외교부 실의료비 청구",
-                tagline: "B2B 해외 의료비 청구 서비스",
-                description: "외교부 임직원의 의료비 청구와 상태 추적을 돕는 엔터프라이즈 웹앱.",
-                tech: ["Next.js 14", "TypeScript", "AWS", "Firebase"],
-                links: [{ label: "Case Study", type: "web", available: true, url: "/portfolio/app/4" }],
-                detail: "/portfolio/app/4"
+                id: "terradice",
+                title: "테라다이스 (Terradice)",
+                tagline: "매일 바뀌는 질문 기반 일기 앱",
+                description: "일기 작성 중도 포기를 해결하기 위한 랜덤 일기 앱",
+                tech: ["React Native", "Expo"],
+                links: [{ label: "앱 심사 진행중", type: "web", available: true, url: "" }],
+                detail: "/portfolio/app/2",
+                image: "/app_2_terradice.png",
+                type: "mobile"
               }
             ].map((project, index) => (
               <motion.article
@@ -447,7 +449,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group relative flex h-full flex-col overflow-visible rounded-[32px] border border-white/10 bg-white/[0.05] pb-6 backdrop-blur"
               >
-                <div className="relative h-[320px]">
+                <div className={project.type === "web" ? "relative h-[320px]" : "relative h-[320px]"}>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
                       animate={{
@@ -456,14 +458,14 @@ export default function Home() {
                         rotateY: [2, -2, 2]
                       }}
                       transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
-                      className="relative w-full max-w-[240px]"
+                      className={project.type === "web" ? "relative w-full max-w-[442px]" : "relative w-full max-w-[240px]"}
                       style={{ transformStyle: "preserve-3d" }}
                     >
                       <Image
-                        src="/mobile_1.png"
+                        src={project.image}
                         alt={`${project.title} mockup`}
-                        width={500}
-                        height={820}
+                        width={project.type === "web" ? 910 : 500}
+                        height={project.type === "web" ? 780 : 820}
                         className="w-full object-contain drop-shadow-[0_40px_80px_rgba(10,10,35,0.45)]"
                         priority
                       />
@@ -522,7 +524,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <Button
+                  {/* <Button
                     asChild
                     variant="outline"
                     size="lg"
@@ -532,7 +534,7 @@ export default function Home() {
                       자세히 보기
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
-                  </Button>
+                  </Button> */}
                 </div>
               </motion.article>
             ))}

@@ -28,6 +28,8 @@ export type PortfolioItem = {
   status: string
   date: string
   features: string[]
+  showPlatforms?: boolean
+  showDetailLink?: boolean
 }
 
 export const portfolioItems: PortfolioItem[] = [
@@ -48,19 +50,20 @@ export const portfolioItems: PortfolioItem[] = [
         available: true
       }
     ],
-    image: "/sample1.jpg",
+    image: "/2_maedup.png",
     status: "운영중",
     date: "2025.08 - 현재",
-    features: ["반응형 웹 디자인", "실시간 채팅 기능", "Supabase 기반 백엔드", "SEO 최적화", "다크모드 지원"]
+    features: ["반응형 웹 디자인", "실시간 채팅 기능", "Supabase 기반 백엔드", "SEO 최적화", "다크모드 지원"],
+    showDetailLink: false
   },
   {
     routeId: "2",
-    id: "catchpick",
-    title: "캐치픽 (Catchpick)",
-    description: "중장년 액티비티 예약 네이티브 앱",
+    id: "terradice",
+    title: "테라다이스 (Terradice)",
+    description: "매일 바뀌는 질문 기반 일기 앱",
     longDescription:
-      "5070 시니어를 위한 액티비티 예약 플랫폼입니다. 골프, 등산, 여행 등 다양한 액티비티를 쉽게 예약하고, 같은 관심사를 가진 사람들과 함께 즐길 수 있습니다.",
-    tech: ["React Native", "Expo", "TypeScript", "Supabase", "iOS", "Android"],
+      "일기 작성을 중도에 포기하는 사용자를 위한 랜덤 질문 기반 일기 앱입니다. 매일 다양한 질문을 제시하여 일기 작성의 부담을 줄이고, 꾸준한 기록 습관을 형성할 수 있도록 돕습니다.",
+    tech: ["React Native", "Expo", "TypeScript"],
     platforms: [
       {
         type: "ios",
@@ -77,13 +80,37 @@ export const portfolioItems: PortfolioItem[] = [
         available: false
       }
     ],
-    image: "/sample1.jpg",
-    status: "개발중",
-    date: "2025.08 - 현재",
-    features: ["크로스 플랫폼 네이티브 앱", "액티비티 예약 시스템", "실시간 알림", "카카오페이 결제 연동", "사용자 리뷰 시스템"]
+    image: "/3_terra.png",
+    status: "앱 심사 진행중",
+    date: "2025.10 - 현재",
+    features: ["랜덤 질문 기반 일기 작성", "크로스 플랫폼 네이티브 앱", "간편한 UI/UX", "일기 기록 관리", "알림 시스템"],
+    showDetailLink: false
   },
   {
     routeId: "3",
+    id: "onyu",
+    title: "온유.ai (Onyu.ai)",
+    description: "음성 데이터 기반 AI 오디오북 제작 플랫폼",
+    longDescription:
+      "글쓰기에 어려움을 느끼는 중·장년층과 시니어 세대를 위해 음성 인터뷰를 기반으로 AI가 자서전을 자동 생성하는 플랫폼입니다. 사용자의 목소리와 이야기를 담아 개인화된 오디오북과 전자책을 제작할 수 있습니다.",
+    tech: ["Next.js 15", "AI/ML", "TypeScript", "Python", "Supabase", "Vercel", "OpenAI API"],
+    platforms: [
+      {
+        type: "web",
+        icon: "globe",
+        label: "웹사이트",
+        url: "https://onyu.ai",
+        available: true
+      }
+    ],
+    image: "/5_onyu.png",
+    status: "운영중",
+    date: "2025.09 - 현재",
+    features: ["음성 인터뷰 기반 자서전 생성", "AI 기반 텍스트 자동 생성", "오디오북 제작", "전자책 출력", "Supabase 기반 데이터 관리"],
+    showDetailLink: false
+  },
+  {
+    routeId: "4",
     id: "travel-insurance",
     title: "B2B 여행자 보험 가입 서비스",
     description: "단체 보험 가입과 청구를 위한 엔터프라이즈 웹앱",
@@ -99,7 +126,7 @@ export const portfolioItems: PortfolioItem[] = [
         available: false
       }
     ],
-    image: "/sample1.jpg",
+    image: "/hyeker-terminal-icon.svg",
     status: "운영중",
     date: "2023.09 - 2024.09",
     features: [
@@ -107,10 +134,12 @@ export const portfolioItems: PortfolioItem[] = [
       "대량 가입자 업로드를 위한 엑셀 파싱 인터페이스",
       "무한 스크롤 기반 가입자 목록 탐색",
       "단계별 유효성 검사 및 에러 처리 자동화"
-    ]
+    ],
+    showPlatforms: false,
+    showDetailLink: false
   },
   {
-    routeId: "4",
+    routeId: "5",
     id: "medical-claim",
     title: "외교부 실의료비 청구 서비스",
     description: "해외 의료비 청구를 위한 B2B/B2C 하이브리드 웹앱",
@@ -126,13 +155,15 @@ export const portfolioItems: PortfolioItem[] = [
         available: false
       }
     ],
-    image: "/sample1.jpg",
+    image: "/1_flying.png",
     status: "운영중",
     date: "2023.09 - 2024.09",
-    features: ["Presigned URL을 활용한 대용량 증빙 업로드", "Server/Client 컴포넌트 분리로 초기 로드 축소", "관리자 분석을 위한 GA 이벤트 매핑", "공통 UI 컴포넌트 시스템 구축"]
+    features: ["Presigned URL을 활용한 대용량 증빙 업로드", "Server/Client 컴포넌트 분리로 초기 로드 축소", "관리자 분석을 위한 GA 이벤트 매핑", "공통 UI 컴포넌트 시스템 구축"],
+    showPlatforms: false,
+    showDetailLink: false
   },
   {
-    routeId: "5",
+    routeId: "6",
     id: "lfmall-delivery",
     title: "LFmall 배송자동화 고도화",
     description: "배송 ETA 예측 기능을 제공하는 커머스 고도화 프로젝트",
@@ -148,7 +179,7 @@ export const portfolioItems: PortfolioItem[] = [
         available: true
       }
     ],
-    image: "/sample1.jpg",
+    image: "/4_lfmall.png",
     status: "완료",
     date: "2022.11 - 2023.02",
     features: [
@@ -156,10 +187,11 @@ export const portfolioItems: PortfolioItem[] = [
       "React.js · JSP 혼합 구조 대응",
       "상품 상세 정보와 연동된 ETA 노출",
       "물류 운영팀 요구사항을 반영한 반복 개선"
-    ]
+    ],
+    showDetailLink: false
   },
   {
-    routeId: "6",
+    routeId: "7",
     id: "hyosung-mes",
     title: "효성첨단소재 생산이력추적 시스템",
     description: "베트남 공장의 생산 공정을 추적하는 MES 시스템",
@@ -182,7 +214,7 @@ export const portfolioItems: PortfolioItem[] = [
         available: false
       }
     ],
-    image: "/sample1.jpg",
+    image: "/hyeker-terminal-icon.svg",
     status: "완료",
     date: "2020.12 - 2022.09",
     features: [
@@ -190,7 +222,9 @@ export const portfolioItems: PortfolioItem[] = [
       "공정별 실시간 이력 수집 및 대시보드화",
       "Swagger 기반 API 문서화",
       "베트남 현지 환경에 맞춘 로컬라이징"
-    ]
+    ],
+    showPlatforms: false,
+    showDetailLink: false
   }
 ]
 

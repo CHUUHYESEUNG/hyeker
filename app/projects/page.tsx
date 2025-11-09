@@ -14,6 +14,13 @@ const timeline = [
     icon: Code,
     projects: [
       {
+        name: "온유.ai (Onyu.ai)",
+        description: "음성 데이터 기반 AI 오디오북 제작 플랫폼",
+        tech: ["Next.js 15", "App Router", "Supabase", "Vercel"],
+        link: "https://onyu.ai",
+        details: []
+      },
+      {
         name: "매듭 (Maedup)",
         description: "5070 시니어 프리미엄 라이프스타일 플랫폼",
         tech: ["Next.js 15", "App Router", "Supabase", "Vercel"],

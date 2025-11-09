@@ -104,13 +104,16 @@ export default function PortfolioPage() {
             <Card className="overflow-hidden hover:border-primary transition-all duration-300 hover:shadow-glow-lg">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Image Section */}
-                <div className="relative h-[300px] lg:h-auto bg-muted">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="relative h-[300px] lg:h-auto bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center p-6">
+                  <div className={`relative ${item.image.endsWith('.svg') ? 'w-[12.5%] h-[12.5%]' : 'w-full h-full'}`}>
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
                   <div className="absolute top-4 right-4">
                     <Badge
                       variant={item.status === "운영중" ? "default" : "secondary"}
@@ -167,45 +170,49 @@ export default function PortfolioPage() {
                       </div>
 
                       {/* Platform Links */}
-                      <div>
-                        <h3 className="text-sm font-semibold mb-3">플랫폼</h3>
-                        <div className="flex flex-wrap gap-3">
-                          {item.platforms.map((platform, idx) => {
-                            const Icon = portfolioPlatformIconMap[platform.icon]
-                            return (
-                              <Button
-                                key={idx}
-                                asChild={platform.available}
-                                variant={platform.available ? "default" : "secondary"}
-                                disabled={!platform.available}
-                                className="gap-2"
-                              >
-                                {platform.available ? (
-                                  <a href={platform.url} target="_blank" rel="noopener noreferrer">
-                                    <Icon className="h-4 w-4" />
-                                    {platform.label}
-                                    <ExternalLink className="h-3 w-3 ml-1" />
-                                  </a>
-                                ) : (
-                                  <span>
-                                    <Icon className="h-4 w-4" />
-                                    {platform.label} (준비중)
-                                  </span>
-                                )}
-                              </Button>
-                            )
-                          })}
+                      {item.showPlatforms !== false && (
+                        <div>
+                          <h3 className="text-sm font-semibold mb-3">플랫폼</h3>
+                          <div className="flex flex-wrap gap-3">
+                            {item.platforms.map((platform, idx) => {
+                              const Icon = portfolioPlatformIconMap[platform.icon]
+                              return (
+                                <Button
+                                  key={idx}
+                                  asChild={platform.available}
+                                  variant={platform.available ? "default" : "secondary"}
+                                  disabled={!platform.available}
+                                  className="gap-2"
+                                >
+                                  {platform.available ? (
+                                    <a href={platform.url} target="_blank" rel="noopener noreferrer">
+                                      <Icon className="h-4 w-4" />
+                                      {platform.label}
+                                      <ExternalLink className="h-3 w-3 ml-1" />
+                                    </a>
+                                  ) : (
+                                    <span>
+                                      <Icon className="h-4 w-4" />
+                                      {platform.label} (준비중)
+                                    </span>
+                                  )}
+                                </Button>
+                              )
+                            })}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </CardContent>
-                    <div className="pt-6 flex justify-end">
-                      <Button variant="link" asChild className="h-auto px-0 text-primary">
-                        <Link href={`/portfolio/app/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
-                          자세히 보기
-                          <ArrowRight className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </div>
+                    {item.showDetailLink !== false && (
+                      <div className="pt-6 flex justify-end">
+                        <Button variant="link" asChild className="h-auto px-0 text-primary">
+                          <Link href={`/portfolio/app/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
+                            자세히 보기
+                            <ArrowRight className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

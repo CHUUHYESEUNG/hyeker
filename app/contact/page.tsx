@@ -10,14 +10,14 @@ const socialLinks = [
     name: "GitHub",
     href: "https://github.com/CHUUHYESEUNG",
     icon: Github,
-    description: "",
+    description: "개발 히스토리",
     color: "hover:bg-gray-900 hover:text-white"
   },
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/hyeseung-hailey-jang-a506a7211/",
     icon: Linkedin,
-    description: "",
+    description: "잠시 계정 중지",
     color: "hover:bg-blue-600 hover:text-white"
   },
   {
@@ -31,7 +31,7 @@ const socialLinks = [
     name: "브런치",
     href: "https://brunch.co.kr/@hyeker",
     icon: BookOpen,
-    description: "창업 일기",
+    description: "에세이",
     color: "hover:bg-green-600 hover:text-white"
   },
   {

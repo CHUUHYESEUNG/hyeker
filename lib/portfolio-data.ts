@@ -111,6 +111,32 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     routeId: "4",
+    id: "acselab",
+    title: "액티브시니어랩 Active Senior Lab",
+    description: "액티브시니어랩 프로젝트 포트폴리오 사이트",
+    longDescription:
+      "시니어를 위한 개인 개발 포트폴리오를 종합하여 볼 수 있는 Lab 웹사이트 입니다.",
+    tech: ["Next.js 15", "TypeScript", "Tailwind CSS", "Vercel"],
+    platforms: [
+      {
+        type: "web",
+        icon: "globe",
+        label: "웹사이트",
+        url: "https://acselab.com",
+        available: true
+      },
+    ],
+    image: "/6_acse.png",
+    status: "완료",
+    date: "2025.10",
+    features: [
+      "시니어를 위한 개인 개발 포트폴리오",
+    ],
+    showPlatforms: false,
+    showDetailLink: true
+  },
+  {
+    routeId: "5",
     id: "travel-insurance",
     title: "B2B 여행자 보험 가입 서비스",
     description: "단체 보험 가입과 청구를 위한 엔터프라이즈 웹앱",
@@ -139,7 +165,7 @@ export const portfolioItems: PortfolioItem[] = [
     showDetailLink: false
   },
   {
-    routeId: "5",
+    routeId: "6",
     id: "medical-claim",
     title: "외교부 실의료비 청구 서비스",
     description: "해외 의료비 청구를 위한 B2B/B2C 하이브리드 웹앱",
@@ -163,7 +189,7 @@ export const portfolioItems: PortfolioItem[] = [
     showDetailLink: false
   },
   {
-    routeId: "6",
+    routeId: "7",
     id: "lfmall-delivery",
     title: "LFmall 배송자동화 고도화",
     description: "배송 ETA 예측 기능을 제공하는 커머스 고도화 프로젝트",
@@ -191,7 +217,7 @@ export const portfolioItems: PortfolioItem[] = [
     showDetailLink: false
   },
   {
-    routeId: "7",
+    routeId: "8",
     id: "hyosung-mes",
     title: "효성첨단소재 생산이력추적 시스템",
     description: "베트남 공장의 생산 공정을 추적하는 MES 시스템",
@@ -225,7 +251,8 @@ export const portfolioItems: PortfolioItem[] = [
     ],
     showPlatforms: false,
     showDetailLink: false
-  }
+  },
+  
 ]
 
 export const getPortfolioItemByRouteId = (routeId: string) =>

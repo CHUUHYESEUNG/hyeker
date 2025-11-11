@@ -8,26 +8,32 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ExternalLink, Loader2 } from "lucide-react"
-import { portfolioItems, portfolioPlatformIconMap } from "@/lib/portfolio-data"
+import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory } from "@/lib/portfolio-data"
 
 export default function PortfolioPage() {
   const INITIAL_BATCH = 2
   const LOAD_STEP = 2
+  const [activeCategory, setActiveCategory] = useState<PortfolioCategory>("development")
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH)
   const [isLoading, setIsLoading] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const isExhausted = visibleCount >= portfolioItems.length
+
+  const filteredItems = useMemo(
+    () => portfolioItems.filter((item) => item.category === activeCategory),
+    [activeCategory]
+  )
+  const isExhausted = visibleCount >= filteredItems.length
 
   const loadMore = useCallback(() => {
     if (isLoading || isExhausted) return
     setIsLoading(true)
     timeoutRef.current = setTimeout(() => {
-      setVisibleCount((prev) => Math.min(prev + LOAD_STEP, portfolioItems.length))
+      setVisibleCount((prev) => Math.min(prev + LOAD_STEP, filteredItems.length))
       setIsLoading(false)
       timeoutRef.current = null
     }, 280)
-  }, [isExhausted, isLoading])
+  }, [isExhausted, isLoading, filteredItems.length])
 
   useEffect(() => {
     if (isExhausted) return
@@ -57,7 +63,12 @@ export default function PortfolioPage() {
     }
   }, [])
 
-  const visibleItems = useMemo(() => portfolioItems.slice(0, visibleCount), [visibleCount])
+  // Reset visible count when category changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_BATCH)
+  }, [activeCategory])
+
+  const visibleItems = useMemo(() => filteredItems.slice(0, visibleCount), [filteredItems, visibleCount])
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -73,6 +84,37 @@ export default function PortfolioPage() {
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           실제 운영 중이거나 개발 중인 프로젝트들
         </p>
+      </motion.div>
+
+      {/* Category Tabs */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="flex justify-center mb-12"
+      >
+        <div className="inline-flex items-center gap-2 p-1 bg-muted rounded-lg">
+          <button
+            onClick={() => setActiveCategory("development")}
+            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeCategory === "development"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            개발
+          </button>
+          <button
+            onClick={() => setActiveCategory("design")}
+            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 ${
+              activeCategory === "design"
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            디자인
+          </button>
+        </div>
       </motion.div>
 
       {/* Portfolio Grid */}

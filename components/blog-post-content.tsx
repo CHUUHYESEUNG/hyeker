@@ -152,7 +152,14 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
           <Card className="mb-12">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0" />
+                <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-primary/20">
+                  <Image
+                    src="/me.png"
+                    alt="Hyeker profile"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div>
                   <h3 className="font-semibold text-lg">혜커 Hyeker</h3>
                   <p className="text-sm text-muted-foreground">

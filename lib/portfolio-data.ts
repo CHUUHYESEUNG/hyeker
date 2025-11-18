@@ -17,6 +17,8 @@ export type PortfolioPlatform = {
 }
 
 export type PortfolioCategory = "development" | "design"
+export type DevelopmentSubCategory = "web" | "app"
+export type DesignSubCategory = "content" | "logo" | "card"
 
 export type PortfolioItem = {
   routeId: string
@@ -31,6 +33,7 @@ export type PortfolioItem = {
   date: string
   features: string[]
   category: PortfolioCategory
+  subCategory?: DevelopmentSubCategory | DesignSubCategory
   showPlatforms?: boolean
   showDetailLink?: boolean
   markdownPath?: string
@@ -59,6 +62,7 @@ export const portfolioItems: PortfolioItem[] = [
     date: "2025.08 - 현재",
     features: ["반응형 웹 디자인", "실시간 채팅 기능", "Supabase 기반 백엔드", "SEO 최적화", "다크모드 지원"],
     category: "development",
+    subCategory: "web",
     showDetailLink: false
   },
   {
@@ -90,6 +94,7 @@ export const portfolioItems: PortfolioItem[] = [
     date: "2025.10 - 현재",
     features: ["랜덤 질문 기반 일기 작성", "크로스 플랫폼 네이티브 앱", "간편한 UI/UX", "일기 기록 관리", "알림 시스템"],
     category: "development",
+    subCategory: "app",
     showDetailLink: false
   },
   {
@@ -114,6 +119,7 @@ export const portfolioItems: PortfolioItem[] = [
     date: "2025.09 - 현재",
     features: ["음성 인터뷰 기반 자서전 생성", "AI 기반 텍스트 자동 생성", "오디오북 제작", "전자책 출력", "Supabase 기반 데이터 관리"],
     category: "development",
+    subCategory: "web",
     showDetailLink: false
   },
   {
@@ -140,6 +146,7 @@ export const portfolioItems: PortfolioItem[] = [
       "시니어를 위한 개인 개발 포트폴리오",
     ],
     category: "development",
+    subCategory: "web",
     showPlatforms: false,
     showDetailLink: true
   },
@@ -170,6 +177,7 @@ export const portfolioItems: PortfolioItem[] = [
       "단계별 유효성 검사 및 에러 처리 자동화"
     ],
     category: "development",
+    subCategory: "web",
     showPlatforms: false,
     showDetailLink: false
   },
@@ -195,6 +203,7 @@ export const portfolioItems: PortfolioItem[] = [
     date: "2023.09 - 2024.09",
     features: ["Presigned URL을 활용한 대용량 증빙 업로드", "Server/Client 컴포넌트 분리로 초기 로드 축소", "관리자 분석을 위한 GA 이벤트 매핑", "공통 UI 컴포넌트 시스템 구축"],
     category: "development",
+    subCategory: "web",
     showPlatforms: false,
     showDetailLink: false
   },
@@ -225,6 +234,7 @@ export const portfolioItems: PortfolioItem[] = [
       "물류 운영팀 요구사항을 반영한 반복 개선"
     ],
     category: "development",
+    subCategory: "web",
     showDetailLink: false
   },
   {
@@ -261,6 +271,7 @@ export const portfolioItems: PortfolioItem[] = [
       "베트남 현지 환경에 맞춘 로컬라이징"
     ],
     category: "development",
+    subCategory: "web",
     showPlatforms: false,
     showDetailLink: false
   },
@@ -292,6 +303,7 @@ export const portfolioItems: PortfolioItem[] = [
       "프로토타입 제작"
     ],
     category: "design",
+    subCategory: "content",
     showPlatforms: false,
     showDetailLink: true,
     markdownPath: "/content/portfolio/design/101.md"
@@ -323,6 +335,7 @@ export const portfolioItems: PortfolioItem[] = [
       "사용자 리서치"
     ],
     category: "design",
+    subCategory: "content",
     showPlatforms: false,
     showDetailLink: true,
     markdownPath: "/content/portfolio/design/102.md"
@@ -344,6 +357,7 @@ export const portfolioItems: PortfolioItem[] = [
       "명함 디자인"
     ],
     category: "design",
+    subCategory: "card",
     showPlatforms: false,
     showDetailLink: true,
     markdownPath: "/content/portfolio/design/103.md"

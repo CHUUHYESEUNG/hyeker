@@ -8,20 +8,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ExternalLink, Loader2 } from "lucide-react"
-import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory } from "@/lib/portfolio-data"
+import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory, type DevelopmentSubCategory, type DesignSubCategory } from "@/lib/portfolio-data"
 
 export default function PortfolioPage() {
   const INITIAL_BATCH = 2
   const LOAD_STEP = 2
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory>("development")
+  const [activeSubCategory, setActiveSubCategory] = useState<DevelopmentSubCategory | DesignSubCategory | "all">("all")
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH)
   const [isLoading, setIsLoading] = useState(false)
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const filteredItems = useMemo(
-    () => portfolioItems.filter((item) => item.category === activeCategory),
-    [activeCategory]
+    () => portfolioItems.filter((item) => {
+      if (item.category !== activeCategory) return false
+      if (activeSubCategory === "all") return true
+      return item.subCategory === activeSubCategory
+    }),
+    [activeCategory, activeSubCategory]
   )
   const isExhausted = visibleCount >= filteredItems.length
 
@@ -63,10 +68,16 @@ export default function PortfolioPage() {
     }
   }, [])
 
-  // Reset visible count when category changes
+  // Reset visible count and subcategory when category changes
   useEffect(() => {
     setVisibleCount(INITIAL_BATCH)
+    setActiveSubCategory("all")
   }, [activeCategory])
+
+  // Reset visible count when subcategory changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_BATCH)
+  }, [activeSubCategory])
 
   const visibleItems = useMemo(() => filteredItems.slice(0, visibleCount), [filteredItems, visibleCount])
 
@@ -89,7 +100,7 @@ export default function PortfolioPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="flex justify-center mb-12"
+        className="flex justify-center mb-8"
       >
         <div className="inline-flex items-center gap-2 p-1 bg-muted rounded-lg">
           <button
@@ -112,6 +123,84 @@ export default function PortfolioPage() {
           >
             디자인
           </button>
+        </div>
+      </motion.div>
+
+      {/* SubCategory Filter */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="flex justify-center mb-12"
+      >
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <button
+            onClick={() => setActiveSubCategory("all")}
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+              activeSubCategory === "all"
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            전체
+          </button>
+          {activeCategory === "development" ? (
+            <>
+              <button
+                onClick={() => setActiveSubCategory("web")}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSubCategory === "web"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                #웹
+              </button>
+              <button
+                onClick={() => setActiveSubCategory("app")}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSubCategory === "app"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                #앱
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => setActiveSubCategory("content")}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSubCategory === "content"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                #콘텐츠
+              </button>
+              <button
+                onClick={() => setActiveSubCategory("logo")}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSubCategory === "logo"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                #로고
+              </button>
+              <button
+                onClick={() => setActiveSubCategory("card")}
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSubCategory === "card"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                #명함
+              </button>
+            </>
+          )}
         </div>
       </motion.div>
 

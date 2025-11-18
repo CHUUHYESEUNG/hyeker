@@ -351,19 +351,10 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Main Content: 3D Model (Left) + Description (Right) */}
+          {/* Main Content: Lottie (Left) + Description (Right) */}
           <div className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center max-w-7xl mx-auto">
-            {/* Left: 3D Model */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative h-[600px] lg:h-[700px]"
-            >
-              {/* 3D Model - No container, free form */}
-              <FBXModel scrollProgress={skillsProgress} />
-            </motion.div>
+            {/* Left: Lottie */}
+            <div>Lottie</div>
 
             {/* Right: A to Z Description */}
             <motion.div

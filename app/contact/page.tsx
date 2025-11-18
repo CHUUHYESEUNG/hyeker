@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Mail, Github, Linkedin, Instagram, BookOpen, FileText, MessageCircle } from "lucide-react"
+import { Breadcrumb } from "@/components/breadcrumb"
 
 const socialLinks = [
   {
@@ -53,6 +54,9 @@ const socialLinks = [
 export default function ContactPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "연락처", href: "/contact" }]} />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

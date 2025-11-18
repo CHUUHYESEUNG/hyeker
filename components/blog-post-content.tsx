@@ -12,14 +12,17 @@ import { BlogPost } from "@/lib/blog-data"
 import { ReadingProgress } from "@/components/reading-progress"
 import { TableOfContents } from "@/components/table-of-contents"
 import { GiscusComments } from "@/components/giscus-comments"
+import { RelatedPosts } from "@/components/related-posts"
+import { Breadcrumb, type BreadcrumbItem } from "@/components/breadcrumb"
 
 interface BlogPostContentProps {
   post: BlogPost
   prevPost: BlogPost | null
   nextPost: BlogPost | null
+  breadcrumbItems: BreadcrumbItem[]
 }
 
-export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentProps) {
+export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: BlogPostContentProps) {
   return (
     <>
       {/* Reading Progress Bar */}
@@ -29,6 +32,9 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
       <TableOfContents />
 
       <div className="container mx-auto px-6 sm:px-6 lg:px-8 pb-20 pt-8">
+      {/* Breadcrumb */}
+      <Breadcrumb items={breadcrumbItems} />
+
       {/* Back Button */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -179,7 +185,7 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12"
         >
           {prevPost && (
             <Card className="hover:border-primary transition-colors">
@@ -213,6 +219,9 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
             </Card>
           )}
         </motion.div>
+
+        {/* Related Posts */}
+        <RelatedPosts currentPostId={post.id} currentPostTags={post.tags} />
 
         {/* Comments Section */}
         <motion.div

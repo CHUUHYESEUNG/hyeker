@@ -10,6 +10,14 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory, type DevelopmentSubCategory, type DesignSubCategory } from "@/lib/portfolio-data"
 
+const subCategoryLabels: Record<DevelopmentSubCategory | DesignSubCategory, string> = {
+  web: "웹",
+  app: "앱",
+  content: "콘텐츠",
+  logo: "로고",
+  card: "명함"
+}
+
 export default function PortfolioPage() {
   const INITIAL_BATCH = 2
   const LOAD_STEP = 2
@@ -255,7 +263,15 @@ export default function PortfolioPage() {
                     <p className="text-white/80 text-xs md:text-sm line-clamp-2">
                       {item.description}
                     </p>
-                    <div className="mt-2">
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {item.subCategory && (
+                        <Badge
+                          variant="outline"
+                          className="text-xs bg-white/10 text-white border-white/20 backdrop-blur-sm"
+                        >
+                          #{subCategoryLabels[item.subCategory]}
+                        </Badge>
+                      )}
                       <Badge
                         variant={item.status === "완료" ? "default" : "secondary"}
                         className="text-xs"

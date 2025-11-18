@@ -53,7 +53,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${pretendard.variable} antialiased font-sans`}>
+      <body className={`${pretendard.variable} ${pretendard.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -21,15 +21,15 @@ export function GiscusComments() {
       <h2 className="text-2xl font-bold mb-6">댓글</h2>
       <Giscus
         id="comments"
-        repo="CHUUHYESEUNG/hyeker"
-        repoId="R_kgDONXmOgg"
-        category="General"
-        categoryId="DIC_kwDONXmOgs4ClOVk"
+        repo="chuuhyeseung/hyeker"
+        repoId="R_kgDOQKksVg"
+        category="Announcements"
+        categoryId="DIC_kwDOQKksVs4Cx8TR"
         mapping="pathname"
         strict="0"
         reactionsEnabled="1"
         emitMetadata="0"
-        inputPosition="top"
+        inputPosition="bottom"
         theme={theme === "dark" ? "dark" : "light"}
         lang="ko"
         loading="lazy"

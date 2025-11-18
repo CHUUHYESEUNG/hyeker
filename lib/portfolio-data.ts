@@ -33,6 +33,7 @@ export type PortfolioItem = {
   category: PortfolioCategory
   showPlatforms?: boolean
   showDetailLink?: boolean
+  markdownPath?: string
 }
 
 export const portfolioItems: PortfolioItem[] = [
@@ -292,7 +293,8 @@ export const portfolioItems: PortfolioItem[] = [
     ],
     category: "design",
     showPlatforms: false,
-    showDetailLink: false
+    showDetailLink: true,
+    markdownPath: "/content/portfolio/design/101.md"
   },
   {
     routeId: "102",
@@ -322,7 +324,8 @@ export const portfolioItems: PortfolioItem[] = [
     ],
     category: "design",
     showPlatforms: false,
-    showDetailLink: false
+    showDetailLink: true,
+    markdownPath: "/content/portfolio/design/102.md"
   },
 
 ]

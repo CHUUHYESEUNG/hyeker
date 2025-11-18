@@ -81,9 +81,6 @@ export default function PortfolioPage() {
       >
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">Portfolio</h1>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mb-8" />
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          실제 운영 중이거나 개발 중인 프로젝트들
-        </p>
       </motion.div>
 
       {/* Category Tabs */}
@@ -248,7 +245,7 @@ export default function PortfolioPage() {
                     {item.showDetailLink !== false && (
                       <div className="pt-6 flex justify-end">
                         <Button variant="link" asChild className="h-auto px-0 text-primary">
-                          <Link href={`/portfolio/app/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
+                          <Link href={`/portfolio/${item.category === 'design' ? 'design' : 'app'}/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
                             자세히 보기
                             <ArrowRight className="h-4 w-4" />
                           </Link>

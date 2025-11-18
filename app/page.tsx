@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Github, Linkedin, Instagram, BookOpen, FileText } from "lucide-react"
 import { useCallback, useRef, useState } from "react"
 import type { MouseEvent as ReactMouseEvent } from "react"
-import FBXModel from "@/components/FBXModel"
+import Lottie from "lottie-react"
+import DesignerAnimation from "@/public/lottie/Designer.json"
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -354,7 +355,24 @@ export default function Home() {
           {/* Main Content: Lottie (Left) + Description (Right) */}
           <div className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center max-w-7xl mx-auto">
             {/* Left: Lottie */}
-            <div>Lottie</div>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="relative flex justify-center items-center"
+            >
+              <div className="relative w-full max-w-[600px]">
+                {/* Glow effect */}
+                <div className="absolute inset-0 rounded-full bg-[#5b35ff]/20 blur-3xl" />
+                {/* Lottie Animation */}
+                <Lottie
+                  animationData={DesignerAnimation}
+                  loop={true}
+                  className="w-full h-auto"
+                />
+              </div>
+            </motion.div>
 
             {/* Right: A to Z Description */}
             <motion.div
@@ -421,7 +439,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
           >
-            <h2 className="mt-6 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지 <br /> 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.</h2>
+            <h2 className="mt-12 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지 <br /> 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.</h2>
           </motion.div>
       </section>
 
@@ -620,102 +638,6 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
                 </Link>
               </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="relative overflow-hidden bg-[#04020c] py-24">
-        <div className="absolute inset-0">
-          <div className="absolute -left-1/4 top-0 h-[400px] w-[400px] rounded-full bg-[#7f4dff]/25 blur-[140px]" />
-          <div className="absolute right-[-20%] bottom-[-10%] h-[520px] w-[520px] rounded-full bg-[#4dcfff]/15 blur-[160px]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04),transparent_60%)]" />
-        </div>
-        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 26 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto max-w-4xl rounded-[36px] border border-white/10 bg-white/[0.08] p-10 backdrop-blur-lg text-white shadow-[0_30px_120px_-60px_rgba(95,78,255,0.65)]"
-          >
-            <div className="grid gap-8 lg:grid-cols-[1.2fr,0.8fr]">
-              <div className="space-y-6 text-center sm:text-left">
-                <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.45em] text-white/60">
-                  Contact
-                  <span className="h-1 w-1 rounded-full bg-[#e7defe]" />
-                </span>
-                <h2 className="text-3xl font-semibold sm:text-4xl">Let&apos;s build something bold!</h2>
-
-                <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="group h-12 rounded-full border border-white/20 bg-white/10 px-7 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-1 hover:bg-white/20"
-                  >
-                    <a href="mailto:heyhyeker@gmail.com">
-                      <Mail className="mr-2 h-4 w-4" />
-                      heyhyeker@gmail.com
-                    </a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="group h-12 rounded-full border border-white/20 bg-transparent px-7 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:-translate-y-1 hover:border-white/35 hover:bg-white/10"
-                  >
-                    <Link href="/contact">
-                      제안 보내기
-                      <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-1" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-6 rounded-[28px] border border-white/10 bg-black/20 p-6 backdrop-blur">
-                <div className="space-y-3">
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Social</p>
-                  <div className="flex flex-wrap gap-3">
-                    {[
-                      { icon: Github, href: "https://github.com/CHUUHYESEUNG", label: "GitHub" },
-                      { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                      { icon: Instagram, href: "https://instagram.com/heyhyeker", label: "Instagram" },
-                      { icon: BookOpen, href: "https://brunch.co.kr/@hyeker", label: "브런치" },
-                      { icon: FileText, href: "https://dalsoon-jang.tistory.com", label: "티스토리" }
-                    ].map((social, idx) => (
-                      <motion.a
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-white/70 transition hover:-translate-y-1 hover:text-white"
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.95 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: idx * 0.05 }}
-                        aria-label={social.label}
-                      >
-                        <social.icon className="h-5 w-5" />
-                      </motion.a>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2 text-sm text-white/60">
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Next</p>
-                  <ul className="space-y-1.5">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/45" />
-                      <span>프로젝트 성격 · 일정 · 예산 범위를 알려 주세요.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/45" />
-                      <span>필요 시 온라인 미팅을 통해 방향을 함께 맞춰요.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>

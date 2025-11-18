@@ -49,7 +49,7 @@ export function Header() {
       >
         <motion.nav
           animate={{
-            scale: isScrolled ? 0.98 : 1,
+            scale: isScrolled ? 0.92 : 1,
           }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           className={`relative flex items-center justify-between rounded-full border ${

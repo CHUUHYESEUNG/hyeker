@@ -439,7 +439,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
           >
-            <h2 className="mt-12 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지 <br /> 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.</h2>
+            <h2 className="mt-12 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순 실행하는 것을 넘어</span> <br /> 어떻게 사용자 가치로 연결되는지 <br /> 고민하며 프로덕트를 만듭니다.</h2>
           </motion.div>
       </section>
 

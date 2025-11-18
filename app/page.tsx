@@ -357,17 +357,10 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative h-[500px] lg:h-[600px] rounded-[36px] border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl overflow-hidden"
+              className="relative h-[600px] lg:h-[700px]"
             >
-              {/* Glow effects */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#8a63ff]/15 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#c8b9ff]/5 to-[#47c4ff]/10" />
-
-              {/* 3D Model */}
+              {/* 3D Model - No container, free form */}
               <FBXModel scrollProgress={skillsProgress} />
-
-              {/* Border highlight */}
-              <div className="absolute inset-0 rounded-[36px] border border-white/5" />
             </motion.div>
 
             {/* Right: A to Z Description */}

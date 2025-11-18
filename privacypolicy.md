@@ -167,7 +167,7 @@ Users can exercise the following rights:
 
 For inquiries regarding the App, please contact:
 
-- **Email:** hyeker.j@gmail.com
+- **Email:** heyhyeker@gmail.com
 - **Response Time:** Within 3 business days
 
 **For Google AdMob inquiries:**
@@ -378,7 +378,7 @@ Google은 EU-US 데이터 프라이버시 프레임워크 및 적절한 안전�
 
 본 앱 관련 문의사항이 있으신 경우 아래로 연락해 주시기 바랍니다:
 
-- **이메일:** [hyeker.j@gmail.com]
+- **이메일:** [heyhyeker@gmail.com]
 - **회신 기간:** 영업일 기준 3일 이내
 
 **Google AdMob 관련 문의:**

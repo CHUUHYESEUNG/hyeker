@@ -30,25 +30,6 @@
 
 ---
 
-## 📦 Installation
-
-```bash
-# 의존성 설치
-npm install
-
-# 개발 서버 실행 (Turbopack)
-npm run dev
-
-# 프로덕션 빌드
-npm run build
-
-# 프로덕션 서버 실행
-npm start
-
-# Lint 검사
-npm run lint
-```
-
 **Environment**:
 - Node.js 18+
 - npm 9+
@@ -268,8 +249,8 @@ npx shadcn@latest add [component-name]
 ### Metadata
 ```typescript
 export const metadata = {
-  title: 'HYEKER STUDIO',
-  description: '1인 인디 개발자 혜커의 블로그 & 포트폴리오',
+  title: '혜커 HYEKER',
+  description: '개발자 혜커의 블로그 & 포트폴리오',
   openGraph: { ... },
   twitter: { ... }
 }

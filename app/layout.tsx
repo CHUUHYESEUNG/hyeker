@@ -17,10 +17,10 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://hyeker.com'),
   title: {
-    default: "HYEKER STUDIO",
-    template: "%s - HYEKER STUDIO",
+    default: "혜커 HYEKER",
+    template: "%s - 혜커 HYEKER",
   },
-  description: "디자이너에서 개발자로 전환한 1인 인디 개발자 혜커의 포트폴리오. Next.js, React Native, AI/ML 기반 프로덕트 개발 전문.",
+  description: "디발자 혜커의 포트폴리오. Next.js, React Native, AI/ML 기반 프로덕트 개발 전문.",
   keywords: ["장혜승", "혜커", "HYEKER", "풀스택 개발자", "Full-stack Developer", "Next.js", "React Native", "포트폴리오", "1인 개발자", "인디 개발자", "디자이너 개발자", "커리어 전환"],
   authors: [{ name: "장혜승 (Hyeseung Jang)", url: "https://hyeker.com" }],
   creator: "장혜승 (HYEKER)",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "HYEKER STUDIO - Designer & Full-stack Developer",
-    description: "디자이너에서 개발자로 전환한 1인 인디 개발자 혜커의 포트폴리오",
+    description: "디발자 혜커의 포트폴리오",
     url: "https://hyeker.com",
     siteName: "HYEKER STUDIO",
     locale: "ko_KR",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "HYEKER STUDIO - Designer & Full-stack Developer",
-    description: "디자이너에서 개발자로 전환한 1인 인디 개발자 혜커의 포트폴리오",
+    description: "디발자 혜커의 포트폴리오",
     images: ["/og.png"],
     creator: "@heyhyeker",
   },

@@ -116,151 +116,228 @@ export default function PortfolioPage() {
       </motion.div>
 
       {/* Portfolio Grid */}
-      <div className="space-y-16 max-w-6xl mx-auto">
-        {visibleItems.map((item, index) => {
-          const isImmediate = index < INITIAL_BATCH
-          const animationProps = isImmediate
-            ? {
-                initial: { opacity: 0, y: 40 },
-                animate: { opacity: 1, y: 0 }
-              }
-            : {
-                initial: { opacity: 0, y: 40 },
-                whileInView: { opacity: 1, y: 0 }
-              }
-          const transitionProps = {
-            duration: 0.6,
-            delay: isImmediate ? index * 0.15 : (index - INITIAL_BATCH) * 0.1
-          }
-          const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
+      {activeCategory === "design" ? (
+        /* Instagram-style Grid for Design */
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+          {visibleItems.map((item, index) => {
+            const isImmediate = index < INITIAL_BATCH
+            const animationProps = isImmediate
+              ? {
+                  initial: { opacity: 0, scale: 0.9 },
+                  animate: { opacity: 1, scale: 1 }
+                }
+              : {
+                  initial: { opacity: 0, scale: 0.9 },
+                  whileInView: { opacity: 1, scale: 1 }
+                }
+            const transitionProps = {
+              duration: 0.4,
+              delay: isImmediate ? index * 0.08 : (index - INITIAL_BATCH) * 0.05
+            }
+            const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
 
-          return (
-            <motion.div
-              key={item.id}
-              {...animationProps}
-              transition={transitionProps}
-              viewport={viewportProps}
-            >
-            <Card className="overflow-hidden hover:border-primary transition-all duration-300 hover:shadow-glow-lg">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Image Section */}
-                <div className="relative h-[300px] lg:h-auto bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center p-6">
-                  <div className={`relative ${item.image.endsWith('.svg') ? 'w-[12.5%] h-[12.5%]' : 'w-full h-full'}`}>
+            return (
+              <motion.div
+                key={item.id}
+                {...animationProps}
+                transition={transitionProps}
+                viewport={viewportProps}
+              >
+                <Link
+                  href={`/portfolio/design/${item.routeId}`}
+                  className="group block relative aspect-square overflow-hidden rounded-lg bg-muted"
+                >
+                  {/* Image */}
+                  <div className="relative w-full h-full">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
                   </div>
-                  <div className="absolute top-4 right-4">
+
+                  {/* Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <h3 className="text-white font-semibold text-sm md:text-base mb-1 line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/80 text-xs md:text-sm line-clamp-2">
+                      {item.description}
+                    </p>
+                    <div className="mt-2">
+                      <Badge
+                        variant={item.status === "완료" ? "default" : "secondary"}
+                        className="text-xs"
+                      >
+                        {item.status}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {/* Status Badge (visible by default on mobile) */}
+                  <div className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                     <Badge
-                      variant={item.status === "운영중" ? "default" : "secondary"}
-                      className="text-sm"
+                      variant={item.status === "완료" ? "default" : "secondary"}
+                      className="text-xs backdrop-blur-sm bg-background/80"
                     >
                       {item.status}
                     </Badge>
                   </div>
-                </div>
+                </Link>
+              </motion.div>
+            )
+          })}
+        </div>
+      ) : (
+        /* List Layout for Development */
+        <div className="space-y-16 max-w-6xl mx-auto">
+          {visibleItems.map((item, index) => {
+            const isImmediate = index < INITIAL_BATCH
+            const animationProps = isImmediate
+              ? {
+                  initial: { opacity: 0, y: 40 },
+                  animate: { opacity: 1, y: 0 }
+                }
+              : {
+                  initial: { opacity: 0, y: 40 },
+                  whileInView: { opacity: 1, y: 0 }
+                }
+            const transitionProps = {
+              duration: 0.6,
+              delay: isImmediate ? index * 0.15 : (index - INITIAL_BATCH) * 0.1
+            }
+            const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
 
-                {/* Content Section */}
-                <div className="p-6 lg:p-8 flex flex-col justify-between">
-                  <div>
-                    <CardHeader className="p-0 mb-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <CardTitle className="text-3xl mb-2">{item.title}</CardTitle>
-                      </div>
-                      <CardDescription className="text-base">
-                        {item.description}
-                      </CardDescription>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {item.date}
-                      </p>
-                    </CardHeader>
+            return (
+              <motion.div
+                key={item.id}
+                {...animationProps}
+                transition={transitionProps}
+                viewport={viewportProps}
+              >
+              <Card className="overflow-hidden hover:border-primary transition-all duration-300 hover:shadow-glow-lg">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Image Section */}
+                  <div className="relative h-[300px] lg:h-auto bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center p-6">
+                    <div className={`relative ${item.image.endsWith('.svg') ? 'w-[12.5%] h-[12.5%]' : 'w-full h-full'}`}>
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <Badge
+                        variant={item.status === "운영중" ? "default" : "secondary"}
+                        className="text-sm"
+                      >
+                        {item.status}
+                      </Badge>
+                    </div>
+                  </div>
 
-                    <CardContent className="p-0 space-y-6">
-                      <p className="text-muted-foreground leading-relaxed">
-                        {item.longDescription}
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div>
-                        <h3 className="text-sm font-semibold mb-2">기술 스택</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {item.tech.map((tech) => (
-                            <Badge key={tech} variant="outline" className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
+                  {/* Content Section */}
+                  <div className="p-6 lg:p-8 flex flex-col justify-between">
+                    <div>
+                      <CardHeader className="p-0 mb-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <CardTitle className="text-3xl mb-2">{item.title}</CardTitle>
                         </div>
-                      </div>
+                        <CardDescription className="text-base">
+                          {item.description}
+                        </CardDescription>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {item.date}
+                        </p>
+                      </CardHeader>
 
-                      {/* Features */}
-                      <div>
-                        <h3 className="text-sm font-semibold mb-2">주요 기능</h3>
-                        <ul className="space-y-1">
-                          {item.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                              <span className="text-primary mt-1">•</span>
-                              <span>{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <CardContent className="p-0 space-y-6">
+                        <p className="text-muted-foreground leading-relaxed">
+                          {item.longDescription}
+                        </p>
 
-                      {/* Platform Links */}
-                      {item.showPlatforms !== false && (
+                        {/* Tech Stack */}
                         <div>
-                          <h3 className="text-sm font-semibold mb-3">플랫폼</h3>
-                          <div className="flex flex-wrap gap-3">
-                            {item.platforms.map((platform, idx) => {
-                              const Icon = portfolioPlatformIconMap[platform.icon]
-                              return (
-                                <Button
-                                  key={idx}
-                                  asChild={platform.available}
-                                  variant={platform.available ? "default" : "secondary"}
-                                  disabled={!platform.available}
-                                  className="gap-2"
-                                >
-                                  {platform.available ? (
-                                    <a href={platform.url} target="_blank" rel="noopener noreferrer">
-                                      <Icon className="h-4 w-4" />
-                                      {platform.label}
-                                      <ExternalLink className="h-3 w-3 ml-1" />
-                                    </a>
-                                  ) : (
-                                    <span>
-                                      <Icon className="h-4 w-4" />
-                                      {platform.label} (준비중)
-                                    </span>
-                                  )}
-                                </Button>
-                              )
-                            })}
+                          <h3 className="text-sm font-semibold mb-2">기술 스택</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {item.tech.map((tech) => (
+                              <Badge key={tech} variant="outline" className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
                           </div>
                         </div>
+
+                        {/* Features */}
+                        <div>
+                          <h3 className="text-sm font-semibold mb-2">주요 기능</h3>
+                          <ul className="space-y-1">
+                            {item.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <span className="text-primary mt-1">•</span>
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Platform Links */}
+                        {item.showPlatforms !== false && (
+                          <div>
+                            <h3 className="text-sm font-semibold mb-3">플랫폼</h3>
+                            <div className="flex flex-wrap gap-3">
+                              {item.platforms.map((platform, idx) => {
+                                const Icon = portfolioPlatformIconMap[platform.icon]
+                                return (
+                                  <Button
+                                    key={idx}
+                                    asChild={platform.available}
+                                    variant={platform.available ? "default" : "secondary"}
+                                    disabled={!platform.available}
+                                    className="gap-2"
+                                  >
+                                    {platform.available ? (
+                                      <a href={platform.url} target="_blank" rel="noopener noreferrer">
+                                        <Icon className="h-4 w-4" />
+                                        {platform.label}
+                                        <ExternalLink className="h-3 w-3 ml-1" />
+                                      </a>
+                                    ) : (
+                                      <span>
+                                        <Icon className="h-4 w-4" />
+                                        {platform.label} (준비중)
+                                      </span>
+                                    )}
+                                  </Button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                      {item.showDetailLink !== false && (
+                        <div className="pt-6 flex justify-end">
+                          <Button variant="link" asChild className="h-auto px-0 text-primary">
+                            <Link href={`/portfolio/${item.category === 'design' ? 'design' : 'app'}/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
+                              자세히 보기
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </div>
                       )}
-                    </CardContent>
-                    {item.showDetailLink !== false && (
-                      <div className="pt-6 flex justify-end">
-                        <Button variant="link" asChild className="h-auto px-0 text-primary">
-                          <Link href={`/portfolio/${item.category === 'design' ? 'design' : 'app'}/${item.routeId}`} className="inline-flex items-center gap-1 text-base">
-                            자세히 보기
-                            <ArrowRight className="h-4 w-4" />
-                          </Link>
-                        </Button>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-            </motion.div>
-          )
-        })}
-      </div>
+              </Card>
+              </motion.div>
+            )
+          })}
+        </div>
+      )}
 
       <div ref={loadMoreRef} className="h-24 flex items-center justify-center">
         {isExhausted ? (

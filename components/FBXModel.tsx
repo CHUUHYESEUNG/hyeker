@@ -93,7 +93,7 @@ export default function FBXModel({ className = '', scrollProgress = 0 }: FBXMode
         <pointLight position={[0, 0, 5]} intensity={0.4} color="#47c4ff" />
 
         {/* 3D 모델 */}
-        <AnimatedModel url="/3dmodel/hiphop_move.fbx" scrollProgress={scrollProgress} />
+        <AnimatedModel url="/3dmodel/standup.fbx" scrollProgress={scrollProgress} />
       </Canvas>
     </div>
   );

@@ -344,25 +344,23 @@ export default function Home() {
               <span className="h-1 w-1 rounded-full bg-[#c8b9ff]" />
             </span>
             <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">프로덕트 단위의 A to Z</h2>
-            <p className="mt-4 text-base text-white/65">
-              기획부터 디자인, 개발까지 전 과정을 아우르는 하이브리드 역량
-            </p>
+            <div className="space-y-6 mt-4">
+              <p className="text-base sm:text-lg text-white/70 leading-relaxed">
+                한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> <br /> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
+              </p>
+            </div>
           </motion.div>
 
           {/* Main Content: 3D Model (Left) + Description (Right) */}
           <div className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center max-w-7xl mx-auto">
             {/* Left: 3D Model */}
             <motion.div
-              initial={{ opacity: 0, x: -40 }}
+              initial={{ opacity: 0 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative h-[500px] lg:h-[600px] rounded-[36px] border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl overflow-hidden"
+              className="relative h-[500px] lg:h-[600px] rounded-[36px] border border-white/10 from-white/[0.08] to-white/[0.02] backdrop-blur-xl overflow-hidden"
             >
-              {/* Glow effects */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#8a63ff]/15 via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#c8b9ff]/5 to-[#47c4ff]/10" />
-
               {/* 3D Model */}
               <FBXModel scrollProgress={skillsProgress} />
 
@@ -378,14 +376,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-8 text-white"
             >
-              <div className="space-y-6">
-                <h3 className="text-2xl sm:text-3xl font-semibold">
-                  프로덕트 단위로<br />넓게 보는 메이커
-                </h3>
-                <p className="text-base sm:text-lg text-white/70 leading-relaxed">
-                  한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
-                </p>
-              </div>
+          
 
               <div className="space-y-6">
                 {[
@@ -431,15 +422,19 @@ export default function Home() {
                   </motion.div>
                 ))}
               </div>
-
-              <div className="pt-4 rounded-2xl border border-[#c8b9ff]/20 bg-gradient-to-br from-[#c8b9ff]/10 to-transparent p-6">
-                <p className="text-sm text-white/80 leading-relaxed">
-                  <span className="font-medium text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지, 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.
-                </p>
-              </div>
             </motion.div>
           </div>
         </div>
+        {/* Title Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
+          >
+            <h2 className="mt-6 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지 <br /> 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.</h2>
+          </motion.div>
       </section>
 
       {/* Portfolio Section */}

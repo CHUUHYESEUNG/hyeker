@@ -9,14 +9,18 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 interface AnimatedModelProps {
   url: string;
   scrollProgress?: number;
+  onLoadStart?: () => void;
+  onLoadComplete?: () => void;
+  onLoadError?: (error: string) => void;
 }
 
-function AnimatedModel({ url, scrollProgress = 0 }: AnimatedModelProps) {
+function AnimatedModel({ url, scrollProgress = 0, onLoadStart, onLoadComplete, onLoadError }: AnimatedModelProps) {
   const groupRef = useRef<THREE.Group>(null);
   const mixerRef = useRef<THREE.AnimationMixer | null>(null);
   const [model, setModel] = useState<THREE.Group | null>(null);
 
   useEffect(() => {
+    onLoadStart?.();
     const loader = new FBXLoader();
     loader.load(
       url,
@@ -36,12 +40,17 @@ function AnimatedModel({ url, scrollProgress = 0 }: AnimatedModelProps) {
         }
 
         setModel(fbx);
+        onLoadComplete?.();
+        console.log('FBX Model loaded successfully!');
       },
       (progress) => {
-        console.log((progress.loaded / progress.total) * 100 + '% loaded');
+        const percent = Math.round((progress.loaded / progress.total) * 100);
+        console.log(`Loading: ${percent}%`);
       },
       (error) => {
         console.error('Error loading FBX:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load model';
+        onLoadError?.(errorMessage);
       }
     );
 
@@ -50,7 +59,7 @@ function AnimatedModel({ url, scrollProgress = 0 }: AnimatedModelProps) {
         mixerRef.current.stopAllAction();
       }
     };
-  }, [url]);
+  }, [url, onLoadStart, onLoadComplete, onLoadError]);
 
   useFrame((state, delta) => {
     if (mixerRef.current) {
@@ -83,9 +92,26 @@ interface FBXModelProps {
 }
 
 export default function FBXModel({ className = '', scrollProgress = 0 }: FBXModelProps) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   return (
-    <div className={`w-full h-full ${className}`}>
-      <Canvas>
+    <div className={`w-full h-full relative ${className}`}>
+      {/* 로딩 인디케이터 */}
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/5 rounded-lg">
+          <div className="text-white/60 text-sm">Loading 3D Model...</div>
+        </div>
+      )}
+
+      {/* 에러 메시지 */}
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-red-500/10 rounded-lg">
+          <div className="text-red-400 text-sm">Error: {error}</div>
+        </div>
+      )}
+
+      <Canvas style={{ background: 'transparent' }}>
         {/* 카메라를 더 가까이 배치 */}
         <PerspectiveCamera makeDefault position={[0.5, 0.8, 2.2]} fov={50} />
 
@@ -97,7 +123,16 @@ export default function FBXModel({ className = '', scrollProgress = 0 }: FBXMode
         <pointLight position={[0, 0, 5]} intensity={0.5} color="#47c4ff" />
 
         {/* 3D 모델 */}
-        <AnimatedModel url="/3dmodel/hiphop_move.fbx" scrollProgress={scrollProgress} />
+        <AnimatedModel
+          url="/3dmodel/hiphop_move.fbx"
+          scrollProgress={scrollProgress}
+          onLoadStart={() => setLoading(true)}
+          onLoadComplete={() => setLoading(false)}
+          onLoadError={(err) => {
+            setLoading(false);
+            setError(err);
+          }}
+        />
       </Canvas>
     </div>
   );

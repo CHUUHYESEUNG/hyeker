@@ -118,7 +118,7 @@ export default function PortfolioPage() {
       {/* Portfolio Grid */}
       {activeCategory === "design" ? (
         /* Instagram-style Grid for Design */
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {visibleItems.map((item, index) => {
             const isImmediate = index < INITIAL_BATCH
             const animationProps = isImmediate
@@ -154,7 +154,7 @@ export default function PortfolioPage() {
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
 

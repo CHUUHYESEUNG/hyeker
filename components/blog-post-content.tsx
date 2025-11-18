@@ -9,6 +9,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Calendar, Clock, Share2, ChevronLeft, ChevronRight } from "lucide-react"
 import { BlogPost } from "@/lib/blog-data"
+import { ReadingProgress } from "@/components/reading-progress"
+import { TableOfContents } from "@/components/table-of-contents"
+import { GiscusComments } from "@/components/giscus-comments"
 
 interface BlogPostContentProps {
   post: BlogPost
@@ -18,7 +21,14 @@ interface BlogPostContentProps {
 
 export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentProps) {
   return (
-    <div className="container mx-auto px-6 sm:px-6 lg:px-8 pb-20 pt-8">
+    <>
+      {/* Reading Progress Bar */}
+      <ReadingProgress />
+
+      {/* Table of Contents */}
+      <TableOfContents />
+
+      <div className="container mx-auto px-6 sm:px-6 lg:px-8 pb-20 pt-8">
       {/* Back Button */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -196,7 +206,18 @@ export function BlogPostContent({ post, prevPost, nextPost }: BlogPostContentPro
             </Card>
           )}
         </motion.div>
+
+        {/* Comments Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <Separator className="my-12" />
+          <GiscusComments />
+        </motion.div>
       </div>
     </div>
+    </>
   )
 }

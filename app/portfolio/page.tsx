@@ -110,10 +110,10 @@ export default function PortfolioPage() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="flex justify-center mb-8"
       >
-        <div className="inline-flex items-center gap-2 p-1 bg-muted rounded-lg">
+        <div className="grid grid-cols-2 w-full max-w-md gap-2 p-1 bg-muted rounded-lg">
           <button
             onClick={() => setActiveCategory("development")}
-            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer ${
               activeCategory === "development"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
@@ -123,7 +123,7 @@ export default function PortfolioPage() {
           </button>
           <button
             onClick={() => setActiveCategory("design")}
-            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 ${
+            className={`px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200 cursor-pointer ${
               activeCategory === "design"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
@@ -144,7 +144,7 @@ export default function PortfolioPage() {
         <div className="flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={() => setActiveSubCategory("all")}
-            className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
               activeSubCategory === "all"
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -156,7 +156,7 @@ export default function PortfolioPage() {
             <>
               <button
                 onClick={() => setActiveSubCategory("web")}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                   activeSubCategory === "web"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -166,7 +166,7 @@ export default function PortfolioPage() {
               </button>
               <button
                 onClick={() => setActiveSubCategory("app")}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                   activeSubCategory === "app"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -179,7 +179,7 @@ export default function PortfolioPage() {
             <>
               <button
                 onClick={() => setActiveSubCategory("content")}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                   activeSubCategory === "content"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -189,7 +189,7 @@ export default function PortfolioPage() {
               </button>
               <button
                 onClick={() => setActiveSubCategory("logo")}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                   activeSubCategory === "logo"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -199,7 +199,7 @@ export default function PortfolioPage() {
               </button>
               <button
                 onClick={() => setActiveSubCategory("card")}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                   activeSubCategory === "card"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"

@@ -237,7 +237,7 @@ export default function ProjectsPage() {
                   {item.projects.map((project, pIndex) => (
                     <div key={pIndex} className="space-y-3">
                       <div>
-                        <h3 className="font-semibold text-lg text-primary">{project.name}</h3>
+                        <h3 className="font-semibold text-lg text-foreground">{project.name}</h3>
                         <p className="text-sm text-muted-foreground mt-1">{project.description}</p>
                       </div>
 
@@ -255,7 +255,7 @@ export default function ProjectsPage() {
                         <ul className="space-y-1 text-sm text-muted-foreground">
                           {project.details.map((detail, dIndex) => (
                             <li key={dIndex} className="flex items-start gap-2">
-                              <span className="text-primary mt-1">•</span>
+                              <span className="text-foreground/60 mt-1">•</span>
                               <span>{detail}</span>
                             </li>
                           ))}
@@ -267,7 +267,7 @@ export default function ProjectsPage() {
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-block text-sm text-primary hover:underline"
+                          className="inline-block text-sm text-foreground/80 hover:text-foreground hover:underline transition-colors"
                         >
                           프로젝트 보기 →
                         </a>

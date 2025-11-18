@@ -343,7 +343,7 @@ export default function Home() {
               Skillscape
               <span className="h-1 w-1 rounded-full bg-[#c8b9ff]" />
             </span>
-            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">프로덕트 단위의 A to Z</h2>
+            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">프로덕트 A to Z</h2>
             <div className="space-y-6 mt-4">
               <p className="text-base sm:text-lg text-white/70 leading-relaxed">
                 한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> <br /> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
@@ -359,13 +359,10 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative h-[500px] lg:h-[600px] rounded-[36px] border border-white/10 from-white/[0.08] to-white/[0.02] backdrop-blur-xl overflow-hidden"
+              className="relative h-[600px] lg:h-[700px]"
             >
-              {/* 3D Model */}
+              {/* 3D Model - No container, free form */}
               <FBXModel scrollProgress={skillsProgress} />
-
-              {/* Border highlight */}
-              <div className="absolute inset-0 rounded-[36px] border border-white/5" />
             </motion.div>
 
             {/* Right: A to Z Description */}

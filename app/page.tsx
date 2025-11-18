@@ -218,22 +218,74 @@ export default function Home() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="space-y-4 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left"
+                >
                   <p className="text-xs uppercase tracking-[0.4em] text-white/45">Design Craft</p>
-                  <ul className="space-y-2 text-sm text-white/70">
-                    <li>Design system &amp; brand storytelling</li>
-                    <li>Motion spec · Micro interaction</li>
-                    <li>Creative direction &amp; prototyping</li>
-                  </ul>
-                </div>
-                <div className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left">
+                  <div className="space-y-4">
+                    {[
+                      { name: "Figma", level: 90 },
+                      { name: "Photoshop", level: 85 },
+                      { name: "Illustrator", level: 80 },
+                      { name: "After Effects", level: 75 },
+                      { name: "Prototyping", level: 88 }
+                    ].map((skill, index) => (
+                      <div key={skill.name} className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-white/70">{skill.name}</span>
+                          <span className="text-white/50">{skill.level}%</span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, delay: 0.3 + index * 0.1, ease: "easeOut" }}
+                            className="h-full rounded-full bg-gradient-to-r from-[#9d88ff] to-[#b09aff]"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="space-y-4 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left"
+                >
                   <p className="text-xs uppercase tracking-[0.4em] text-white/45">Engineering</p>
-                  <ul className="space-y-2 text-sm text-white/70">
-                    <li>Next.js 15 · React Native · TypeScript</li>
-                    <li>FastAPI · Spring Boot · Supabase</li>
-                    <li>AI-assisted workflow &amp; automation</li>
-                  </ul>
-                </div>
+                  <div className="space-y-4">
+                    {[
+                      { name: "React / Next.js", level: 92 },
+                      { name: "TypeScript", level: 88 },
+                      { name: "Python / FastAPI", level: 82 },
+                      { name: "React Native", level: 78 },
+                      { name: "Supabase / DB", level: 80 }
+                    ].map((skill, index) => (
+                      <div key={skill.name} className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-white/70">{skill.name}</span>
+                          <span className="text-white/50">{skill.level}%</span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: `${skill.level}%` }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, delay: 0.4 + index * 0.1, ease: "easeOut" }}
+                            className="h-full rounded-full bg-gradient-to-r from-[#7ecbff] to-[#47c4ff]"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
               </div>
 
               <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur text-left">

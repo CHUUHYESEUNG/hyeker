@@ -2,24 +2,38 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Github, Linkedin, Instagram, BookOpen, FileText } from "lucide-react"
 import { useCallback, useRef, useState } from "react"
 import type { MouseEvent as ReactMouseEvent } from "react"
+import FBXModel from "@/components/FBXModel"
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null)
+  const skillsRef = useRef<HTMLDivElement>(null)
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
+  })
+
+  const { scrollYProgress: skillsScrollProgress } = useScroll({
+    target: skillsRef,
+    offset: ["start end", "end start"]
   })
 
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
   const y = useTransform(scrollYProgress, [0, 1], [0, 200])
   const [heroTilt, setHeroTilt] = useState({ rotateX: 0, rotateY: 0 })
+
+  // Skills 섹션 3D 모델 애니메이션
+  const [skillsProgress, setSkillsProgress] = useState(0)
+  useMotionValueEvent(skillsScrollProgress, "change", (latest) => {
+    setSkillsProgress(latest)
+  })
 
   const handleHeroPointerMove = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
     if (!heroRef.current) return
@@ -309,118 +323,120 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="relative overflow-hidden bg-[#04030d] py-24">
+      <section ref={skillsRef} className="relative overflow-hidden bg-[#04030d] py-32">
         <div className="absolute inset-0">
-          <div className="absolute -left-1/4 top-0 h-[360px] w-[420px] rounded-full bg-[#8a63ff]/25 blur-3xl" />
-          <div className="absolute right-[-15%] top-1/3 h-[320px] w-[380px] rounded-full bg-[#47c4ff]/15 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_55%)]" />
+          <div className="absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-[#8a63ff]/20 blur-3xl" />
+          <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] rounded-full bg-[#47c4ff]/15 blur-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_60%)]" />
         </div>
+
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Title Section */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mx-auto flex max-w-4xl flex-col items-center text-center text-white"
+            className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.45em] text-white/55">
               Skillscape
               <span className="h-1 w-1 rounded-full bg-[#c8b9ff]" />
             </span>
-            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">디자인과 엔지니어링 A to Z</h2>
+            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">프로덕트 단위의 A to Z</h2>
             <p className="mt-4 text-base text-white/65">
-              사용자 경험을 중심으로 디자인 시스템, 프론트엔드, 백엔드, AI 워크플로를 연결합니다.
+              기획부터 디자인, 개발까지 전 과정을 아우르는 하이브리드 역량
             </p>
           </motion.div>
 
-          <div className="relative mt-16 grid gap-6 lg:grid-cols-[0.6fr,1fr]">
+          {/* Main Content: 3D Model (Left) + Description (Right) */}
+          <div className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center max-w-7xl mx-auto">
+            {/* Left: 3D Model */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="rounded-[32px] border border-white/10 bg-white/[0.05] p-6 text-white backdrop-blur"
+              transition={{ duration: 0.8 }}
+              className="relative h-[500px] lg:h-[600px] rounded-[36px] border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl overflow-hidden"
             >
-              <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-6">
-                <p className="text-xs uppercase tracking-[0.45em] text-white/45">Profile</p>
-                <div className="mt-6 grid gap-4 text-sm text-white/70">
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-[#9d88ff]" />
-                    <span>Design system · 마이크로 인터랙션</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-[#7ecbff]" />
-                    <span>Next.js 15 · React Native · TypeScript 기반 프론트엔드</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-[#ffc874]" />
-                    <span>FastAPI · Spring Boot · Supabase · AWS 아키텍처</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-[#ff82b5]" />
-                    <span>AI Assisted Workflow · 데이터 기반 문제 해결</span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-6 text-sm text-white/65">
-                <p>
-                  디자인 언어와 엔지니어링 사이의 간극을 줄이는 것을 목표로 합니다. Figma, After Effects로 인터랙션을 스케치하고,
-                  Next.js · React Native로 빠르게 검증하며, FastAPI · Spring Boot와 Supabase/AWS로 안정적인 서비스를 구축합니다.
-                </p>
-              </div>
+              {/* Glow effects */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#8a63ff]/15 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#c8b9ff]/5 to-[#47c4ff]/10" />
+
+              {/* 3D Model */}
+              <FBXModel scrollProgress={skillsProgress} />
+
+              {/* Border highlight */}
+              <div className="absolute inset-0 rounded-[36px] border border-white/5" />
             </motion.div>
 
+            {/* Right: A to Z Description */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="grid gap-6 md:grid-cols-2"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-8 text-white"
             >
-              {[
-                {
-                  title: "Experience Design",
-                  tone: "from-[#9c7dff]/20 to-transparent border-white/15",
-                  items: ["Design system", "Motion spec", "Storytelling", "Creative direction", "Accessibility"]
-                },
-                {
-                  title: "Frontend Core",
-                  tone: "from-[#73b5ff]/20 to-transparent border-white/15",
-                  items: ["Next.js 15", "React Native", "TypeScript", "Tailwind CSS", "Framer Motion"]
-                },
-                {
-                  title: "Product Backend",
-                  tone: "from-[#ffcf73]/15 to-transparent border-white/10",
-                  items: ["FastAPI", "Spring Boot", "Supabase", "PostgreSQL", "REST · GraphQL"]
-                },
-                {
-                  title: "AI & Ops",
-                  tone: "from-[#ff7fb0]/20 to-transparent border-white/10",
-                  items: ["SAINT · LSTM 모델링", "LangChain · Prompting", "Docker · AWS", "CI/CD Automation", "Security & Observability"]
-                }
-              ].map((category, index) => (
-                <motion.div
-                  key={category.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                  className={`group relative overflow-hidden rounded-[28px] border bg-white/[0.04] p-6 text-white backdrop-blur transition hover:translate-y-[-6px]`}
-                >
-                  <div className={`absolute -inset-px rounded-[28px] bg-gradient-to-br ${category.tone} opacity-0 transition group-hover:opacity-100`} />
-                  <div className="relative z-10 space-y-4">
-                    <p className="text-sm uppercase tracking-[0.35em] text-white/50">{category.title}</p>
-                    <ul className="space-y-2 text-sm text-white/70">
-                      {category.items.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/40" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
+              <div className="space-y-6">
+                <h3 className="text-2xl sm:text-3xl font-semibold">
+                  프로덕트 단위로<br />넓게 보는 메이커
+                </h3>
+                <p className="text-base sm:text-lg text-white/70 leading-relaxed">
+                  한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: "🎯",
+                    title: "기획 & 전략",
+                    desc: "사용자 니즈 파악부터 문제 정의, 솔루션 방향 설정까지 프로덕트의 방향성을 잡습니다."
+                  },
+                  {
+                    icon: "🎨",
+                    title: "디자인 시스템",
+                    desc: "Figma와 After Effects로 인터랙션을 스케치하고, 일관된 브랜드 경험을 설계합니다."
+                  },
+                  {
+                    icon: "⚡",
+                    title: "프론트엔드 개발",
+                    desc: "Next.js, React Native, TypeScript로 반응형 UI를 빠르게 구현하고 검증합니다."
+                  },
+                  {
+                    icon: "🔧",
+                    title: "백엔드 & 인프라",
+                    desc: "FastAPI, Spring Boot, Supabase/AWS로 안정적이고 확장 가능한 서비스를 구축합니다."
+                  },
+                  {
+                    icon: "🤖",
+                    title: "AI 워크플로우",
+                    desc: "LLM 기반 자동화와 데이터 분석으로 개발 생산성을 극대화합니다."
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                    className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur hover:bg-white/[0.06] transition"
+                  >
+                    <div className="text-2xl">{item.icon}</div>
+                    <div className="flex-1 space-y-1">
+                      <h4 className="font-medium text-white">{item.title}</h4>
+                      <p className="text-sm text-white/60">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="pt-4 rounded-2xl border border-[#c8b9ff]/20 bg-gradient-to-br from-[#c8b9ff]/10 to-transparent p-6">
+                <p className="text-sm text-white/80 leading-relaxed">
+                  <span className="font-medium text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지, 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.
+                </p>
+              </div>
             </motion.div>
           </div>
         </div>

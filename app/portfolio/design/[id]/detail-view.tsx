@@ -19,6 +19,8 @@ type DesignDetailViewProps = {
 }
 
 export function DesignDetailView({ item, markdownContent }: DesignDetailViewProps) {
+  console.log("🎨 DesignDetailView - item:", item.id, "markdownContent length:", markdownContent?.length || 0)
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <motion.div
@@ -136,36 +138,16 @@ export function DesignDetailView({ item, markdownContent }: DesignDetailViewProp
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-4"
+            className="py-8"
           >
-            <Card className="p-8 lg:p-12">
-              <article className="prose prose-lg dark:prose-invert max-w-none
-                prose-headings:font-bold
-                prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-8
-                prose-h2:text-3xl prose-h2:mb-4 prose-h2:mt-8
-                prose-h3:text-2xl prose-h3:mb-3 prose-h3:mt-6
-                prose-p:leading-relaxed prose-p:mb-4
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                prose-strong:text-foreground prose-strong:font-semibold
-                prose-code:text-primary prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-[''] prose-code:after:content-['']
-                prose-pre:bg-muted prose-pre:border prose-pre:border-border
-                prose-img:rounded-lg prose-img:shadow-md
-                prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1 prose-blockquote:pr-4
-                prose-ul:list-disc prose-ul:ml-6
-                prose-ol:list-decimal prose-ol:ml-6
-                prose-li:mb-2
-                prose-table:border prose-table:border-border
-                prose-th:bg-muted prose-th:p-2
-                prose-td:p-2 prose-td:border prose-td:border-border
-              ">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeRaw]}
-                >
-                  {markdownContent}
-                </ReactMarkdown>
-              </article>
-            </Card>
+            <article className="markdown-content max-w-none">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {markdownContent}
+              </ReactMarkdown>
+            </article>
           </motion.div>
         )}
       </motion.div>

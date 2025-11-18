@@ -299,10 +299,10 @@ export const portfolioItems: PortfolioItem[] = [
   {
     routeId: "102",
     id: "design-sample-2",
-    title: "디자인 프로젝트 샘플 2",
-    description: "두 번째 디자인 프로젝트 설명",
+    title: "11번가 콘텐츠 기획",
+    description: "모바일 앱 디자인 프로젝트",
     longDescription:
-      "디자인 프로젝트에 대한 상세한 설명을 여기에 작성하세요. 프로젝트의 목적, 타겟, 그리고 주요 컨셉에 대해 설명합니다.",
+      "사용자 중심의 직관적인 경험을 제공하는 모바일 앱 디자인 프로젝트입니다.",
     tech: ["Figma", "Sketch", "After Effects"],
     platforms: [
       {
@@ -313,7 +313,7 @@ export const portfolioItems: PortfolioItem[] = [
         available: false
       }
     ],
-    image: "/hyeker-terminal-icon.svg",
+    image: "/mobile_1.png",
     status: "진행중",
     date: "2025.02 - 현재",
     features: [
@@ -326,6 +326,27 @@ export const portfolioItems: PortfolioItem[] = [
     showPlatforms: false,
     showDetailLink: true,
     markdownPath: "/content/portfolio/design/102.md"
+  },
+  {
+    routeId: "103",
+    id: "businesscard",
+    title: "명함 작업",
+    description: "비즈니스 명함 작업",
+    longDescription:
+      "명함 작업 내용입니다.",
+    tech: ["Adobe Photoshop", "Adobe Illustrator"],
+    platforms: [],
+    image: "/sample1.jpg",
+    status: "작업 가능",
+    date: "2016.09~",
+    features: [
+      "로고 제작",
+      "명함 디자인"
+    ],
+    category: "design",
+    showPlatforms: false,
+    showDetailLink: true,
+    markdownPath: "/content/portfolio/design/103.md"
   },
 
 ]

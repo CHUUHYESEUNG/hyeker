@@ -58,12 +58,9 @@ export function Header() {
                 priority
               />
             </span>
-            <span className="hidden text-sm font-semibold tracking-[0.35em] text-foreground sm:inline">
-              HYEKER
-            </span>
           </Link>
 
-          <div className="hidden items-center gap-1 md:flex">
+          <div className="hidden items-center gap-1 mr-2 md:flex">
             {navItems.map((item) => {
               const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
               return (
@@ -81,13 +78,6 @@ export function Header() {
               )
             })}
             <ThemeToggle />
-            <Button
-              asChild
-              variant="ghost"
-              className="rounded-full border border-foreground/10 bg-transparent px-5 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-foreground/70 transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 hover:text-primary dark:border-white/20 dark:text-white/80 dark:hover:bg-white/15 dark:hover:text-white"
-            >
-              <Link href="/contact">Let&apos;s Talk</Link>
-            </Button>
           </div>
 
           <div className="flex items-center gap-2 md:hidden">

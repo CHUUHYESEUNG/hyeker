@@ -81,6 +81,7 @@ export default function PortfolioPage() {
       >
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">Portfolio</h1>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mb-8" />
+
       </motion.div>
 
       {/* Category Tabs */}

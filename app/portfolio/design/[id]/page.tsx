@@ -24,11 +24,16 @@ export default async function DesignDetailPage({ params }: DesignDetailPageProps
     try {
       const filePath = path.join(process.cwd(), item.markdownPath)
       markdownContent = fs.readFileSync(filePath, "utf8")
+      console.log("✅ Markdown loaded:", filePath, "Length:", markdownContent.length)
     } catch (error) {
-      console.error("Failed to read markdown file:", error)
+      console.error("❌ Failed to read markdown file:", error)
       markdownContent = ""
     }
+  } else {
+    console.log("⚠️ No markdownPath for item:", item.id)
   }
+
+  console.log("📄 Passing markdownContent length:", markdownContent.length)
 
   return <DesignDetailView item={item} markdownContent={markdownContent} />
 }

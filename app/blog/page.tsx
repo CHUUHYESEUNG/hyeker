@@ -164,14 +164,13 @@ export default function BlogPage() {
         <motion.article
           key={highlightPost.id}
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
           className="relative mb-16 overflow-hidden rounded-[32px] border border-primary/20 bg-gradient-to-br from-primary/20 via-background/90 to-secondary/15 p-1"
         >
           <Link href={`/blog/${highlightPost.id}`} className="block rounded-[28px] bg-background/95 backdrop-blur">
-            <div className="grid gap-8 p-6 lg:grid-cols-[1.1fr,0.9fr] lg:p-10">
-              <div className="relative h-72 overflow-hidden rounded-3xl lg:h-full">
+            <div className="grid gap-8 p-6 md:grid-cols-[1.2fr,0.8fr] lg:p-10">
+              <div className="relative h-72 md:h-96 lg:h-[500px] overflow-hidden rounded-3xl">
                 <Image
                   src={highlightPost.image}
                   alt={highlightPost.title}

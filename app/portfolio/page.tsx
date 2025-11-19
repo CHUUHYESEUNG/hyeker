@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory, type DevelopmentSubCategory, type DesignSubCategory } from "@/lib/portfolio-data"
+import { Breadcrumb } from "@/components/breadcrumb"
 
 const subCategoryLabels: Record<DevelopmentSubCategory | DesignSubCategory, string> = {
   web: "웹",
@@ -91,6 +92,9 @@ export default function PortfolioPage() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "포트폴리오", href: "/portfolio" }]} />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

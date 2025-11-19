@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Briefcase, Code, Palette, ShoppingBag } from "lucide-react"
+import { Breadcrumb } from "@/components/breadcrumb"
 
 const timeline = [
   {
@@ -183,6 +184,9 @@ const TypeBadge = ({ type }: { type: string }) => {
 export default function ProjectsPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      {/* Breadcrumb */}
+      <Breadcrumb items={[{ label: "프로젝트", href: "/projects" }]} />
+
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

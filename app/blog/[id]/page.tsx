@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { blogPosts } from "@/lib/blog-data"
 import { BlogPostContent } from "@/components/blog-post-content"
+import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
@@ -83,5 +84,21 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
   const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : null
   const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : null
 
-  return <BlogPostContent post={post} prevPost={prevPost} nextPost={nextPost} />
+  // Breadcrumb items
+  const breadcrumbItems = [
+    { label: "블로그", href: "/blog" },
+    { label: post.title, href: `/blog/${post.id}` }
+  ]
+
+  return (
+    <>
+      <BreadcrumbSchema items={breadcrumbItems} />
+      <BlogPostContent
+        post={post}
+        prevPost={prevPost}
+        nextPost={nextPost}
+        breadcrumbItems={breadcrumbItems}
+      />
+    </>
+  )
 }

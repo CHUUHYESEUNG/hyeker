@@ -57,16 +57,16 @@ export async function POST(request: NextRequest) {
     // 방법 2: 웰컴 이메일 전송
     try {
       const emailData = await resend.emails.send({
-        from: "HYEKER STUDIO <hey@hyeker.com>",
+        from: "혜커 HYEKER <heyhyeker@gmail.com>",
         to: email,
-        subject: "🎉 HYEKER STUDIO 뉴스레터 구독을 환영합니다!",
+        subject: "🎉 혜커 HYEKER 뉴스레터 구독을 환영합니다!",
         html: `
           <!DOCTYPE html>
           <html>
             <head>
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>HYEKER STUDIO 뉴스레터 구독 환영</title>
+              <title>혜커 HYEKER 뉴스레터 구독 환영</title>
             </head>
             <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
               <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; padding: 40px 30px; text-align: center; margin-bottom: 30px;">
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
               <div style="background: #f9fafb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
                 <h2 style="color: #1f2937; font-size: 20px; margin-top: 0;">안녕하세요, HYEKER입니다!</h2>
                 <p style="color: #4b5563; font-size: 16px; line-height: 1.8;">
-                  HYEKER STUDIO 뉴스레터를 구독해주셔서 진심으로 감사드립니다.
+                  혜커 HYEKER 뉴스레터를 구독해주셔서 진심으로 감사드립니다.
                 </p>
                 <p style="color: #4b5563; font-size: 16px; line-height: 1.8;">
                   앞으로 개발, 디자인, 그리고 1인 개발자로서의 경험과 인사이트를 정기적으로 공유하겠습니다.

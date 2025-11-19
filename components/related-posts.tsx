@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
@@ -34,7 +34,7 @@ export function RelatedPosts({ currentPostId, currentPostTags }: RelatedPostsPro
 
   return (
     <section className="mt-16 pt-16 border-t border-border">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -47,7 +47,7 @@ export function RelatedPosts({ currentPostId, currentPostTags }: RelatedPostsPro
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {scoredPosts.map(({ post }, index) => (
-            <motion.div
+            <m.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -113,10 +113,10 @@ export function RelatedPosts({ currentPostId, currentPostTags }: RelatedPostsPro
                   </CardContent>
                 </Card>
               </Link>
-            </motion.div>
+            </m.div>
           ))}
         </div>
-      </motion.div>
+      </m.div>
     </section>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { m, useScroll, useSpring } from "framer-motion"
 
 export function ReadingProgress() {
   const [isVisible, setIsVisible] = useState(false)
@@ -29,7 +29,7 @@ export function ReadingProgress() {
   }
 
   return (
-    <motion.div
+    <m.div
       className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent origin-left z-50"
       style={{ scaleX }}
       initial={{ opacity: 0 }}

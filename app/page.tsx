@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
+import { m, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Mail, Github, Linkedin, Instagram, BookOpen, FileText } from "lucide-react"
@@ -60,8 +60,8 @@ export default function Home() {
         className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#05030d] text-white"
       >
         <div className="absolute inset-0">
-          <motion.div style={{ opacity, scale, y }} className="pointer-events-none absolute inset-0">
-            <motion.div
+          <m.div style={{ opacity, scale, y }} className="pointer-events-none absolute inset-0">
+            <m.div
               animate={{
                 rotateX: heroTilt.rotateX * 0.15,
                 rotateY: heroTilt.rotateY * -0.15,
@@ -85,15 +85,15 @@ export default function Home() {
                   className="w-full object-contain"
                 />
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(118,69,217,0.22),rgba(5,3,13,0.98))]" />
           <div className="absolute -left-1/2 top-1/3 h-[520px] w-[520px] rounded-full bg-[#6f3bff]/25 blur-3xl" />
           <div className="absolute -right-1/3 bottom-0 h-[460px] w-[460px] rounded-full bg-[#b48bff]/20 blur-3xl" />
         </div>
 
         <div className="relative z-10 flex w-full flex-col items-center px-6 py-24" style={{ perspective: "1600px" }}>
-          <motion.div
+          <m.div
             animate={{
               rotateX: heroTilt.rotateX,
               rotateY: heroTilt.rotateY
@@ -109,22 +109,22 @@ export default function Home() {
             </div> */}
 
             <div className="space-y-6">
-              <motion.h1
+              <m.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 className="text-6xl font-black uppercase tracking-[0.45em] text-white/85 sm:text-[68px]"
               >
                 HYEKER JANG
-              </motion.h1>
-              <motion.h2
+              </m.h1>
+              <m.h2
                 initial={{ opacity: 0, y: 26 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.05 }}
                 className="text-3xl uppercase tracking-[0.35em] text-white/55 sm:text-[30px]"
               >
                 Designer &amp; Developer
-              </motion.h2>
+              </m.h2>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -150,9 +150,9 @@ export default function Home() {
                 </Link>
               </Button>
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             animate={{
               rotateX: heroTilt.rotateX * -0.6,
               rotateY: heroTilt.rotateY * -0.6,
@@ -174,7 +174,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[linear-gradient(200deg,rgba(7,5,18,0.85)_0%,rgba(7,5,18,0.95)_45%,rgba(5,3,13,1)_100%)]" />
         </div>
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -233,7 +233,7 @@ export default function Home() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                <motion.div
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -255,7 +255,7 @@ export default function Home() {
                           <span className="text-white/50">{skill.level}%</span>
                         </div>
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                          <motion.div
+                          <m.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
                             viewport={{ once: true }}
@@ -266,8 +266,8 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -289,7 +289,7 @@ export default function Home() {
                           <span className="text-white/50">{skill.level}%</span>
                         </div>
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                          <motion.div
+                          <m.div
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
                             viewport={{ once: true }}
@@ -300,7 +300,7 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </m.div>
               </div>
 
               <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur text-left">
@@ -319,7 +319,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -333,7 +333,7 @@ export default function Home() {
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Title Section */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -350,12 +350,12 @@ export default function Home() {
                 한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> <br /> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
               </p>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Main Content: Lottie (Left) + Description (Right) */}
           <div className="relative grid gap-12 lg:grid-cols-2 lg:gap-16 items-center max-w-7xl mx-auto">
             {/* Left: Lottie */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -372,10 +372,10 @@ export default function Home() {
                   className="w-full h-auto"
                 />
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Right: A to Z Description */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -412,7 +412,7 @@ export default function Home() {
                     desc: "LLM 기반 자동화와 데이터 분석으로 개발 생산성을 극대화합니다."
                   }
                 ].map((item, index) => (
-                  <motion.div
+                  <m.div
                     key={item.title}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -425,14 +425,14 @@ export default function Home() {
                       <h4 className="font-medium text-white">{item.title}</h4>
                       <p className="text-sm text-white/60">{item.desc}</p>
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
         {/* Title Section */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -440,7 +440,7 @@ export default function Home() {
             className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
           >
             <h2 className="mt-12 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순히 실행하는 것을 넘어</span>, 왜 이 기능이 필요한지 <br /> 어떻게 사용자 가치로 연결되는지 고민하며 프로덕트를 만듭니다.</h2>
-          </motion.div>
+          </m.div>
       </section>
 
       {/* Portfolio Section */}
@@ -453,7 +453,7 @@ export default function Home() {
         </div>
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-white">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -468,7 +468,7 @@ export default function Home() {
             <p className="mt-4 text-base text-white/65">
               Next.js, RN, Supabase 등을 활용한 웹/앱 제작
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="mt-16 grid gap-8 lg:grid-cols-3">
             {[
@@ -510,7 +510,7 @@ export default function Home() {
                 type: "mobile"
               }
             ].map((project, index) => (
-              <motion.article
+              <m.article
                 key={project.id}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -520,7 +520,7 @@ export default function Home() {
               >
                 <div className={project.type === "web" ? "relative h-[320px]" : "relative h-[320px]"}>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
+                    <m.div
                       animate={{
                         y: [-12, 12, -12],
                         rotateX: [-4, 4, -4],
@@ -541,7 +541,7 @@ export default function Home() {
                       <div className="pointer-events-none absolute inset-0 rounded-[36px] border border-white/20 opacity-40" />
                       <div className="pointer-events-none absolute inset-0 rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.12),transparent_70%)]" />
                       <div className="pointer-events-none absolute inset-x-6 bottom-[-60px] h-24 rounded-full bg-gradient-to-b from-white/20 via-white/10 to-transparent blur-2xl" />
-                    </motion.div>
+                    </m.div>
                   </div>
                   <div className="absolute bottom-[-36px] left-6 right-6 z-20 rounded-2xl border border-white/10 bg-black/45 p-4 backdrop-blur-lg shadow-[0_20px_40px_-30px_rgba(120,110,255,0.7)]">
                     <span className="text-xs uppercase tracking-[0.35em] text-white/55">{project.tagline}</span>
@@ -605,11 +605,11 @@ export default function Home() {
                     </Link>
                   </Button> */}
                 </div>
-              </motion.article>
+              </m.article>
             ))}
           </div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -639,7 +639,7 @@ export default function Home() {
                 </Link>
               </Button>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
     </div>

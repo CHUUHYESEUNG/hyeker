@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MotionProvider } from "@/components/motion-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PersonSchema } from "@/components/schema/person-schema";
@@ -93,11 +94,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1 pt-16">{children}</main>
-            <Footer />
-          </div>
+          <MotionProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1 pt-16">{children}</main>
+              <Footer />
+            </div>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

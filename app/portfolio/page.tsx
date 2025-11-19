@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -96,7 +96,7 @@ export default function PortfolioPage() {
       <Breadcrumb items={[{ label: "포트폴리오", href: "/portfolio" }]} />
 
       {/* Header */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -105,10 +105,10 @@ export default function PortfolioPage() {
         <h1 className="text-4xl sm:text-5xl font-bold mb-4">Portfolio</h1>
         <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full mb-8" />
 
-      </motion.div>
+      </m.div>
 
       {/* Category Tabs */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -136,10 +136,10 @@ export default function PortfolioPage() {
             디자인
           </button>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* SubCategory Filter */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
@@ -214,7 +214,7 @@ export default function PortfolioPage() {
             </>
           )}
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Portfolio Grid */}
       {activeCategory === "design" ? (
@@ -233,12 +233,12 @@ export default function PortfolioPage() {
                 }
             const transitionProps = {
               duration: 0.4,
-              delay: isImmediate ? index * 0.08 : (index - INITIAL_BATCH) * 0.05
+              delay: isImmediate ? Math.min(index * 0.08, 0.3) : Math.min((index - INITIAL_BATCH) * 0.05, 0.2)
             }
             const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
 
             return (
-              <motion.div
+              <m.div
                 key={item.id}
                 {...animationProps}
                 transition={transitionProps}
@@ -295,7 +295,7 @@ export default function PortfolioPage() {
                     </Badge>
                   </div>
                 </Link>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>
@@ -314,13 +314,13 @@ export default function PortfolioPage() {
                   whileInView: { opacity: 1, y: 0 }
                 }
             const transitionProps = {
-              duration: 0.6,
-              delay: isImmediate ? index * 0.15 : (index - INITIAL_BATCH) * 0.1
+              duration: 0.5,
+              delay: isImmediate ? Math.min(index * 0.12, 0.4) : Math.min((index - INITIAL_BATCH) * 0.08, 0.25)
             }
             const viewportProps = isImmediate ? undefined : { once: true, amount: 0.3 }
 
             return (
-              <motion.div
+              <m.div
                 key={item.id}
                 {...animationProps}
                 transition={transitionProps}
@@ -442,7 +442,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
               </Card>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>
@@ -462,7 +462,7 @@ export default function PortfolioPage() {
       </div>
 
       {/* CTA Section */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -482,7 +482,7 @@ export default function PortfolioPage() {
             </Button>
           </CardContent>
         </Card>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

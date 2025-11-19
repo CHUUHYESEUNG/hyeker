@@ -14,6 +14,7 @@ import { ReadingProgress } from "@/components/reading-progress"
 import { TableOfContents } from "@/components/table-of-contents"
 import { RelatedPosts } from "@/components/related-posts"
 import { Breadcrumb, type BreadcrumbItem } from "@/components/breadcrumb"
+import { NewsletterForm } from "@/components/newsletter-form"
 
 // Dynamic import for Giscus to reduce initial bundle size
 const GiscusComments = dynamic(() => import("@/components/giscus-comments").then(mod => ({ default: mod.GiscusComments })), {
@@ -228,6 +229,16 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
 
         {/* Related Posts */}
         <RelatedPosts currentPostId={post.id} currentPostTags={post.tags} />
+
+        {/* Newsletter Subscription */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="mb-12"
+        >
+          <NewsletterForm />
+        </m.div>
 
         {/* Comments Section */}
         <m.div

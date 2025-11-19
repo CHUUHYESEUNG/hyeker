@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
     // 방법 2: 웰컴 이메일 전송
     try {
       const emailData = await resend.emails.send({
-        from: "HYEKER STUDIO <hey@hyeker.com>",
+        // TODO: 도메인 인증 후 "HYEKER STUDIO <hey@hyeker.com>"로 변경
+        from: "HYEKER STUDIO <onboarding@resend.dev>",
         to: email,
         subject: "🎉 HYEKER STUDIO 뉴스레터 구독을 환영합니다!",
         html: `

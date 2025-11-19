@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user, userData, loading, isAdmin } = useAuth()
+  const { user, loading, isAdmin } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         router.push('/')
       }
     }
-  }, [user, userData, loading, isAdmin, router])
+  }, [user, loading, isAdmin, router])
 
   // 로딩 중
   if (loading) {

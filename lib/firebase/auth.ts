@@ -78,4 +78,4 @@ export const onAuthChange = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, callback)
 }
 
-export { User }
+export type { User }

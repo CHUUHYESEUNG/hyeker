@@ -2,8 +2,8 @@
 
 ## 세션 정보
 - 브랜치: `claude/design-portfolio-grid-layout-01BcHsSf77hEuqvDh9Y1qg9V`
-- 작업 기간: 2025-11-18
-- 주요 목표: 포트폴리오 사이트 디자인 개선 및 폰트 변경
+- 작업 기간: 2025-11-18 ~ 2025-11-19
+- 주요 목표: 포트폴리오 사이트 디자인 개선, 블로그 확장, SEO 최적화
 
 ---
 
@@ -233,6 +233,332 @@ const pretendard = localFont({
 
 ---
 
+### 9. 블로그 기능 확장
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `components/giscus-comments.tsx` - GitHub Discussions 기반 댓글 시스템
+- `components/reading-progress.tsx` - 읽기 진행률 표시
+- `components/table-of-contents.tsx` - 자동 목차 생성
+- `components/blog-post-content.tsx` - 블로그 포스트 통합 컴포넌트
+
+**주요 기능**:
+
+#### Giscus 댓글
+```tsx
+<Giscus
+  repo="chuuhyeseung/hyeker"
+  repoId="R_kgDOQKksVg"
+  category="Announcements"
+  categoryId="DIC_kwDOQKksVs4Cx8TR"
+  mapping="pathname"
+  theme={theme === "dark" ? "dark" : "light"}
+  lang="ko"
+/>
+```
+- GitHub Discussions 기반 댓글 시스템
+- 다크모드 자동 전환
+- OAuth 인증
+
+#### 읽기 진행률 바
+```tsx
+const { scrollYProgress } = useScroll()
+const scaleX = useSpring(scrollYProgress, {
+  stiffness: 100,
+  damping: 30,
+})
+```
+- 페이지 상단 고정 프로그레스 바
+- Framer Motion 스프링 애니메이션
+
+#### 목차(TOC)
+- h2, h3 자동 수집
+- Intersection Observer로 현재 섹션 추적
+- 데스크톱: 고정 사이드바
+- 모바일: 플로팅 버튼 + 모달
+
+#### 프로필 이미지
+```tsx
+<Image
+  src="/me.png"
+  alt="Hyeker profile"
+  fill
+  className="object-cover"
+/>
+```
+- 저자 섹션에 실제 프로필 이미지 표시
+
+**해결한 이슈**:
+- Giscus 저장소 미설치 오류 → 올바른 repo 설정값 적용
+- `@giscus/react` 모듈 해결 실패 → 완전 재설치로 해결
+
+---
+
+### 10. 종합 SEO 최적화
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `app/sitemap.ts` - 동적 사이트맵 생성
+- `app/robots.ts` - 검색 엔진 크롤링 정책
+- `components/schema/person-schema.tsx` - Person JSON-LD
+- `components/schema/website-schema.tsx` - WebSite JSON-LD
+- `app/layout.tsx` (수정) - 메타데이터 보강
+
+**구현 내용**:
+
+#### 1. 사이트맵 자동 생성
+```typescript
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://hyeker.com'
+
+  // 정적 페이지
+  const routes = [
+    { url: baseUrl, changeFrequency: 'weekly', priority: 1 },
+    { url: `${baseUrl}/portfolio`, changeFrequency: 'weekly', priority: 0.9 },
+    // ...
+  ]
+
+  // 블로그 포스트 동적 생성
+  const blogRoutes = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.id}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  return [...routes, ...blogRoutes, ...portfolioRoutes]
+}
+```
+
+#### 2. robots.txt 설정
+```typescript
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/_next/'],
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: ['/'],  // AI 학습 방지
+      },
+    ],
+    sitemap: 'https://hyeker.com/sitemap.xml',
+  }
+}
+```
+
+#### 3. 메타데이터 개선
+```typescript
+export const metadata: Metadata = {
+  metadataBase: new URL('https://hyeker.com'),
+  verification: {
+    google: "google-site-verification-code",
+    other: {
+      "naver-site-verification": "naver-site-verification-code",
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
+```
+
+#### 4. JSON-LD 구조화 데이터
+- Person 스키마: 개인 정보, 소셜 링크, 직업
+- WebSite 스키마: 사이트 이름, URL, 설명
+
+#### 5. 블로그 동적 메타데이터
+```typescript
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = blogPosts.find(p => p.id === id)
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    keywords: [...post.tags, "개발 블로그", "HYEKER"],
+    openGraph: { /* ... */ },
+    twitter: { /* ... */ },
+    alternates: {
+      canonical: `https://hyeker.com/blog/${post.id}`,
+    },
+  }
+}
+```
+
+---
+
+### 11. 페이지별 메타데이터 추가
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `app/portfolio/layout.tsx` - 포트폴리오 메타데이터
+- `app/projects/layout.tsx` - 프로젝트 메타데이터
+- `app/contact/layout.tsx` - 연락처 메타데이터
+
+**추가된 메타데이터**:
+- Open Graph (소셜 미디어 공유)
+- Twitter Card (트위터 공유)
+- Keywords (검색 키워드)
+- Canonical URL (중복 컨텐츠 방지)
+
+**효과**:
+- 모든 페이지에서 소셜 미디어 공유 시 예쁜 카드 표시
+- 검색 엔진 최적화 개선
+- 페이지별 맞춤 키워드 설정
+
+---
+
+### 12. 블로그 관련 포스트 추천
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `components/related-posts.tsx`
+
+**알고리즘**:
+```typescript
+const scoredPosts = blogPosts
+  .filter(post => post.id !== currentPostId)
+  .map(post => {
+    const commonTags = post.tags.filter(tag => currentPostTags.includes(tag))
+    return {
+      post,
+      score: commonTags.length  // 공통 태그 개수로 점수 계산
+    }
+  })
+  .filter(item => item.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)  // 상위 3개만 표시
+```
+
+**UI 기능**:
+- 카드형 레이아웃 (3개 컬럼)
+- 공통 태그 강조 표시
+- 호버 효과 및 애니메이션
+- 관련 포스트 없으면 자동 숨김
+
+**SEO/UX 효과**:
+- 사용자 체류 시간 증가
+- 페이지뷰 증가
+- 콘텐츠 발견성 향상
+- 내부 링크 구조 강화
+
+---
+
+### 13. Breadcrumb 네비게이션
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `components/breadcrumb.tsx` - UI 컴포넌트
+- `components/schema/breadcrumb-schema.tsx` - JSON-LD 스키마
+
+**적용 위치**:
+- `/blog` → `홈 > 블로그`
+- `/blog/[id]` → `홈 > 블로그 > 포스트 제목`
+- `/portfolio` → `홈 > 포트폴리오`
+- `/projects` → `홈 > 프로젝트`
+- `/contact` → `홈 > 연락처`
+
+**구현**:
+```tsx
+<Breadcrumb items={[
+  { label: "블로그", href: "/blog" },
+  { label: post.title, href: `/blog/${post.id}` }
+]} />
+
+<BreadcrumbSchema items={breadcrumbItems} />
+```
+
+**JSON-LD 스키마**:
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://hyeker.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "블로그",
+      "item": "https://hyeker.com/blog"
+    }
+  ]
+}
+```
+
+**SEO 효과**:
+- Google 검색 결과에 breadcrumb 표시 가능
+- 사이트 구조 명확화
+- 크롤링 효율성 향상
+
+**UX 효과**:
+- 현재 위치 파악 쉬움
+- 상위 페이지로 빠른 이동
+- 사이트 계층 구조 이해 향상
+
+---
+
+### 14. Google Analytics 4 설정 가이드
+**날짜**: 2025-11-19
+
+**생성된 파일**:
+- `GOOGLE_ANALYTICS_SETUP.md` - 완벽한 단계별 가이드
+
+**포함 내용**:
+1. GA4 계정 생성 (스크린샷 없이 상세 설명)
+2. 측정 ID 발급 방법
+3. Next.js 통합 방법 2가지:
+   - 직접 삽입
+   - 환경 변수 사용 (추천)
+4. Vercel 환경 변수 설정
+5. 설치 확인 방법 (3가지)
+6. IP 필터링 설정
+7. 커스텀 이벤트 추적 예시
+8. 주요 지표 확인 위치
+9. GDPR 및 개인정보 처리방침 안내
+
+**환경 변수 방식 예시**:
+```tsx
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+
+{GA_ID && process.env.NODE_ENV === 'production' && (
+  <>
+    <Script
+      src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+      strategy="afterInteractive"
+    />
+    <Script id="google-analytics" strategy="afterInteractive">
+      {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${GA_ID}');
+      `}
+    </Script>
+  </>
+)}
+```
+
+**사용자 할 일**:
+- [ ] Google Analytics 계정 생성
+- [ ] 측정 ID (G-XXXXXXXXXX) 받기
+- [ ] Vercel 환경 변수 설정
+- [ ] 배포 후 실시간 데이터 확인
+
+---
+
 ## 기술 스택
 
 ### Frontend
@@ -256,24 +582,51 @@ const pretendard = localFont({
 ```
 /home/user/hyeker/
 ├── app/
-│   ├── layout.tsx                 # 루트 레이아웃, 폰트 설정
-│   ├── globals.css                # 전역 스타일, 테마 색상
+│   ├── layout.tsx                        # 루트 레이아웃, 폰트, JSON-LD
+│   ├── globals.css                       # 전역 스타일, 테마 색상
+│   ├── sitemap.ts                        # 동적 사이트맵 생성
+│   ├── robots.ts                         # 검색 엔진 크롤링 정책
+│   ├── blog/
+│   │   ├── page.tsx                     # 블로그 목록 + Breadcrumb
+│   │   └── [id]/
+│   │       └── page.tsx                 # 블로그 포스트 + 메타데이터
 │   ├── portfolio/
-│   │   └── page.tsx              # 그리드 레이아웃, 필터링
-│   └── projects/
-│       └── page.tsx              # 색상 개선
+│   │   ├── layout.tsx                   # 포트폴리오 메타데이터
+│   │   └── page.tsx                     # 그리드 레이아웃, 필터링
+│   ├── projects/
+│   │   ├── layout.tsx                   # 프로젝트 메타데이터
+│   │   └── page.tsx                     # 색상 개선
+│   └── contact/
+│       ├── layout.tsx                   # 연락처 메타데이터
+│       └── page.tsx                     # Breadcrumb 추가
 ├── components/
-│   └── header.tsx                # 모던 UI 헤더
+│   ├── header.tsx                        # 모던 UI 헤더
+│   ├── breadcrumb.tsx                    # Breadcrumb UI
+│   ├── related-posts.tsx                 # 관련 포스트 추천
+│   ├── blog-post-content.tsx             # 블로그 통합 컴포넌트
+│   ├── giscus-comments.tsx               # GitHub 댓글 시스템
+│   ├── reading-progress.tsx              # 읽기 진행률 바
+│   ├── table-of-contents.tsx             # 자동 목차
+│   └── schema/
+│       ├── person-schema.tsx            # Person JSON-LD
+│       ├── website-schema.tsx           # WebSite JSON-LD
+│       └── breadcrumb-schema.tsx        # BreadcrumbList JSON-LD
 ├── lib/
-│   └── portfolio-data.ts         # 포트폴리오 데이터, 타입
-└── public/
-    └── fonts/
-        └── PretendardVariable.woff2  # 2MB
+│   ├── portfolio-data.ts                 # 포트폴리오 데이터
+│   └── blog-data.ts                      # 블로그 데이터
+├── public/
+│   ├── fonts/
+│   │   └── PretendardVariable.woff2     # 2MB
+│   └── me.png                            # 프로필 이미지
+├── GOOGLE_ANALYTICS_SETUP.md             # GA4 설정 가이드
+└── CLAUDE.md                             # 작업 기록
 ```
 
 ---
 
 ## 커밋 히스토리
+
+### 2025-11-18 (Day 1)
 
 1. `feat: modernize header with advanced UI techniques`
    - Framer Motion 애니메이션
@@ -289,6 +642,32 @@ const pretendard = localFont({
 
 4. `fix: add pretendard.className for proper font application`
    - className 추가로 폰트 제대로 적용
+
+### 2025-11-19 (Day 2)
+
+5. `feat: add blog enhancements - comments, TOC, reading progress`
+   - Giscus 댓글 시스템
+   - 읽기 진행률 바
+   - 자동 목차 생성
+
+6. `fix: update Giscus configuration with correct repo settings`
+   - 올바른 GitHub repo 설정값 적용
+
+7. `feat: add profile image to blog author section`
+   - /public/me.png 추가
+   - 저자 섹션 프로필 이미지 표시
+
+8. `feat: implement comprehensive SEO optimization`
+   - sitemap.ts, robots.ts 생성
+   - 메타데이터 보강
+   - Person, WebSite JSON-LD 스키마
+   - 블로그 동적 메타데이터
+
+9. `feat: add SEO enhancements - metadata, related posts, breadcrumbs, and analytics guide`
+   - 포트폴리오/프로젝트/연락처 메타데이터
+   - 관련 포스트 추천 컴포넌트
+   - Breadcrumb 네비게이션 + JSON-LD
+   - Google Analytics 4 설정 가이드
 
 ---
 
@@ -310,34 +689,103 @@ const pretendard = localFont({
 
 ---
 
+## 사용자 할 일 (즉시)
+
+### 1. Google/Naver Search Console 인증
+**현재 상태**: 플레이스홀더 코드만 있음
+
+**Option A: HTML 파일 인증 (추천, 쉬움)**
+1. Search Console에서 HTML 파일 다운로드
+2. `public/` 폴더에 복사
+3. 배포 후 인증 클릭
+
+**Option B: TXT 레코드 (Vercel DNS)**
+1. Vercel 대시보드 → Settings → Domains → hyeker.com
+2. DNS Records → Add → TXT
+3. Google/Naver 값 입력
+
+**파일 위치**:
+- `app/layout.tsx:60` - Google 인증 코드
+- `app/layout.tsx:62` - Naver 인증 코드
+
+### 2. Google Analytics 설치
+**가이드**: `GOOGLE_ANALYTICS_SETUP.md` 파일 참조
+
+**단계**:
+1. Google Analytics 계정 생성
+2. 측정 ID 받기 (G-XXXXXXXXXX)
+3. Vercel 환경 변수 설정
+   - Name: `NEXT_PUBLIC_GA_ID`
+   - Value: `G-XXXXXXXXXX`
+4. `app/layout.tsx`에 Script 태그 추가
+5. 배포 후 실시간 데이터 확인
+
+### 3. sitemap.xml 제출
+**URL**: `https://hyeker.com/sitemap.xml`
+
+1. Google Search Console에서 sitemap 제출
+2. Naver Search Advisor에서 sitemap 제출
+3. 크롤링 상태 모니터링
+
+---
+
 ## 다음 작업 제안
 
 ### UI/UX 개선
 - [ ] 포트폴리오 상세 페이지 개선
-- [ ] 블로그 페이지 그리드 레이아웃
 - [ ] Contact 페이지 폼 디자인 개선
 - [ ] Footer 재디자인
+- [ ] 404 페이지 커스터마이징
 
 ### 성능 최적화
 - [ ] 이미지 lazy loading 최적화
 - [ ] 애니메이션 성능 프로파일링
 - [ ] Lighthouse 점수 개선
+- [ ] Core Web Vitals 측정
 
 ### 기능 추가
-- [ ] 검색 기능
-- [ ] 포트폴리오 정렬 옵션
+- [ ] 블로그 검색 기능 강화
+- [ ] 포트폴리오 필터 & 정렬 옵션 추가
 - [ ] 다국어 지원 (i18n)
-- [ ] RSS 피드
+- [ ] RSS 피드 생성
+- [ ] 소셜 공유 버튼 구현
+- [ ] 뉴스레터 구독 기능
+
+### SEO 고급 최적화
+- [ ] Open Graph 이미지 동적 생성
+- [ ] Article JSON-LD 스키마 (블로그)
+- [ ] FAQ JSON-LD 스키마
+- [ ] 이미지 alt 텍스트 최적화
+- [ ] 내부 링크 구조 최적화
 
 ---
 
 ## 참고 자료
 
+### 폰트 & 스타일링
 - [Next.js Font Optimization](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
 - [Pretendard GitHub](https://github.com/orioncactus/pretendard)
-- [Framer Motion Docs](https://www.framer.com/motion/)
 - [Tailwind CSS v4](https://tailwindcss.com/docs)
 - [OKLCH Color Space](https://oklch.com/)
+
+### 애니메이션
+- [Framer Motion Docs](https://www.framer.com/motion/)
+- [Framer Motion Scroll Animations](https://www.framer.com/motion/scroll-animations/)
+
+### SEO & 메타데이터
+- [Next.js Metadata API](https://nextjs.org/docs/app/building-your-application/optimizing/metadata)
+- [Schema.org Documentation](https://schema.org/)
+- [Google Search Central](https://developers.google.com/search/docs)
+- [Naver Search Advisor](https://searchadvisor.naver.com/)
+- [Open Graph Protocol](https://ogp.me/)
+
+### 블로그 & 댓글
+- [Giscus GitHub](https://github.com/giscus/giscus)
+- [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+
+### Analytics
+- [Google Analytics 4](https://developers.google.com/analytics/devguides/collection/ga4)
+- [Next.js Analytics](https://nextjs.org/analytics)
 
 ---
 
@@ -346,9 +794,76 @@ const pretendard = localFont({
 **현재 브랜치**: `claude/design-portfolio-grid-layout-01BcHsSf77hEuqvDh9Y1qg9V`
 
 **메인 브랜치로 머지 시 체크리스트**:
-- [ ] 모든 페이지에서 폰트 제대로 적용되는지 확인
-- [ ] 라이트모드/다크모드 테마 전환 테스트
-- [ ] 모바일 반응형 테스트
-- [ ] 애니메이션 성능 체크
-- [ ] 빌드 에러 없는지 확인
-- [ ] 링크 및 네비게이션 작동 확인
+- [x] 모든 페이지에서 폰트 제대로 적용되는지 확인
+- [x] 라이트모드/다크모드 테마 전환 테스트
+- [x] 모바일 반응형 테스트
+- [x] 애니메이션 성능 체크
+- [x] 빌드 에러 없는지 확인 ✅
+- [x] 링크 및 네비게이션 작동 확인
+- [x] SEO 메타데이터 모든 페이지에 적용
+- [x] Breadcrumb 모든 페이지에 표시
+- [x] 블로그 댓글, 진행률, 목차 기능 동작
+- [x] 관련 포스트 추천 기능 동작
+- [ ] Google Search Console 인증 완료
+- [ ] Naver Search Advisor 인증 완료
+- [ ] Google Analytics 설치 및 데이터 수집 확인
+- [ ] sitemap.xml 제출 완료
+
+---
+
+## 세션 요약
+
+### 완료된 주요 기능
+✅ 포트폴리오 그리드 레이아웃
+✅ 서브카테고리 필터링
+✅ 다크 테마 색상 개선
+✅ Pretendard 폰트 로컬 호스팅
+✅ 헤더 모던 UI
+✅ 블로그 댓글 시스템 (Giscus)
+✅ 읽기 진행률 바
+✅ 자동 목차
+✅ 종합 SEO 최적화
+✅ 페이지별 메타데이터
+✅ 관련 포스트 추천
+✅ Breadcrumb 네비게이션
+✅ Google Analytics 가이드
+
+### 생성된 파일 (총 20개)
+- **컴포넌트**: 7개
+- **레이아웃**: 3개
+- **SEO 파일**: 2개 (sitemap, robots)
+- **JSON-LD 스키마**: 3개
+- **가이드 문서**: 2개 (GA4, CLAUDE.md)
+- **기타**: 3개
+
+### 총 커밋 수: 9개
+- 2025-11-18: 4개 (디자인 & 폰트)
+- 2025-11-19: 5개 (블로그 & SEO)
+
+### 빌드 상태
+```bash
+✓ Compiled successfully
+✓ Generating static pages (21/21)
+Route (app)
+├ ○ / (Static)
+├ ○ /blog (Static)
+├ ● /blog/[id] (SSG - 10 pages)
+├ ○ /contact (Static)
+├ ○ /portfolio (Static)
+├ ○ /projects (Static)
+├ ○ /robots.txt (Static)
+└ ○ /sitemap.xml (Static)
+```
+
+### 예상 SEO 개선 효과
+- **Sitemap**: 검색 엔진 자동 크롤링
+- **Metadata**: 모든 페이지 검색 최적화
+- **JSON-LD**: Rich Snippets 가능
+- **Breadcrumb**: 검색 결과 구조 표시
+- **Related Posts**: 체류 시간 증가
+- **Open Graph**: 소셜 공유 최적화
+
+---
+
+**마지막 업데이트**: 2025-11-19
+**다음 세션 추천 작업**: Search Console 인증 → GA4 설치 → 데이터 모니터링

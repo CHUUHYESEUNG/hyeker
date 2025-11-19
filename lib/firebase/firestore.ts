@@ -1,0 +1,178 @@
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+  Timestamp,
+  serverTimestamp,
+  QueryConstraint,
+} from 'firebase/firestore'
+import { db } from './config'
+
+export interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string // Markdown
+  category: string
+  tags: string[]
+  date: Timestamp
+  readTime: string
+  image: string
+  authorId: string
+  authorName: string
+  authorAvatar: string
+  published: boolean
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+export interface BlogPostInput {
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  category: string
+  tags: string[]
+  readTime: string
+  image: string
+  authorId: string
+  authorName: string
+  authorAvatar: string
+  published: boolean
+}
+
+// Blog Posts CRUD
+
+/**
+ * 모든 블로그 포스트 가져오기 (공개만)
+ */
+export const getBlogPosts = async (categoryFilter?: string): Promise<BlogPost[]> => {
+  const constraints: QueryConstraint[] = [
+    where('published', '==', true),
+    orderBy('date', 'desc'),
+  ]
+
+  if (categoryFilter && categoryFilter !== 'all' && categoryFilter !== '전체') {
+    constraints.push(where('category', '==', categoryFilter))
+  }
+
+  const q = query(collection(db, 'blog_posts'), ...constraints)
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as BlogPost[]
+}
+
+/**
+ * Admin: 모든 블로그 포스트 가져오기 (Draft 포함)
+ */
+export const getAllBlogPostsAdmin = async (): Promise<BlogPost[]> => {
+  const q = query(collection(db, 'blog_posts'), orderBy('createdAt', 'desc'))
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as BlogPost[]
+}
+
+/**
+ * 단일 블로그 포스트 가져오기 (ID)
+ */
+export const getBlogPost = async (id: string): Promise<BlogPost | null> => {
+  const docRef = doc(db, 'blog_posts', id)
+  const docSnap = await getDoc(docRef)
+
+  if (!docSnap.exists()) {
+    return null
+  }
+
+  return {
+    id: docSnap.id,
+    ...docSnap.data(),
+  } as BlogPost
+}
+
+/**
+ * 단일 블로그 포스트 가져오기 (Slug)
+ */
+export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+  const q = query(collection(db, 'blog_posts'), where('slug', '==', slug), limit(1))
+  const snapshot = await getDocs(q)
+
+  if (snapshot.empty) {
+    return null
+  }
+
+  const doc = snapshot.docs[0]
+  return {
+    id: doc.id,
+    ...doc.data(),
+  } as BlogPost
+}
+
+/**
+ * 블로그 포스트 생성
+ */
+export const createBlogPost = async (data: BlogPostInput): Promise<string> => {
+  const docRef = await addDoc(collection(db, 'blog_posts'), {
+    ...data,
+    date: Timestamp.now(),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+
+  return docRef.id
+}
+
+/**
+ * 블로그 포스트 수정
+ */
+export const updateBlogPost = async (id: string, data: Partial<BlogPostInput>): Promise<void> => {
+  const docRef = doc(db, 'blog_posts', id)
+  await updateDoc(docRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  })
+}
+
+/**
+ * 블로그 포스트 삭제
+ */
+export const deleteBlogPost = async (id: string): Promise<void> => {
+  const docRef = doc(db, 'blog_posts', id)
+  await deleteDoc(docRef)
+}
+
+/**
+ * Slug 생성 헬퍼
+ */
+export const generateSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-가-힣]/g, '') // 특수문자 제거 (한글 유지)
+    .replace(/[\s_-]+/g, '-') // 공백을 하이픈으로
+    .replace(/^-+|-+$/g, '') // 시작/끝 하이픈 제거
+}
+
+/**
+ * 읽기 시간 계산 (간단한 로직)
+ */
+export const calculateReadTime = (content: string): string => {
+  const wordsPerMinute = 200 // 한국어 평균 읽기 속도
+  const wordCount = content.split(/\s+/).length
+  const minutes = Math.ceil(wordCount / wordsPerMinute)
+  return `${minutes}분`
+}

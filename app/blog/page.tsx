@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Calendar, Clock, Search, ArrowRight, Loader2 } from "lucide-react"
 import { blogPosts, categories } from "@/lib/blog-data"
 import { Breadcrumb } from "@/components/breadcrumb"
+import { NewsletterForm } from "@/components/newsletter-form"
 
 export default function BlogPage() {
   const INITIAL_BATCH = 4
@@ -310,6 +311,17 @@ export default function BlogPage() {
           <p className="text-lg text-muted-foreground">검색 결과가 없습니다. 다른 키워드를 입력해보세요.</p>
         </m.div>
       )}
+
+      {/* Newsletter Subscription */}
+      <m.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="mx-auto max-w-3xl mt-20 mb-12"
+      >
+        <NewsletterForm />
+      </m.div>
     </div>
   )
 }

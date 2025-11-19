@@ -273,3 +273,93 @@
 .markdown-content hr {
   @apply border-border my-8;
 }
+
+/* SimpleMDE Editor Styles */
+.markdown-editor-wrapper .EasyMDEContainer {
+  @apply border border-border rounded-lg overflow-hidden bg-background;
+}
+
+.markdown-editor-wrapper .CodeMirror {
+  @apply bg-background text-foreground;
+  font-family: var(--font-pretendard), ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 400px;
+}
+
+.markdown-editor-wrapper .CodeMirror-cursor {
+  @apply border-l-primary;
+}
+
+.markdown-editor-wrapper .CodeMirror-selected {
+  @apply bg-primary/10;
+}
+
+.markdown-editor-wrapper .editor-toolbar {
+  @apply bg-muted/30 border-b border-border;
+}
+
+.markdown-editor-wrapper .editor-toolbar button {
+  @apply text-muted-foreground hover:text-foreground hover:bg-muted transition-colors;
+}
+
+.markdown-editor-wrapper .editor-toolbar button.active {
+  @apply text-primary bg-primary/10;
+}
+
+.markdown-editor-wrapper .editor-toolbar i.separator {
+  @apply border-l border-border;
+}
+
+.markdown-editor-wrapper .editor-preview,
+.markdown-editor-wrapper .editor-preview-side {
+  @apply bg-background text-foreground p-4;
+}
+
+.markdown-editor-wrapper .editor-preview h1,
+.markdown-editor-wrapper .editor-preview-side h1 {
+  @apply text-3xl font-bold mt-6 mb-4;
+}
+
+.markdown-editor-wrapper .editor-preview h2,
+.markdown-editor-wrapper .editor-preview-side h2 {
+  @apply text-2xl font-bold mt-5 mb-3;
+}
+
+.markdown-editor-wrapper .editor-preview h3,
+.markdown-editor-wrapper .editor-preview-side h3 {
+  @apply text-xl font-semibold mt-4 mb-2;
+}
+
+.markdown-editor-wrapper .editor-preview p,
+.markdown-editor-wrapper .editor-preview-side p {
+  @apply mb-4;
+}
+
+.markdown-editor-wrapper .editor-preview code,
+.markdown-editor-wrapper .editor-preview-side code {
+  @apply bg-muted px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.markdown-editor-wrapper .editor-preview pre,
+.markdown-editor-wrapper .editor-preview-side pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.markdown-editor-wrapper .editor-preview pre code,
+.markdown-editor-wrapper .editor-preview-side pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown-editor-wrapper .editor-statusbar {
+  @apply bg-muted/30 border-t border-border text-xs text-muted-foreground;
+}
+
+/* Dark mode adjustments */
+.dark .markdown-editor-wrapper .CodeMirror {
+  color: oklch(0.97 0.01 293);
+}
+
+.dark .markdown-editor-wrapper .CodeMirror-gutters {
+  @apply bg-muted/50 border-r border-border;
+}

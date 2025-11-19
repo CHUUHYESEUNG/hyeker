@@ -2,7 +2,8 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
+import { m } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,9 +12,14 @@ import { ArrowLeft, Calendar, Clock, Share2, ChevronLeft, ChevronRight } from "l
 import { BlogPost } from "@/lib/blog-data"
 import { ReadingProgress } from "@/components/reading-progress"
 import { TableOfContents } from "@/components/table-of-contents"
-import { GiscusComments } from "@/components/giscus-comments"
 import { RelatedPosts } from "@/components/related-posts"
 import { Breadcrumb, type BreadcrumbItem } from "@/components/breadcrumb"
+
+// Dynamic import for Giscus to reduce initial bundle size
+const GiscusComments = dynamic(() => import("@/components/giscus-comments").then(mod => ({ default: mod.GiscusComments })), {
+  ssr: false,
+  loading: () => <div className="text-center text-muted-foreground py-8">댓글을 불러오는 중...</div>
+})
 
 interface BlogPostContentProps {
   post: BlogPost
@@ -36,7 +42,7 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
       <Breadcrumb items={breadcrumbItems} />
 
       {/* Back Button */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
@@ -48,11 +54,11 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
             블로그로 돌아가기
           </Link>
         </Button>
-      </motion.div>
+      </m.div>
 
       <div className="max-w-4xl mx-auto">
         {/* Article Header */}
-        <motion.article
+        <m.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -147,10 +153,10 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
               </p>
             </div>
           </div>
-        </motion.article>
+        </m.article>
 
         {/* Author Info */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -178,10 +184,10 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Navigation */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -218,20 +224,20 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
               </Link>
             </Card>
           )}
-        </motion.div>
+        </m.div>
 
         {/* Related Posts */}
         <RelatedPosts currentPostId={post.id} currentPostTags={post.tags} />
 
         {/* Comments Section */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <Separator className="my-12" />
           <GiscusComments />
-        </motion.div>
+        </m.div>
       </div>
     </div>
     </>

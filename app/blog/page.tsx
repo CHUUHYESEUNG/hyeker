@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -104,7 +104,7 @@ export default function BlogPage() {
       <Breadcrumb items={[{ label: "블로그", href: "/blog" }]} />
 
       {/* Header */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -119,10 +119,10 @@ export default function BlogPage() {
         <p className="mt-4 text-lg text-muted-foreground">
           개인적인 생각과 경험 공유하기
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Search Bar */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
@@ -138,10 +138,10 @@ export default function BlogPage() {
             className="h-12 border-none bg-transparent pl-4 sm:pl-12 text-base focus-visible:ring-0"
           />
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Category Filter */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -157,11 +157,11 @@ export default function BlogPage() {
             {category.name}
           </Button>
         ))}
-      </motion.div>
+      </m.div>
 
       {/* Highlight Post */}
       {highlightPost && (
-        <motion.article
+        <m.article
           key={highlightPost.id}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -222,19 +222,19 @@ export default function BlogPage() {
               </div>
             </div>
           </Link>
-        </motion.article>
+        </m.article>
       )}
 
       {/* Remaining Posts */}
       {remainingPosts.length > 0 && (
         <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 xl:grid-cols-3">
           {remainingPosts.map((post, index) => (
-            <motion.div
+            <m.div
               key={post.id}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.05 }}
+              transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.25) }}
             >
               <Link href={`/blog/${post.id}`} className="group block h-full">
                 <Card className="flex h-full flex-col overflow-hidden border-border/60 bg-background/80 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow-md">
@@ -280,7 +280,7 @@ export default function BlogPage() {
                   </CardContent>
                 </Card>
               </Link>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       )}
@@ -302,13 +302,13 @@ export default function BlogPage() {
 
       {/* No Results */}
       {filteredPosts.length === 0 && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="py-20 text-center"
         >
           <p className="text-lg text-muted-foreground">검색 결과가 없습니다. 다른 키워드를 입력해보세요.</p>
-        </motion.div>
+        </m.div>
       )}
     </div>
   )

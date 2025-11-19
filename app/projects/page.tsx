@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Briefcase, Code, Palette, ShoppingBag } from "lucide-react"
@@ -188,7 +188,7 @@ export default function ProjectsPage() {
       <Breadcrumb items={[{ label: "프로젝트", href: "/projects" }]} />
 
       {/* Hero Section */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -199,7 +199,7 @@ export default function ProjectsPage() {
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           디자이너부터 개발자까지, 다양한 경험을 쌓아온 여정
         </p>
-      </motion.div>
+      </m.div>
 
       {/* Timeline */}
       <div className="max-w-5xl mx-auto relative">
@@ -209,7 +209,7 @@ export default function ProjectsPage() {
         {/* Timeline Items */}
         <div className="space-y-12">
           {timeline.map((item, index) => (
-            <motion.div
+            <m.div
               key={index}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -280,7 +280,7 @@ export default function ProjectsPage() {
                   ))}
                 </CardContent>
               </Card>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

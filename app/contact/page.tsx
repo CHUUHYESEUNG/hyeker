@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Mail, Github, Linkedin, Instagram, BookOpen, FileText, MessageCircle } from "lucide-react"
@@ -58,7 +58,7 @@ export default function ContactPage() {
       <Breadcrumb items={[{ label: "연락처", href: "/contact" }]} />
 
       {/* Header */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -69,11 +69,11 @@ export default function ContactPage() {
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           프로젝트 의뢰, 협업 제안은 언제나 환영합니다
         </p>
-      </motion.div>
+      </m.div>
 
       <div className="max-w-5xl mx-auto">
         {/* Main Contact Card */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -108,10 +108,10 @@ export default function ContactPage() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Social Links */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -120,7 +120,7 @@ export default function ContactPage() {
           <h2 className="text-2xl font-bold text-center mb-8">소셜 미디어</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {socialLinks.map((link, index) => (
-              <motion.a
+              <m.a
                 key={link.name}
                 href={link.href}
                 target="_blank"
@@ -142,10 +142,10 @@ export default function ContactPage() {
                     <p className="text-sm text-muted-foreground">{link.description}</p>
                   </CardContent>
                 </Card>
-              </motion.a>
+              </m.a>
             ))}
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   )

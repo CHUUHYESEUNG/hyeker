@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ArrowLeft, ExternalLink } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -23,7 +23,7 @@ export function DesignDetailView({ item, markdownContent }: DesignDetailViewProp
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -134,7 +134,7 @@ export function DesignDetailView({ item, markdownContent }: DesignDetailViewProp
 
         {/* Markdown Content Section */}
         {markdownContent && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -148,9 +148,9 @@ export function DesignDetailView({ item, markdownContent }: DesignDetailViewProp
                 {markdownContent}
               </ReactMarkdown>
             </article>
-          </motion.div>
+          </m.div>
         )}
-      </motion.div>
+      </m.div>
     </div>
   )
 }

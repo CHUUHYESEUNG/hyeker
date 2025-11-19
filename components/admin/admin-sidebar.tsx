@@ -1,10 +1,9 @@
 "use client"
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Terminal, FileText, Briefcase, LayoutDashboard, LogOut } from 'lucide-react'
-import { logout } from '@/lib/firebase/auth'
-import { useRouter } from 'next/navigation'
+import { logout } from '@/lib/util/auth'
 
 const navigation = [
   { name: '대시보드', href: '/admin', icon: LayoutDashboard },
@@ -16,13 +15,10 @@ export function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
 
-  const handleLogout = async () => {
-    try {
-      await logout()
-      router.push('/admin/login')
-    } catch (error) {
-      console.error('로그아웃 실패:', error)
-    }
+  const handleLogout = () => {
+    logout()
+    router.push('/admin/login')
+    router.refresh()
   }
 
   return (

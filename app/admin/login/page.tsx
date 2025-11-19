@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { login } from '@/lib/firebase/auth'
+import { login } from '@/lib/util/auth'
 import { useAuth } from '@/components/admin/auth-provider'
-import { Terminal, Lock, Mail } from 'lucide-react'
+import { Terminal, Lock, User } from 'lucide-react'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -27,23 +27,19 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      await login(email, password)
-      router.push('/admin')
-      router.refresh()
-    } catch (err: any) {
-      console.error('로그인 실패:', err)
+      const authUser = login(username, password)
 
-      if (err.code === 'auth/user-not-found') {
-        setError('존재하지 않는 계정입니다.')
-      } else if (err.code === 'auth/wrong-password') {
-        setError('비밀번호가 올바르지 않습니다.')
-      } else if (err.code === 'auth/invalid-credential') {
-        setError('이메일 또는 비밀번호가 올바르지 않습니다.')
-      } else if (err.code === 'auth/too-many-requests') {
-        setError('로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.')
+      if (authUser) {
+        // 로그인 성공
+        router.push('/admin')
+        router.refresh()
       } else {
-        setError('로그인에 실패했습니다. 다시 시도해주세요.')
+        // 로그인 실패
+        setError('아이디 또는 비밀번호가 올바르지 않습니다.')
       }
+    } catch (err) {
+      console.error('로그인 실패:', err)
+      setError('로그인에 실패했습니다. 다시 시도해주세요.')
     } finally {
       setLoading(false)
     }
@@ -72,22 +68,22 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Email Input */}
+            {/* Username Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                이메일
+              <label htmlFor="username" className="block text-sm font-medium text-foreground mb-2">
+                아이디
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@hyeker.com"
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="admin"
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   required
-                  autoComplete="email"
+                  autoComplete="username"
                 />
               </div>
             </div>
@@ -131,7 +127,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="mt-6 pt-6 border-t border-border text-center text-sm text-muted-foreground">
-            Admin 계정은 Firebase Console에서 생성됩니다
+            테스트 계정: admin / hs0505
           </div>
         </div>
 

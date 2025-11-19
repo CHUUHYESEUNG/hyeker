@@ -14,7 +14,7 @@ import {
   serverTimestamp,
   QueryConstraint,
 } from 'firebase/firestore'
-import { db } from './config'
+import { db } from '@/lib/util/firebase'
 
 export interface BlogPost {
   id: string

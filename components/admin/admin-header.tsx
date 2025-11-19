@@ -4,7 +4,7 @@ import { useAuth } from './auth-provider'
 import { User } from 'lucide-react'
 
 export function AdminHeader() {
-  const { userData } = useAuth()
+  const { user } = useAuth()
 
   return (
     <header className="bg-card border-b border-border px-6 py-4">
@@ -18,9 +18,9 @@ export function AdminHeader() {
         <div className="flex items-center gap-3">
           <div className="text-right">
             <p className="text-sm font-medium text-foreground">
-              {userData?.name || userData?.email}
+              {user?.username || 'Admin'}
             </p>
-            <p className="text-xs text-muted-foreground capitalize">{userData?.role}</p>
+            <p className="text-xs text-muted-foreground capitalize">{user?.role || 'admin'}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
             <User className="w-5 h-5 text-primary" />

@@ -6,7 +6,7 @@ import {
   uploadBytesResumable,
   UploadTaskSnapshot,
 } from 'firebase/storage'
-import { storage } from './config'
+import { storage } from '@/lib/util/firebase'
 
 /**
  * 이미지 업로드 (Blog)

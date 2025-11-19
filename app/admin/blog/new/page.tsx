@@ -11,7 +11,7 @@ import { useAuth } from '@/components/admin/auth-provider'
 
 export default function NewBlogPostPage() {
   const router = useRouter()
-  const { user, userData } = useAuth()
+  const { user } = useAuth()
 
   const [formData, setFormData] = useState({
     title: '',
@@ -43,7 +43,7 @@ export default function NewBlogPostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!user || !userData) {
+    if (!user) {
       alert('로그인이 필요합니다.')
       return
     }
@@ -72,8 +72,8 @@ export default function NewBlogPostPage() {
         tags: tagsArray,
         readTime,
         image: formData.image || '/sample1.jpg',
-        authorId: user.uid,
-        authorName: userData.name || userData.email || '작성자',
+        authorId: user.username,
+        authorName: '장혜승',
         authorAvatar: '',
         published: formData.published,
       })

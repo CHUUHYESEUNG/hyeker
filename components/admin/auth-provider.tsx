@@ -1,19 +1,16 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { User } from 'firebase/auth'
-import { onAuthChange, getUserData, UserData } from '@/lib/firebase/auth'
+import { getCurrentUser, AuthUser } from '@/lib/util/auth'
 
 interface AuthContextType {
-  user: User | null
-  userData: UserData | null
+  user: AuthUser | null
   loading: boolean
   isAdmin: boolean
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  userData: null,
   loading: true,
   isAdmin: false,
 })
@@ -31,33 +28,29 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null)
-  const [userData, setUserData] = useState<UserData | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthChange(async (firebaseUser) => {
-      setUser(firebaseUser)
+    // 초기 로드 시 localStorage에서 사용자 정보 가져오기
+    const currentUser = getCurrentUser()
+    setUser(currentUser)
+    setLoading(false)
 
-      if (firebaseUser) {
-        // Firestore에서 사용자 권한 정보 가져오기
-        const data = await getUserData(firebaseUser.uid)
-        setUserData(data)
-      } else {
-        setUserData(null)
-      }
+    // storage 이벤트 리스너 (다른 탭에서 로그인/로그아웃 감지)
+    const handleStorageChange = () => {
+      const currentUser = getCurrentUser()
+      setUser(currentUser)
+    }
 
-      setLoading(false)
-    })
-
-    return unsubscribe
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, [])
 
   const value = {
     user,
-    userData,
     loading,
-    isAdmin: userData?.role === 'admin',
+    isAdmin: user?.role === 'admin' && user?.isAuthenticated === true,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

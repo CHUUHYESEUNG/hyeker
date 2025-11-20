@@ -131,22 +131,6 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: "8",
-    title: "임신 준비 중인 개발자의 커리어 고민",
-    slug: "developer-pregnancy-career",
-    excerpt: "임신과 육아를 준비하면서 개발자로서의 커리어를 어떻게 이어갈 것인지에 대한 솔직한 이야기.",
-    content: "일과 삶의 균형, 그리고 개발자로서의 성장...",
-    category: "일상",
-    tags: ["커리어", "일상", "워라밸", "개발자"],
-    date: "2024-12-05",
-    readTime: "6분",
-    image: "/sample1.jpg",
-    author: {
-      name: "장혜승",
-      avatar: ""
-    }
-  },
-  {
-    id: "9",
     title: "Supabase와 Next.js로 풀스택 앱 만들기",
     slug: "fullstack-app-with-supabase",
     excerpt: "Supabase를 백엔드로 사용하여 Next.js 풀스택 애플리케이션을 빠르게 구축하는 방법.",
@@ -162,7 +146,7 @@ export const blogPosts: BlogPost[] = [
     }
   },
   {
-    id: "10",
+    id: "9",
     title: "AWS Cognito를 활용한 인증 시스템 구축",
     slug: "aws-cognito-authentication",
     excerpt: "비즈인사이트 프로젝트에서 AWS Cognito를 사용하여 안전한 사용자 인증 시스템을 구축한 경험.",

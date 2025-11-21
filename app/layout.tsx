@@ -4,8 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MotionProvider } from "@/components/motion-provider";
 import { AuthProvider } from "@/components/admin/auth-provider";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { LayoutWrapper } from "@/components/layout-wrapper";
 import { PersonSchema } from "@/components/schema/person-schema";
 import { WebSiteSchema } from "@/components/schema/website-schema";
 import Script from 'next/script'
@@ -118,11 +117,9 @@ export default function RootLayout({
         >
           <AuthProvider>
             <MotionProvider>
-              <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-1 pt-16">{children}</main>
-                <Footer />
-              </div>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
             </MotionProvider>
           </AuthProvider>
         </ThemeProvider>

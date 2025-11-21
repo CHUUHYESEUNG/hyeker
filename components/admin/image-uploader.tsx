@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useRef } from 'react'
-import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react'
-import { uploadBlogImage, validateImageFile } from '@/lib/firebase/storage'
+import { Upload, X, Loader2, AlertTriangle } from 'lucide-react'
+import { uploadToCloudinary, validateImageFile, isCloudinaryConfigured } from '@/lib/cloudinary'
 import Image from 'next/image'
 
 interface ImageUploaderProps {
@@ -17,6 +17,8 @@ export function ImageUploader({ onUpload, currentImage, label = "이미지" }: I
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentImage || null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const cloudinaryConfigured = isCloudinaryConfigured()
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -38,16 +40,16 @@ export function ImageUploader({ onUpload, currentImage, label = "이미지" }: I
     }
     reader.readAsDataURL(file)
 
-    // Firebase Storage에 업로드
+    // Cloudinary에 업로드
     try {
       setUploading(true)
       setProgress(0)
 
-      const downloadURL = await uploadBlogImage(file, (prog) => {
+      const result = await uploadToCloudinary(file, (prog) => {
         setProgress(Math.round(prog))
       })
 
-      onUpload(downloadURL)
+      onUpload(result.secure_url)
       setError(null)
     } catch (err) {
       console.error('이미지 업로드 실패:', err)
@@ -65,6 +67,33 @@ export function ImageUploader({ onUpload, currentImage, label = "이미지" }: I
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
+  }
+
+  // Cloudinary 미설정 시 안내
+  if (!cloudinaryConfigured) {
+    return (
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-foreground">
+          {label}
+        </label>
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-medium text-foreground mb-2">Cloudinary 설정 필요</p>
+              <p className="text-muted-foreground mb-3">
+                이미지 업로드를 위해 Cloudinary를 설정해주세요.
+              </p>
+              <div className="bg-background/50 rounded p-3 font-mono text-xs">
+                <p className="text-muted-foreground mb-1"># .env.local</p>
+                <p>NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name</p>
+                <p>NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_preset</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -129,7 +158,7 @@ export function ImageUploader({ onUpload, currentImage, label = "이미지" }: I
                 <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm font-medium text-foreground">클릭하여 이미지 업로드</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  JPG, PNG, WebP, GIF (최대 5MB)
+                  JPG, PNG, WebP, GIF (최대 10MB)
                 </p>
               </div>
             )}

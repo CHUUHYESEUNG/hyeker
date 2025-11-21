@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const { user, isAdmin } = useAuth()
+  const { user, isAdmin, refreshUser } = useAuth()
 
   // 이미 로그인된 Admin이면 리다이렉트
   useEffect(() => {
@@ -30,9 +30,9 @@ export default function LoginPage() {
       const authUser = login(username, password)
 
       if (authUser) {
-        // 로그인 성공
+        // 로그인 성공 - AuthProvider 상태 업데이트
+        refreshUser()
         router.push('/admin')
-        router.refresh()
       } else {
         // 로그인 실패
         setError('아이디 또는 비밀번호가 올바르지 않습니다.')

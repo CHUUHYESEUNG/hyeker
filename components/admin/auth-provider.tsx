@@ -1,18 +1,20 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react'
 import { getCurrentUser, AuthUser } from '@/lib/util/auth'
 
 interface AuthContextType {
   user: AuthUser | null
   loading: boolean
   isAdmin: boolean
+  refreshUser: () => void
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   isAdmin: false,
+  refreshUser: () => {},
 })
 
 export const useAuth = () => {
@@ -30,6 +32,12 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
+
+  // 사용자 정보 새로고침 함수
+  const refreshUser = useCallback(() => {
+    const currentUser = getCurrentUser()
+    setUser(currentUser)
+  }, [])
 
   useEffect(() => {
     // 초기 로드 시 localStorage에서 사용자 정보 가져오기
@@ -51,6 +59,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     loading,
     isAdmin: user?.role === 'admin' && user?.isAuthenticated === true,
+    refreshUser,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

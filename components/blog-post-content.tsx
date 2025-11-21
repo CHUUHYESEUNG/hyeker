@@ -27,9 +27,10 @@ interface BlogPostContentProps {
   prevPost: BlogPost | null
   nextPost: BlogPost | null
   breadcrumbItems: BreadcrumbItem[]
+  allPosts?: BlogPost[]
 }
 
-export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: BlogPostContentProps) {
+export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems, allPosts = [] }: BlogPostContentProps) {
   return (
     <>
       {/* Reading Progress Bar */}
@@ -228,7 +229,7 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems }: B
         </m.div>
 
         {/* Related Posts */}
-        <RelatedPosts currentPostId={post.id} currentPostTags={post.tags} />
+        <RelatedPosts currentPostId={post.id} currentPostTags={post.tags} allPosts={allPosts} />
 
         {/* Newsletter Subscription */}
         <m.div

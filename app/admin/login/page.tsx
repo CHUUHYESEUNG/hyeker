@@ -126,9 +126,6 @@ export default function LoginPage() {
           </form>
 
           {/* Footer */}
-          <div className="mt-6 pt-6 border-t border-border text-center text-sm text-muted-foreground">
-            테스트 계정: admin / hs0505
-          </div>
         </div>
 
         {/* Back to Home */}

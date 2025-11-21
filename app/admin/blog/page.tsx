@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, AlertTriangle } from 'lucide-react'
 import { getAllBlogPostsAdmin, deleteBlogPost, BlogPost } from '@/lib/firebase/firestore'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -12,15 +12,24 @@ export default function AdminBlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [firebaseError, setFirebaseError] = useState(false)
   const router = useRouter()
 
   const fetchPosts = async () => {
+    // Firebase 설정 확인
+    if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
+      setFirebaseError(true)
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       const data = await getAllBlogPostsAdmin()
       setPosts(data)
     } catch (error) {
       console.error('블로그 목록 가져오기 실패:', error)
+      setFirebaseError(true)
     } finally {
       setLoading(false)
     }
@@ -51,6 +60,40 @@ export default function AdminBlogListPage() {
     return (
       <div className="flex items-center justify-center h-96">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (firebaseError) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-bold text-foreground">블로그 관리</h2>
+          <p className="text-muted-foreground mt-1">포스트 목록을 불러올 수 없습니다</p>
+        </div>
+
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-6">
+          <div className="flex items-start gap-4">
+            <AlertTriangle className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">Firebase 설정 필요</h3>
+              <p className="text-muted-foreground text-sm mb-4">
+                블로그 데이터를 관리하려면 Firebase를 설정해야 합니다.
+              </p>
+              <div className="bg-background/50 rounded-lg p-4 text-sm font-mono">
+                <p className="text-muted-foreground mb-2"># .env.local 파일에 추가:</p>
+                <p>NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key</p>
+                <p>NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id</p>
+              </div>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-2 mt-4 text-sm text-primary hover:underline"
+              >
+                ← 대시보드로 돌아가기
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

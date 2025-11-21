@@ -1,3 +1,4 @@
+// 블로그 포스트 타입 (프론트엔드용)
 export interface BlogPost {
   id: string
   title: string
@@ -171,14 +172,3 @@ export const categories = [
   { name: "커리어", slug: "커리어" },
   { name: "일상", slug: "일상" }
 ]
-
-export function getBlogPosts(category?: string): BlogPost[] {
-  if (!category || category === "all") {
-    return blogPosts
-  }
-  return blogPosts.filter(post => post.category === category)
-}
-
-export function getBlogPost(id: string): BlogPost | undefined {
-  return blogPosts.find(post => post.id === id)
-}

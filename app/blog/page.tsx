@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Calendar, Clock, Search, ArrowRight, Loader2 } from "lucide-react"
-import { blogPosts, categories } from "@/lib/blog-data"
+import { categories, BlogPost } from "@/lib/blog-data"
+import { getBlogPosts } from "@/lib/firebase/firestore"
 import { Breadcrumb } from "@/components/breadcrumb"
 import { NewsletterForm } from "@/components/newsletter-form"
 
@@ -20,8 +21,49 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH)
   const [isLoading, setIsLoading] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const loadMoreRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Firestore에서 블로그 포스트 가져오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setInitialLoading(true)
+        const posts = await getBlogPosts()
+
+        // Firestore 데이터를 프론트엔드 형식으로 변환
+        const formattedPosts: BlogPost[] = posts.map(post => ({
+          id: post.id,
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          content: post.content,
+          category: post.category,
+          tags: post.tags,
+          date: post.date?.toDate?.()
+            ? post.date.toDate().toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0],
+          readTime: post.readTime,
+          image: post.image || '/sample1.jpg',
+          author: {
+            name: post.authorName || '장혜승',
+            avatar: post.authorAvatar || ''
+          }
+        }))
+
+        setBlogPosts(formattedPosts)
+      } catch (error) {
+        console.error('블로그 포스트 로딩 실패:', error)
+        setBlogPosts([])
+      } finally {
+        setInitialLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
 
   const filterPosts = useCallback((category: string, query: string) => {
     const normalizedQuery = query.trim().toLowerCase()
@@ -34,7 +76,7 @@ export default function BlogPage() {
         post.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
       return matchesCategory && matchesSearch
     })
-  }, [])
+  }, [blogPosts])
 
   const filteredPosts = useMemo(
     () => filterPosts(selectedCategory, searchQuery),
@@ -98,6 +140,21 @@ export default function BlogPage() {
 
   const highlightPost = visiblePosts[0]
   const remainingPosts = visiblePosts.slice(1)
+
+  // 초기 로딩 상태
+  if (initialLoading) {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <Breadcrumb items={[{ label: "블로그", href: "/blog" }]} />
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+            <p className="text-muted-foreground">포스트를 불러오는 중...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -302,13 +359,17 @@ export default function BlogPage() {
       )}
 
       {/* No Results */}
-      {filteredPosts.length === 0 && (
+      {filteredPosts.length === 0 && !initialLoading && (
         <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="py-20 text-center"
         >
-          <p className="text-lg text-muted-foreground">검색 결과가 없습니다. 다른 키워드를 입력해보세요.</p>
+          <p className="text-lg text-muted-foreground">
+            {blogPosts.length === 0
+              ? "아직 작성된 포스트가 없습니다. Admin에서 첫 포스트를 작성해보세요!"
+              : "검색 결과가 없습니다. 다른 키워드를 입력해보세요."}
+          </p>
         </m.div>
       )}
 

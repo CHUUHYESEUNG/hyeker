@@ -1,5 +1,4 @@
 import { MetadataRoute } from 'next'
-import { blogPosts } from '@/lib/blog-data'
 import { portfolioItems } from '@/lib/portfolio-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -45,14 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // 블로그 포스트 동적 페이지
-  const blogRoutes = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.id}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }))
-
   // 포트폴리오 상세 페이지
   const portfolioRoutes = portfolioItems.map((item) => {
     const path = item.category === 'design' ? 'design' : 'app'
@@ -64,5 +55,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  return [...routes, ...blogRoutes, ...portfolioRoutes]
+  // Note: 블로그 포스트는 Firestore에서 동적으로 관리되므로
+  // 블로그 목록 페이지를 통해 검색 엔진이 크롤링합니다.
+
+  return [...routes, ...portfolioRoutes]
 }

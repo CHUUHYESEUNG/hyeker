@@ -1,10 +1,41 @@
-import { blogPosts } from "@/lib/blog-data"
+import { getBlogPosts } from "@/lib/firebase/firestore"
 
 export async function GET() {
   const siteUrl = "https://hyeker.com"
   const author = {
     name: "장혜승 (HYEKER)",
     email: "hey@hyeker.com",
+  }
+
+  // Firestore에서 블로그 포스트 가져오기
+  let blogPosts: Array<{
+    id: string
+    title: string
+    excerpt: string
+    content: string
+    image: string
+    category: string
+    tags: string[]
+    date: string
+  }> = []
+
+  try {
+    const posts = await getBlogPosts()
+    blogPosts = posts.map(post => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      image: post.image || '/sample1.jpg',
+      category: post.category,
+      tags: post.tags,
+      date: post.date?.toDate?.()
+        ? post.date.toDate().toISOString().split('T')[0]
+        : new Date().toISOString().split('T')[0],
+    }))
+  } catch (error) {
+    console.error('RSS 피드 생성 중 에러:', error)
+    // 에러 시 빈 배열로 진행
   }
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -34,7 +65,7 @@ export async function GET() {
       <guid isPermaLink="true">${siteUrl}/blog/${post.id}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
       <content:encoded><![CDATA[
-        <img src="${siteUrl}${post.image}" alt="${post.title}" />
+        <img src="${post.image.startsWith('http') ? post.image : siteUrl + post.image}" alt="${post.title}" />
         <p>${post.excerpt}</p>
         <p>${post.content}</p>
       ]]></content:encoded>

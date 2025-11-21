@@ -1,74 +1,118 @@
-import { Metadata } from "next"
-import { blogPosts } from "@/lib/blog-data"
+"use client"
+
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
+import { getBlogPost, getBlogPosts } from "@/lib/firebase/firestore"
 import { BlogPostContent } from "@/components/blog-post-content"
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema"
+import { BlogPost } from "@/lib/blog-data"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Loader2 } from "lucide-react"
 
-type Props = {
-  params: Promise<{ id: string }>
-}
+export default function BlogPostPage() {
+  const params = useParams()
+  const id = params.id as string
 
-// Generate metadata for SEO
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params
-  const post = blogPosts.find(p => p.id === id)
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
-  if (!post) {
-    return {
-      title: "Not Found",
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setLoading(true)
+        setError(false)
+
+        // 현재 포스트와 전체 포스트 목록 가져오기
+        const [currentPost, posts] = await Promise.all([
+          getBlogPost(id),
+          getBlogPosts()
+        ])
+
+        if (!currentPost) {
+          setError(true)
+          return
+        }
+
+        // Firestore 데이터를 프론트엔드 형식으로 변환
+        const formattedPost: BlogPost = {
+          id: currentPost.id,
+          title: currentPost.title,
+          slug: currentPost.slug,
+          excerpt: currentPost.excerpt,
+          content: currentPost.content,
+          category: currentPost.category,
+          tags: currentPost.tags,
+          date: currentPost.date?.toDate?.()
+            ? currentPost.date.toDate().toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0],
+          readTime: currentPost.readTime,
+          image: currentPost.image || '/sample1.jpg',
+          author: {
+            name: currentPost.authorName || '장혜승',
+            avatar: currentPost.authorAvatar || ''
+          }
+        }
+
+        const formattedPosts: BlogPost[] = posts.map(p => ({
+          id: p.id,
+          title: p.title,
+          slug: p.slug,
+          excerpt: p.excerpt,
+          content: p.content,
+          category: p.category,
+          tags: p.tags,
+          date: p.date?.toDate?.()
+            ? p.date.toDate().toISOString().split('T')[0]
+            : new Date().toISOString().split('T')[0],
+          readTime: p.readTime,
+          image: p.image || '/sample1.jpg',
+          author: {
+            name: p.authorName || '장혜승',
+            avatar: p.authorAvatar || ''
+          }
+        }))
+
+        setPost(formattedPost)
+        setAllPosts(formattedPosts)
+
+        // 페이지 타이틀 업데이트
+        document.title = `${formattedPost.title} - 혜커 HYEKER`
+      } catch (err) {
+        console.error('포스트 로딩 실패:', err)
+        setError(true)
+      } finally {
+        setLoading(false)
+      }
     }
+
+    if (id) {
+      fetchPost()
+    }
+  }, [id])
+
+  // 로딩 상태
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto mb-4" />
+            <p className="text-muted-foreground">포스트를 불러오는 중...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
-  return {
-    title: post.title,
-    description: post.excerpt,
-    keywords: [...post.tags, "개발 블로그", "HYEKER", "혜커"],
-    authors: [{ name: post.author.name, url: "https://hyeker.com" }],
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      url: `https://hyeker.com/blog/${post.id}`,
-      type: "article",
-      publishedTime: post.date,
-      authors: [post.author.name],
-      images: [
-        {
-          url: `https://hyeker.com${post.image}`,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: [`https://hyeker.com${post.image}`],
-    },
-    alternates: {
-      canonical: `https://hyeker.com/blog/${post.id}`,
-    },
-  }
-}
-
-// Generate static params for all blog posts
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    id: post.id,
-  }))
-}
-
-export default async function BlogPostPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const post = blogPosts.find(p => p.id === id)
-
-  if (!post) {
+  // 에러 또는 포스트 없음
+  if (error || !post) {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <h1 className="text-4xl font-bold mb-4">글을 찾을 수 없습니다</h1>
+        <p className="text-muted-foreground mb-8">요청하신 포스트가 존재하지 않거나 삭제되었습니다.</p>
         <Button asChild>
           <Link href="/blog">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -80,9 +124,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
   }
 
   // ID 기반으로 이전/다음 글 찾기
-  const currentIndex = blogPosts.findIndex(p => p.id === id)
-  const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : null
-  const nextPost = currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : null
+  const currentIndex = allPosts.findIndex(p => p.id === id)
+  const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null
+  const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null
 
   // Breadcrumb items
   const breadcrumbItems = [
@@ -98,6 +142,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ id: s
         prevPost={prevPost}
         nextPost={nextPost}
         breadcrumbItems={breadcrumbItems}
+        allPosts={allPosts}
       />
     </>
   )

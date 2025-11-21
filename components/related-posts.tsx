@@ -6,16 +6,17 @@ import { m } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
-import { blogPosts, type BlogPost } from "@/lib/blog-data"
+import { type BlogPost } from "@/lib/blog-data"
 
 interface RelatedPostsProps {
   currentPostId: string
   currentPostTags: string[]
+  allPosts?: BlogPost[]  // 선택적 props로 변경
 }
 
-export function RelatedPosts({ currentPostId, currentPostTags }: RelatedPostsProps) {
+export function RelatedPosts({ currentPostId, currentPostTags, allPosts = [] }: RelatedPostsProps) {
   // Calculate relevance score for each post
-  const scoredPosts = blogPosts
+  const scoredPosts = allPosts
     .filter(post => post.id !== currentPostId)
     .map(post => {
       const commonTags = post.tags.filter(tag => currentPostTags.includes(tag))

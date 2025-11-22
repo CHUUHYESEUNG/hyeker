@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og.png",
+        url: "/api/og?title=HYEKER%20STUDIO&description=1인%20인디%20개발자의%20포트폴리오",
         width: 1200,
         height: 630,
         alt: "HYEKER STUDIO 포트폴리오"
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "HYEKER STUDIO - Designer & Full-stack Developer",
     description: "디발자 혜커의 포트폴리오",
-    images: ["/og.png"],
+    images: ["/api/og?title=HYEKER%20STUDIO&description=1인%20인디%20개발자의%20포트폴리오"],
     creator: "@heyhyeker",
   },
   alternates: {

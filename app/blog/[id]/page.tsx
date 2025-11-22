@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useParams } from "next/navigation"
-import { getBlogPost, getBlogPosts } from "@/lib/firebase/firestore"
+import { getBlogPost, getBlogPosts, incrementViewCount } from "@/lib/firebase/firestore"
 import { BlogPostContent } from "@/components/blog-post-content"
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema"
 import { BlogPost } from "@/lib/blog-data"
@@ -18,6 +18,7 @@ export default function BlogPostPage() {
   const [allPosts, setAllPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const viewCountedRef = useRef(false)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -36,6 +37,14 @@ export default function BlogPostPage() {
           return
         }
 
+        // 조회수 증가 (세션당 한 번만)
+        if (!viewCountedRef.current) {
+          viewCountedRef.current = true
+          incrementViewCount(id).catch(err => {
+            console.error('조회수 증가 실패:', err)
+          })
+        }
+
         // Firestore 데이터를 프론트엔드 형식으로 변환
         const formattedPost: BlogPost = {
           id: currentPost.id,
@@ -50,6 +59,7 @@ export default function BlogPostPage() {
             : new Date().toISOString().split('T')[0],
           readTime: currentPost.readTime,
           image: currentPost.image || '/sample1.jpg',
+          views: (currentPost.views || 0) + 1, // 현재 조회 포함
           author: {
             name: currentPost.authorName || '장혜승',
             avatar: currentPost.authorAvatar || ''
@@ -69,6 +79,7 @@ export default function BlogPostPage() {
             : new Date().toISOString().split('T')[0],
           readTime: p.readTime,
           image: p.image || '/sample1.jpg',
+          views: p.views || 0,
           author: {
             name: p.authorName || '장혜승',
             avatar: p.authorAvatar || ''
@@ -80,6 +91,26 @@ export default function BlogPostPage() {
 
         // 페이지 타이틀 업데이트
         document.title = `${formattedPost.title} - 혜커 HYEKER`
+
+        // OG 메타 태그 동적 업데이트
+        const ogTitle = document.querySelector('meta[property="og:title"]')
+        const ogDescription = document.querySelector('meta[property="og:description"]')
+        const ogImage = document.querySelector('meta[property="og:image"]')
+        const ogUrl = document.querySelector('meta[property="og:url"]')
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]')
+        const twitterDescription = document.querySelector('meta[name="twitter:description"]')
+        const twitterImage = document.querySelector('meta[name="twitter:image"]')
+
+        const ogImageUrl = `/api/og?title=${encodeURIComponent(formattedPost.title)}&description=${encodeURIComponent(formattedPost.excerpt)}&type=blog`
+        const postUrl = `https://hyeker.com/blog/${id}`
+
+        if (ogTitle) ogTitle.setAttribute('content', formattedPost.title)
+        if (ogDescription) ogDescription.setAttribute('content', formattedPost.excerpt)
+        if (ogImage) ogImage.setAttribute('content', ogImageUrl)
+        if (ogUrl) ogUrl.setAttribute('content', postUrl)
+        if (twitterTitle) twitterTitle.setAttribute('content', formattedPost.title)
+        if (twitterDescription) twitterDescription.setAttribute('content', formattedPost.excerpt)
+        if (twitterImage) twitterImage.setAttribute('content', ogImageUrl)
       } catch (err) {
         console.error('포스트 로딩 실패:', err)
         setError(true)

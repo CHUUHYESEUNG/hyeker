@@ -13,6 +13,7 @@ import {
   Timestamp,
   serverTimestamp,
   QueryConstraint,
+  increment,
 } from 'firebase/firestore'
 import { db } from '@/lib/util/firebase'
 
@@ -31,6 +32,7 @@ export interface BlogPost {
   authorName: string
   authorAvatar: string
   published: boolean
+  views: number
   createdAt: Timestamp
   updatedAt: Timestamp
 }
@@ -129,6 +131,7 @@ export const createBlogPost = async (data: BlogPostInput): Promise<string> => {
   const docRef = await addDoc(collection(db, 'blog_posts'), {
     ...data,
     date: Timestamp.now(),
+    views: 0,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })
@@ -153,6 +156,16 @@ export const updateBlogPost = async (id: string, data: Partial<BlogPostInput>): 
 export const deleteBlogPost = async (id: string): Promise<void> => {
   const docRef = doc(db, 'blog_posts', id)
   await deleteDoc(docRef)
+}
+
+/**
+ * 조회수 증가
+ */
+export const incrementViewCount = async (id: string): Promise<void> => {
+  const docRef = doc(db, 'blog_posts', id)
+  await updateDoc(docRef, {
+    views: increment(1)
+  })
 }
 
 /**

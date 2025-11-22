@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Calendar, Clock, Search, ArrowRight, Loader2 } from "lucide-react"
+import { Calendar, Clock, Search, ArrowRight, Loader2, X, Tag, Eye } from "lucide-react"
 import { categories, BlogPost } from "@/lib/blog-data"
 import { getBlogPosts } from "@/lib/firebase/firestore"
 import { getBlogThumbnailUrl } from "@/lib/cloudinary"
@@ -20,6 +20,7 @@ export default function BlogPage() {
   const LOAD_STEP = 4
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH)
   const [isLoading, setIsLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
@@ -48,6 +49,7 @@ export default function BlogPage() {
             : new Date().toISOString().split('T')[0],
           readTime: post.readTime,
           image: post.image || '/sample1.jpg',
+          views: post.views || 0,
           author: {
             name: post.authorName || '장혜승',
             avatar: post.authorAvatar || ''
@@ -66,35 +68,66 @@ export default function BlogPage() {
     fetchPosts()
   }, [])
 
-  const filterPosts = useCallback((category: string, query: string) => {
+  const filterPosts = useCallback((category: string, query: string, tags: string[]) => {
     const normalizedQuery = query.trim().toLowerCase()
     return blogPosts.filter((post) => {
       const matchesCategory = category === "all" || post.category === category
+      const matchesTags = tags.length === 0 || tags.every(tag => post.tags.includes(tag))
       const matchesSearch =
         normalizedQuery.length === 0 ||
         post.title.toLowerCase().includes(normalizedQuery) ||
         post.excerpt.toLowerCase().includes(normalizedQuery) ||
+        post.content.toLowerCase().includes(normalizedQuery) ||
         post.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
-      return matchesCategory && matchesSearch
+      return matchesCategory && matchesTags && matchesSearch
     })
   }, [blogPosts])
 
+  // 모든 태그 추출 (중복 제거)
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>()
+    blogPosts.forEach(post => post.tags.forEach(tag => tagSet.add(tag)))
+    return Array.from(tagSet).sort()
+  }, [blogPosts])
+
+  // 태그 토글
+  const toggleTag = useCallback((tag: string) => {
+    setSelectedTags(prev => {
+      const newTags = prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+      setVisibleCount(INITIAL_BATCH)
+      return newTags
+    })
+  }, [])
+
+  // 모든 필터 초기화
+  const clearFilters = useCallback(() => {
+    setSelectedCategory("all")
+    setSelectedTags([])
+    setSearchQuery("")
+    setVisibleCount(INITIAL_BATCH)
+  }, [])
+
   const filteredPosts = useMemo(
-    () => filterPosts(selectedCategory, searchQuery),
-    [filterPosts, selectedCategory, searchQuery]
+    () => filterPosts(selectedCategory, searchQuery, selectedTags),
+    [filterPosts, selectedCategory, searchQuery, selectedTags]
   )
+
+  // 활성 필터 존재 여부
+  const hasActiveFilters = selectedCategory !== "all" || selectedTags.length > 0 || searchQuery.trim().length > 0
   const isExhausted = visibleCount >= filteredPosts.length
 
   const handleCategoryChange = (slug: string) => {
     setSelectedCategory(slug)
-    const nextLength = filterPosts(slug, searchQuery).length
+    const nextLength = filterPosts(slug, searchQuery, selectedTags).length
     setVisibleCount(Math.min(INITIAL_BATCH, nextLength))
     setIsLoading(false)
   }
 
   const handleSearchChange = (value: string) => {
     setSearchQuery(value)
-    const nextLength = filterPosts(selectedCategory, value).length
+    const nextLength = filterPosts(selectedCategory, value, selectedTags).length
     setVisibleCount(Math.min(INITIAL_BATCH, nextLength))
     setIsLoading(false)
   }
@@ -204,7 +237,7 @@ export default function BlogPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="flex flex-wrap justify-center gap-2 mb-12"
+        className="flex flex-wrap justify-center gap-2 mb-6"
       >
         {categories.map((category) => (
           <Button
@@ -216,6 +249,98 @@ export default function BlogPage() {
             {category.name}
           </Button>
         ))}
+      </m.div>
+
+      {/* Tag Filter */}
+      {allTags.length > 0 && (
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="mb-8"
+        >
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Tag className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">태그로 필터링</span>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => toggleTag(tag)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                  selectedTags.includes(tag)
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground'
+                }`}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+        </m.div>
+      )}
+
+      {/* Active Filters Display */}
+      {hasActiveFilters && (
+        <m.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-wrap items-center justify-center gap-2 mb-8"
+        >
+          <span className="text-sm text-muted-foreground mr-2">활성 필터:</span>
+          {selectedCategory !== "all" && (
+            <Badge variant="secondary" className="gap-1 pr-1">
+              {categories.find(c => c.slug === selectedCategory)?.name}
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className="ml-1 p-0.5 rounded-full hover:bg-background/50"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+          {selectedTags.map(tag => (
+            <Badge key={tag} variant="secondary" className="gap-1 pr-1">
+              #{tag}
+              <button
+                onClick={() => toggleTag(tag)}
+                className="ml-1 p-0.5 rounded-full hover:bg-background/50"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          ))}
+          {searchQuery.trim() && (
+            <Badge variant="secondary" className="gap-1 pr-1">
+              검색: {searchQuery}
+              <button
+                onClick={() => setSearchQuery("")}
+                className="ml-1 p-0.5 rounded-full hover:bg-background/50"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="text-xs h-6 px-2 text-muted-foreground hover:text-foreground"
+          >
+            모두 초기화
+          </Button>
+        </m.div>
+      )}
+
+      {/* Results Count */}
+      <m.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-center text-sm text-muted-foreground mb-8"
+      >
+        총 {filteredPosts.length}개의 포스트
       </m.div>
 
       {/* Highlight Post */}
@@ -255,6 +380,10 @@ export default function BlogPage() {
                       <Clock className="h-3 w-3" />
                       {highlightPost.readTime}
                     </span>
+                    <span className="flex items-center gap-2">
+                      <Eye className="h-3 w-3" />
+                      {highlightPost.views?.toLocaleString() || 0}
+                    </span>
                   </div>
                   <h2 className="text-3xl font-semibold leading-tight">{highlightPost.title}</h2>
                   <p className="text-sm text-white/75 line-clamp-3">{highlightPost.excerpt}</p>
@@ -265,9 +394,20 @@ export default function BlogPage() {
                   <p className="text-sm text-muted-foreground">함께 읽으면 좋은 키워드</p>
                   <div className="flex flex-wrap gap-2">
                     {highlightPost.tags.map((tag) => (
-                      <Badge key={tag} variant="outline" className="rounded-full border-primary/40 bg-primary/10 text-primary">
+                      <button
+                        key={tag}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          toggleTag(tag)
+                        }}
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                          selectedTags.includes(tag)
+                            ? 'bg-primary text-primary-foreground'
+                            : 'border border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                        }`}
+                      >
                         #{tag}
-                      </Badge>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -317,6 +457,10 @@ export default function BlogPage() {
                         <Clock className="h-3 w-3" />
                         {post.readTime}
                       </span>
+                      <span className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        {post.views?.toLocaleString() || 0}
+                      </span>
                     </div>
                   </div>
 
@@ -327,9 +471,21 @@ export default function BlogPage() {
                   <CardContent className="mt-auto">
                     <div className="flex flex-wrap gap-2">
                       {post.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="outline" className="rounded-full text-xs">
+                        <button
+                          key={tag}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            toggleTag(tag)
+                          }}
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium transition-all ${
+                            selectedTags.includes(tag)
+                              ? 'bg-primary text-primary-foreground'
+                              : 'border border-border bg-transparent hover:bg-muted'
+                          }`}
+                        >
                           #{tag}
-                        </Badge>
+                        </button>
                       ))}
                     </div>
                     <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-primary transition group-hover:gap-3">

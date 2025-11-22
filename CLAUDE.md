@@ -1218,6 +1218,90 @@ NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
 
 ---
 
+### 22. Markdown 코드 구문 강조
+**날짜**: 2025-11-22
+
+**생성된 파일**:
+- `components/markdown-renderer.tsx` - ReactMarkdown + rehype-highlight
+
+**기능**:
+- 코드 블록 구문 강조 (GitHub Dark 테마)
+- 코드 복사 버튼
+- GFM (GitHub Flavored Markdown) 지원
+- 테이블, 인라인 코드, 링크, 이미지 스타일링
+- 헤딩 앵커 자동 생성
+
+---
+
+### 23. 블로그 검색 기능 개선
+**날짜**: 2025-11-22
+
+**변경 사항**:
+- `app/blog/page.tsx` - 검색 기능 강화
+
+**기능**:
+- 제목, 발췌문, 본문 내용 검색
+- 태그 클릭 필터링 (다중 선택)
+- 활성 필터 표시 및 개별 제거
+- 전체 필터 초기화 버튼
+- 검색 결과 개수 표시
+
+---
+
+### 24. 태그/카테고리 페이지
+**날짜**: 2025-11-22
+
+**생성된 파일**:
+- `app/blog/tags/[tag]/page.tsx` - 태그별 포스트 목록
+- `app/blog/category/[category]/page.tsx` - 카테고리별 포스트 목록
+
+**기능**:
+- 관련 태그/다른 카테고리 표시
+- 무한 스크롤 로딩
+- 블로그 상세 페이지에서 태그/카테고리 링크 추가
+
+---
+
+### 25. 조회수 카운터
+**날짜**: 2025-11-22
+
+**변경 사항**:
+- `lib/firebase/firestore.ts` - `views` 필드 및 `incrementViewCount()` 함수 추가
+- `lib/blog-data.ts` - BlogPost 타입에 `views` 필드 추가
+- `app/blog/[id]/page.tsx` - 조회수 증가 호출
+- `app/blog/page.tsx` - 카드에 조회수 표시
+- `components/blog-post-content.tsx` - 상세 페이지에 조회수 표시
+
+**기능**:
+- 세션당 1회 조회수 증가
+- Eye 아이콘과 함께 조회수 표시
+- 숫자 포맷팅 (천 단위 구분)
+
+---
+
+### 26. OG 이미지 동적 생성
+**날짜**: 2025-11-22
+
+**생성된 파일**:
+- `app/api/og/route.tsx` - Edge Runtime OG 이미지 생성 API
+
+**기능**:
+- 동적 제목/설명 파라미터
+- 타입별 그라데이션 색상 (default, blog, portfolio)
+- 반응형 폰트 크기
+- 브랜드 로고 및 장식 요소
+
+**사용 방법**:
+```
+/api/og?title=제목&description=설명&type=blog
+```
+
+**적용**:
+- `app/layout.tsx` - 기본 OG 이미지 설정
+- `app/blog/[id]/page.tsx` - 동적 메타 태그 업데이트
+
+---
+
 ## 커밋 히스토리 (2025-11-20 ~ 2025-11-22)
 
 ```

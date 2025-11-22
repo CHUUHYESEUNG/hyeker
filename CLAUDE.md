@@ -820,13 +820,20 @@ from: "HYEKER STUDIO <hey@hyeker.com>"
 │   │   ├── page.tsx                  # Dashboard (통계, 빠른 작업)
 │   │   ├── login/
 │   │   │   └── page.tsx              # 로그인 페이지
-│   │   └── blog/
-│   │       ├── page.tsx              # 블로그 목록/관리
+│   │   ├── blog/
+│   │   │   ├── page.tsx              # 블로그 목록/관리
+│   │   │   ├── new/
+│   │   │   │   └── page.tsx          # 새 포스트 작성
+│   │   │   └── [id]/
+│   │   │       └── edit/
+│   │   │           └── page.tsx      # 포스트 편집
+│   │   └── portfolio/                # ⭐ 포트폴리오 Admin (신규)
+│   │       ├── page.tsx              # 포트폴리오 목록/관리
 │   │       ├── new/
-│   │       │   └── page.tsx          # 새 포스트 작성
+│   │       │   └── page.tsx          # 새 포트폴리오 항목
 │   │       └── [id]/
 │   │           └── edit/
-│   │               └── page.tsx      # 포스트 편집
+│   │               └── page.tsx      # 포트폴리오 편집
 │   │
 │   ├── blog/
 │   │   ├── page.tsx                  # 블로그 목록 (Firestore 연동)
@@ -894,11 +901,13 @@ from: "HYEKER STUDIO <hey@hyeker.com>"
 >>>>>>> 60d977d886d6d4d84fed9dbcd57690f96e21d44c
 ├── lib/
 │   ├── firebase/                     # ⭐ Firebase 관련 (신규)
+│   │   ├── config.ts                 # Firebase 초기화 (조건부)
+│   │   ├── auth.ts                   # Firebase Auth 함수
 │   │   └── firestore.ts              # Firestore CRUD 함수
 │   │
 │   ├── util/
-│   │   ├── auth.ts                   # 간단한 로컬 인증
-│   │   └── firebase.ts               # Firebase 초기화
+│   │   ├── auth.ts                   # 로컬 인증 (폴백)
+│   │   └── firebase.ts               # Firebase 설정 내보내기
 │   │
 │   ├── cloudinary.ts                 # ⭐ Cloudinary 업로드 (신규)
 │   ├── blog-data.ts                  # 블로그 타입 정의
@@ -951,7 +960,9 @@ export const isAdmin = (): boolean
 | `/admin/blog` | 블로그 목록/관리 | ✅ 완성 |
 | `/admin/blog/new` | 새 포스트 작성 | ✅ 완성 |
 | `/admin/blog/[id]/edit` | 포스트 편집 | ✅ 완성 |
-| `/admin/portfolio` | 포트폴리오 관리 | ⏳ 미구현 |
+| `/admin/portfolio` | 포트폴리오 목록/관리 | ✅ 완성 |
+| `/admin/portfolio/new` | 새 포트폴리오 항목 | ✅ 완성 |
+| `/admin/portfolio/[id]/edit` | 포트폴리오 편집 | ✅ 완성 |
 
 ### Admin 컴포넌트
 
@@ -1058,6 +1069,7 @@ service cloud.firestore {
 ### 설정 (`lib/cloudinary.ts`)
 
 ```typescript
+// 업로드
 export const uploadToCloudinary = async (
   file: File,
   onProgress?: (progress: number) => void
@@ -1065,6 +1077,13 @@ export const uploadToCloudinary = async (
 
 export const validateImageFile = (file: File): { valid: boolean; error?: string }
 export const isCloudinaryConfigured = (): boolean
+
+// 이미지 최적화 (자동 포맷/품질 변환)
+export const getOptimizedImageUrl = (url: string, options?: ImageTransformOptions): string
+export const getBlogThumbnailUrl = (url: string): string        // w_800, q_auto, f_auto
+export const getBlogDetailImageUrl = (url: string): string      // w_1200, q_auto:good, f_auto
+export const getPortfolioThumbnailUrl = (url: string): string   // w_600, h_400, c_fill
+export const getAvatarUrl = (url: string, size?: number): string // 원형 아바타
 ```
 
 ### 환경 변수
@@ -1140,6 +1159,62 @@ NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
 | Admin 대시보드 무한 로딩 | Firebase 미설정 시 에러 처리 없음 | 설정 체크 로직 추가 |
 | 블로그 포스트 수정 에러 | Next.js 15 params Promise 변경 | `React.use()` 사용 |
 | Favicon preload 경고 | SVG 아이콘 preload 이슈 | 메타데이터 type 명시 |
+
+---
+
+### 19. 포트폴리오 Admin 페이지
+**날짜**: 2025-11-22
+
+**생성된 파일**:
+- `app/admin/portfolio/page.tsx` - 포트폴리오 목록/관리
+- `app/admin/portfolio/new/page.tsx` - 새 포트폴리오 항목 작성
+- `app/admin/portfolio/[id]/edit/page.tsx` - 포트폴리오 편집
+
+**추가된 Firestore CRUD** (`lib/firebase/firestore.ts`):
+- `getPortfolioItems()` - 공개 포트폴리오만
+- `getAllPortfolioItemsAdmin()` - 모든 포트폴리오 (Draft 포함)
+- `getPortfolioItem(id)` - 단일 포트폴리오
+- `createPortfolioItem(data)` - 생성
+- `updatePortfolioItem(id, data)` - 수정
+- `deletePortfolioItem(id)` - 삭제
+
+---
+
+### 20. Firebase Auth 듀얼 모드 지원
+**날짜**: 2025-11-22
+
+**변경 사항**:
+- `lib/firebase/config.ts` - Firebase 조건부 초기화 (API 키 없을 시 null 반환)
+- `lib/firebase/auth.ts` - null auth 처리, `isFirebaseAuthAvailable()` 함수 추가
+- `components/admin/auth-provider.tsx` - Firebase Auth + localStorage 듀얼 모드 지원
+
+**동작 방식**:
+- Firebase API 키 설정 시: Firebase Authentication 사용
+- Firebase 미설정 시: localStorage 기반 로컬 인증 폴백
+
+---
+
+### 21. Cloudinary 이미지 최적화
+**날짜**: 2025-11-22
+
+**변경 사항**:
+- `lib/cloudinary.ts` - 이미지 최적화 함수 추가
+  - `getOptimizedImageUrl()` - 범용 최적화
+  - `getBlogThumbnailUrl()` - 블로그 썸네일
+  - `getBlogDetailImageUrl()` - 블로그 상세 이미지
+  - `getPortfolioThumbnailUrl()` - 포트폴리오 썸네일
+  - `getAvatarUrl()` - 프로필 아바타
+
+**적용된 페이지**:
+- `app/blog/page.tsx` - 블로그 목록 이미지
+- `components/blog-post-content.tsx` - 블로그 상세 히어로 이미지
+- `app/portfolio/page.tsx` - 포트폴리오 그리드/카드 이미지
+- `app/admin/portfolio/page.tsx` - Admin 포트폴리오 썸네일
+
+**최적화 효과**:
+- `f_auto`: 브라우저에 맞는 최적 포맷 (WebP/AVIF) 자동 선택
+- `q_auto`: 품질 자동 최적화 (파일 크기 절감)
+- 반응형 크기 제한으로 모바일 대역폭 절약
 
 ---
 

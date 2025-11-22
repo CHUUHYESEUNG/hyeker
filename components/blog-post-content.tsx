@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Calendar, Clock, Share2, ChevronLeft, ChevronRight } from "lucide-react"
 import { BlogPost } from "@/lib/blog-data"
+import { getBlogDetailImageUrl } from "@/lib/cloudinary"
 import { ReadingProgress } from "@/components/reading-progress"
 import { TableOfContents } from "@/components/table-of-contents"
 import { RelatedPosts } from "@/components/related-posts"
@@ -102,7 +103,7 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems, all
             {/* Hero Image */}
             <div className="relative w-full h-[400px] rounded-xl overflow-hidden mb-8 shadow-lg">
               <Image
-                src={post.image}
+                src={getBlogDetailImageUrl(post.image)}
                 alt={post.title}
                 fill
                 className="object-cover"

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, ExternalLink, Loader2 } from "lucide-react"
 import { portfolioItems, portfolioPlatformIconMap, type PortfolioCategory, type DevelopmentSubCategory, type DesignSubCategory } from "@/lib/portfolio-data"
 import { Breadcrumb } from "@/components/breadcrumb"
+import { getPortfolioThumbnailUrl } from "@/lib/cloudinary"
 
 const subCategoryLabels: Record<DevelopmentSubCategory | DesignSubCategory, string> = {
   web: "웹",
@@ -251,7 +252,7 @@ export default function PortfolioPage() {
                   {/* Image */}
                   <div className="relative w-full h-full">
                     <Image
-                      src={item.image}
+                      src={getPortfolioThumbnailUrl(item.image)}
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -332,7 +333,7 @@ export default function PortfolioPage() {
                   <div className="relative h-[300px] lg:h-auto bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center p-6">
                     <div className={`relative ${item.image.endsWith('.svg') ? 'w-[12.5%] h-[12.5%]' : 'w-full h-full'}`}>
                       <Image
-                        src={item.image}
+                        src={getPortfolioThumbnailUrl(item.image)}
                         alt={item.title}
                         fill
                         className="object-contain"

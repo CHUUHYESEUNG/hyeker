@@ -176,3 +176,149 @@ export const calculateReadTime = (content: string): string => {
   const minutes = Math.ceil(wordCount / wordsPerMinute)
   return `${minutes}분`
 }
+
+// ================================
+// Portfolio Items CRUD
+// ================================
+
+export type PortfolioCategory = 'development' | 'design'
+export type DevelopmentSubCategory = 'web' | 'app'
+export type DesignSubCategory = 'content' | 'logo' | 'card'
+
+export interface PortfolioPlatform {
+  type: 'web' | 'ios' | 'android'
+  icon: 'globe' | 'smartphone'
+  label: string
+  url: string
+  available: boolean
+}
+
+export interface PortfolioItem {
+  id: string
+  title: string
+  description: string
+  longDescription: string
+  tech: string[]
+  platforms: PortfolioPlatform[]
+  image: string
+  status: string
+  date: string
+  features: string[]
+  category: PortfolioCategory
+  subCategory?: DevelopmentSubCategory | DesignSubCategory
+  showPlatforms?: boolean
+  showDetailLink?: boolean
+  published: boolean
+  order: number
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+export interface PortfolioItemInput {
+  title: string
+  description: string
+  longDescription: string
+  tech: string[]
+  platforms: PortfolioPlatform[]
+  image: string
+  status: string
+  date: string
+  features: string[]
+  category: PortfolioCategory
+  subCategory?: DevelopmentSubCategory | DesignSubCategory
+  showPlatforms?: boolean
+  showDetailLink?: boolean
+  published: boolean
+  order?: number
+}
+
+/**
+ * 모든 포트폴리오 아이템 가져오기 (공개만)
+ */
+export const getPortfolioItems = async (categoryFilter?: PortfolioCategory): Promise<PortfolioItem[]> => {
+  const constraints: QueryConstraint[] = [
+    where('published', '==', true),
+    orderBy('order', 'asc'),
+  ]
+
+  if (categoryFilter) {
+    constraints.push(where('category', '==', categoryFilter))
+  }
+
+  const q = query(collection(db, 'portfolio_items'), ...constraints)
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as PortfolioItem[]
+}
+
+/**
+ * Admin: 모든 포트폴리오 아이템 가져오기 (Draft 포함)
+ */
+export const getAllPortfolioItemsAdmin = async (): Promise<PortfolioItem[]> => {
+  const q = query(collection(db, 'portfolio_items'), orderBy('createdAt', 'desc'))
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as PortfolioItem[]
+}
+
+/**
+ * 단일 포트폴리오 아이템 가져오기 (ID)
+ */
+export const getPortfolioItem = async (id: string): Promise<PortfolioItem | null> => {
+  const docRef = doc(db, 'portfolio_items', id)
+  const docSnap = await getDoc(docRef)
+
+  if (!docSnap.exists()) {
+    return null
+  }
+
+  return {
+    id: docSnap.id,
+    ...docSnap.data(),
+  } as PortfolioItem
+}
+
+/**
+ * 포트폴리오 아이템 생성
+ */
+export const createPortfolioItem = async (data: PortfolioItemInput): Promise<string> => {
+  // 현재 아이템 수를 가져와서 order 설정
+  const existingItems = await getAllPortfolioItemsAdmin()
+  const maxOrder = existingItems.length > 0
+    ? Math.max(...existingItems.map(item => item.order || 0))
+    : 0
+
+  const docRef = await addDoc(collection(db, 'portfolio_items'), {
+    ...data,
+    order: data.order ?? maxOrder + 1,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+
+  return docRef.id
+}
+
+/**
+ * 포트폴리오 아이템 수정
+ */
+export const updatePortfolioItem = async (id: string, data: Partial<PortfolioItemInput>): Promise<void> => {
+  const docRef = doc(db, 'portfolio_items', id)
+  await updateDoc(docRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  })
+}
+
+/**
+ * 포트폴리오 아이템 삭제
+ */
+export const deletePortfolioItem = async (id: string): Promise<void> => {
+  const docRef = doc(db, 'portfolio_items', id)
+  await deleteDoc(docRef)
+}

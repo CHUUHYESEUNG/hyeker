@@ -6,7 +6,7 @@ const ADMIN_CREDENTIALS = {
 
 export interface AuthUser {
   username: string
-  role: 'admin'
+  role: 'admin' | 'user'
   isAuthenticated: boolean
 }
 

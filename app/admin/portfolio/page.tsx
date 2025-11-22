@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Plus, Edit, Trash2, Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
 import { getAllPortfolioItemsAdmin, deletePortfolioItem, PortfolioItem } from '@/lib/firebase/firestore'
+import { getPortfolioThumbnailUrl } from '@/lib/cloudinary'
 
 export default function AdminPortfolioPage() {
   const [items, setItems] = useState<PortfolioItem[]>([])
@@ -127,7 +128,7 @@ export default function AdminPortfolioPage() {
               {/* Thumbnail */}
               <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                 <Image
-                  src={item.image || '/sample1.jpg'}
+                  src={getPortfolioThumbnailUrl(item.image || '/sample1.jpg')}
                   alt={item.title}
                   fill
                   className="object-cover"

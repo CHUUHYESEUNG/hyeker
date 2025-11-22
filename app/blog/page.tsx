@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Calendar, Clock, Search, ArrowRight, Loader2 } from "lucide-react"
 import { categories, BlogPost } from "@/lib/blog-data"
 import { getBlogPosts } from "@/lib/firebase/firestore"
+import { getBlogThumbnailUrl } from "@/lib/cloudinary"
 import { Breadcrumb } from "@/components/breadcrumb"
 import { NewsletterForm } from "@/components/newsletter-form"
 
@@ -230,7 +231,7 @@ export default function BlogPage() {
             <div className="grid gap-8 p-6 md:grid-cols-[1.2fr,0.8fr] lg:p-10">
               <div className="relative h-72 md:h-96 lg:h-[500px] overflow-hidden rounded-3xl">
                 <Image
-                  src={highlightPost.image}
+                  src={getBlogThumbnailUrl(highlightPost.image)}
                   alt={highlightPost.title}
                   fill
                   className="object-cover transition duration-500 group-hover:scale-105"
@@ -298,7 +299,7 @@ export default function BlogPage() {
                 <Card className="flex h-full flex-col overflow-hidden border-border/60 bg-background/80 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow-md">
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={post.image}
+                      src={getBlogThumbnailUrl(post.image)}
                       alt={post.title}
                       fill
                       className="object-cover transition duration-500 group-hover:scale-105"

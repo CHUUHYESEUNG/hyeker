@@ -3,7 +3,9 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Terminal, FileText, Briefcase, LayoutDashboard, LogOut } from 'lucide-react'
-import { logout } from '@/lib/util/auth'
+import { logout as localLogout } from '@/lib/util/auth'
+import { logout as firebaseLogout } from '@/lib/firebase/auth'
+import { useAuth } from './auth-provider'
 
 const navigation = [
   { name: '대시보드', href: '/admin', icon: LayoutDashboard },
@@ -14,11 +16,20 @@ const navigation = [
 export function AdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
+  const { authMode } = useAuth()
 
-  const handleLogout = () => {
-    logout()
-    router.push('/admin/login')
-    router.refresh()
+  const handleLogout = async () => {
+    try {
+      if (authMode === 'firebase') {
+        await firebaseLogout()
+      } else {
+        localLogout()
+      }
+      router.push('/admin/login')
+      router.refresh()
+    } catch (error) {
+      console.error('로그아웃 실패:', error)
+    }
   }
 
   return (

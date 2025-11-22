@@ -109,3 +109,158 @@ export const isCloudinaryConfigured = (): boolean => {
     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
   )
 }
+
+/**
+ * Cloudinary URL인지 확인
+ */
+export const isCloudinaryUrl = (url: string): boolean => {
+  return url.includes('res.cloudinary.com')
+}
+
+/**
+ * Cloudinary URL에서 public_id 추출
+ * 예: https://res.cloudinary.com/cloud_name/image/upload/v123/folder/image.jpg
+ *     -> folder/image
+ */
+export const extractPublicId = (url: string): string | null => {
+  if (!isCloudinaryUrl(url)) return null
+
+  try {
+    // URL에서 upload/ 이후 부분 추출
+    const uploadIndex = url.indexOf('/upload/')
+    if (uploadIndex === -1) return null
+
+    let path = url.substring(uploadIndex + 8) // '/upload/' 이후
+
+    // 버전 번호 제거 (v123456 형식)
+    if (path.startsWith('v') && /^v\d+\//.test(path)) {
+      path = path.replace(/^v\d+\//, '')
+    }
+
+    // 확장자 제거
+    const lastDot = path.lastIndexOf('.')
+    if (lastDot !== -1) {
+      path = path.substring(0, lastDot)
+    }
+
+    return path
+  } catch {
+    return null
+  }
+}
+
+interface ImageTransformOptions {
+  width?: number
+  height?: number
+  quality?: 'auto' | 'auto:low' | 'auto:eco' | 'auto:good' | 'auto:best' | number
+  format?: 'auto' | 'webp' | 'avif' | 'jpg' | 'png'
+  crop?: 'fill' | 'scale' | 'fit' | 'limit' | 'thumb' | 'crop'
+  gravity?: 'auto' | 'face' | 'center' | 'north' | 'south' | 'east' | 'west'
+}
+
+/**
+ * 최적화된 Cloudinary 이미지 URL 생성
+ *
+ * @param url - 원본 Cloudinary URL 또는 다른 이미지 URL
+ * @param options - 변환 옵션
+ * @returns 최적화된 URL (Cloudinary가 아닌 URL은 그대로 반환)
+ *
+ * 사용 예시:
+ * getOptimizedImageUrl(imageUrl, { width: 800, quality: 'auto', format: 'auto' })
+ */
+export const getOptimizedImageUrl = (
+  url: string,
+  options: ImageTransformOptions = {}
+): string => {
+  // Cloudinary URL이 아니면 그대로 반환
+  if (!isCloudinaryUrl(url)) return url
+
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+  if (!cloudName) return url
+
+  const publicId = extractPublicId(url)
+  if (!publicId) return url
+
+  // 변환 파라미터 생성
+  const transforms: string[] = []
+
+  // 기본 자동 최적화
+  const format = options.format ?? 'auto'
+  const quality = options.quality ?? 'auto'
+
+  transforms.push(`f_${format}`)
+  transforms.push(`q_${quality}`)
+
+  // 크기 제한
+  if (options.width) {
+    transforms.push(`w_${options.width}`)
+  }
+  if (options.height) {
+    transforms.push(`h_${options.height}`)
+  }
+
+  // 크롭 모드
+  if (options.crop) {
+    transforms.push(`c_${options.crop}`)
+  }
+
+  // 중심점
+  if (options.gravity) {
+    transforms.push(`g_${options.gravity}`)
+  }
+
+  const transformation = transforms.join(',')
+  return `https://res.cloudinary.com/${cloudName}/image/upload/${transformation}/${publicId}`
+}
+
+/**
+ * 블로그 썸네일용 최적화 URL
+ */
+export const getBlogThumbnailUrl = (url: string): string => {
+  return getOptimizedImageUrl(url, {
+    width: 800,
+    quality: 'auto',
+    format: 'auto',
+    crop: 'limit'
+  })
+}
+
+/**
+ * 블로그 상세 이미지용 최적화 URL
+ */
+export const getBlogDetailImageUrl = (url: string): string => {
+  return getOptimizedImageUrl(url, {
+    width: 1200,
+    quality: 'auto:good',
+    format: 'auto',
+    crop: 'limit'
+  })
+}
+
+/**
+ * 포트폴리오 카드 썸네일용 최적화 URL
+ */
+export const getPortfolioThumbnailUrl = (url: string): string => {
+  return getOptimizedImageUrl(url, {
+    width: 600,
+    height: 400,
+    quality: 'auto',
+    format: 'auto',
+    crop: 'fill',
+    gravity: 'auto'
+  })
+}
+
+/**
+ * 아바타/프로필 이미지용 최적화 URL
+ */
+export const getAvatarUrl = (url: string, size: number = 100): string => {
+  return getOptimizedImageUrl(url, {
+    width: size,
+    height: size,
+    quality: 'auto',
+    format: 'auto',
+    crop: 'fill',
+    gravity: 'face'
+  })
+}

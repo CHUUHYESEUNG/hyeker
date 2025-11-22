@@ -12,12 +12,16 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
+// 값이 유효한지 확인 (빈 문자열, undefined, "undefined" 문자열 체크)
+const isValidValue = (val: string | undefined): boolean => {
+  return !!(val && val !== 'undefined' && val.trim() !== '')
+}
+
 // Firebase가 설정되어 있는지 확인
-const isFirebaseConfigured = !!(
-  firebaseConfig.apiKey &&
-  firebaseConfig.authDomain &&
-  firebaseConfig.projectId
-)
+const isFirebaseConfigured =
+  isValidValue(firebaseConfig.apiKey) &&
+  isValidValue(firebaseConfig.authDomain) &&
+  isValidValue(firebaseConfig.projectId)
 
 // Initialize Firebase only if configured
 let app: FirebaseApp | null = null
@@ -26,10 +30,14 @@ let db: Firestore | null = null
 let storage: FirebaseStorage | null = null
 
 if (isFirebaseConfigured) {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
-  auth = getAuth(app)
-  db = getFirestore(app)
-  storage = getStorage(app)
+  try {
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
+    auth = getAuth(app)
+    db = getFirestore(app)
+    storage = getStorage(app)
+  } catch (error) {
+    console.error('Firebase 초기화 실패:', error)
+  }
 }
 
 export { auth, db, storage, isFirebaseConfigured }

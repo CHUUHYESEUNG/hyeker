@@ -15,7 +15,7 @@ import {
   QueryConstraint,
   increment,
 } from 'firebase/firestore'
-import { db } from '@/lib/util/firebase'
+import { db, isFirebaseConfigured } from '@/lib/util/firebase'
 
 export interface BlogPost {
   id: string
@@ -58,6 +58,11 @@ export interface BlogPostInput {
  * 모든 블로그 포스트 가져오기 (공개만)
  */
 export const getBlogPosts = async (categoryFilter?: string): Promise<BlogPost[]> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다. 빈 배열을 반환합니다.')
+    return []
+  }
+
   const constraints: QueryConstraint[] = [
     where('published', '==', true),
     orderBy('date', 'desc'),
@@ -80,6 +85,11 @@ export const getBlogPosts = async (categoryFilter?: string): Promise<BlogPost[]>
  * Admin: 모든 블로그 포스트 가져오기 (Draft 포함)
  */
 export const getAllBlogPostsAdmin = async (): Promise<BlogPost[]> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return []
+  }
+
   const q = query(collection(db, 'blog_posts'), orderBy('createdAt', 'desc'))
   const snapshot = await getDocs(q)
 
@@ -93,6 +103,11 @@ export const getAllBlogPostsAdmin = async (): Promise<BlogPost[]> => {
  * 단일 블로그 포스트 가져오기 (ID)
  */
 export const getBlogPost = async (id: string): Promise<BlogPost | null> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return null
+  }
+
   const docRef = doc(db, 'blog_posts', id)
   const docSnap = await getDoc(docRef)
 
@@ -110,6 +125,11 @@ export const getBlogPost = async (id: string): Promise<BlogPost | null> => {
  * 단일 블로그 포스트 가져오기 (Slug)
  */
 export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | null> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return null
+  }
+
   const q = query(collection(db, 'blog_posts'), where('slug', '==', slug), limit(1))
   const snapshot = await getDocs(q)
 
@@ -128,6 +148,10 @@ export const getBlogPostBySlug = async (slug: string): Promise<BlogPost | null> 
  * 블로그 포스트 생성
  */
 export const createBlogPost = async (data: BlogPostInput): Promise<string> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   const docRef = await addDoc(collection(db, 'blog_posts'), {
     ...data,
     date: Timestamp.now(),
@@ -143,6 +167,10 @@ export const createBlogPost = async (data: BlogPostInput): Promise<string> => {
  * 블로그 포스트 수정
  */
 export const updateBlogPost = async (id: string, data: Partial<BlogPostInput>): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   const docRef = doc(db, 'blog_posts', id)
   await updateDoc(docRef, {
     ...data,
@@ -154,6 +182,10 @@ export const updateBlogPost = async (id: string, data: Partial<BlogPostInput>): 
  * 블로그 포스트 삭제
  */
 export const deleteBlogPost = async (id: string): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   const docRef = doc(db, 'blog_posts', id)
   await deleteDoc(docRef)
 }
@@ -162,6 +194,11 @@ export const deleteBlogPost = async (id: string): Promise<void> => {
  * 조회수 증가
  */
 export const incrementViewCount = async (id: string): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return
+  }
+
   const docRef = doc(db, 'blog_posts', id)
   await updateDoc(docRef, {
     views: increment(1)
@@ -249,6 +286,11 @@ export interface PortfolioItemInput {
  * 모든 포트폴리오 아이템 가져오기 (공개만)
  */
 export const getPortfolioItems = async (categoryFilter?: PortfolioCategory): Promise<PortfolioItem[]> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return []
+  }
+
   const constraints: QueryConstraint[] = [
     where('published', '==', true),
     orderBy('order', 'asc'),
@@ -271,6 +313,11 @@ export const getPortfolioItems = async (categoryFilter?: PortfolioCategory): Pro
  * Admin: 모든 포트폴리오 아이템 가져오기 (Draft 포함)
  */
 export const getAllPortfolioItemsAdmin = async (): Promise<PortfolioItem[]> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return []
+  }
+
   const q = query(collection(db, 'portfolio_items'), orderBy('createdAt', 'desc'))
   const snapshot = await getDocs(q)
 
@@ -284,6 +331,11 @@ export const getAllPortfolioItemsAdmin = async (): Promise<PortfolioItem[]> => {
  * 단일 포트폴리오 아이템 가져오기 (ID)
  */
 export const getPortfolioItem = async (id: string): Promise<PortfolioItem | null> => {
+  if (!isFirebaseConfigured() || !db) {
+    console.warn('Firebase가 설정되지 않았습니다.')
+    return null
+  }
+
   const docRef = doc(db, 'portfolio_items', id)
   const docSnap = await getDoc(docRef)
 
@@ -301,6 +353,10 @@ export const getPortfolioItem = async (id: string): Promise<PortfolioItem | null
  * 포트폴리오 아이템 생성
  */
 export const createPortfolioItem = async (data: PortfolioItemInput): Promise<string> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   // 현재 아이템 수를 가져와서 order 설정
   const existingItems = await getAllPortfolioItemsAdmin()
   const maxOrder = existingItems.length > 0
@@ -321,6 +377,10 @@ export const createPortfolioItem = async (data: PortfolioItemInput): Promise<str
  * 포트폴리오 아이템 수정
  */
 export const updatePortfolioItem = async (id: string, data: Partial<PortfolioItemInput>): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   const docRef = doc(db, 'portfolio_items', id)
   await updateDoc(docRef, {
     ...data,
@@ -332,6 +392,10 @@ export const updatePortfolioItem = async (id: string, data: Partial<PortfolioIte
  * 포트폴리오 아이템 삭제
  */
 export const deletePortfolioItem = async (id: string): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) {
+    throw new Error('Firebase가 설정되지 않았습니다.')
+  }
+
   const docRef = doc(db, 'portfolio_items', id)
   await deleteDoc(docRef)
 }

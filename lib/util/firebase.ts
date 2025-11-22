@@ -13,11 +13,16 @@ const firebaseConfig = {
 
 // Firebase 설정 여부 확인
 export const isFirebaseConfigured = (): boolean => {
-  return !!(
-    firebaseConfig.apiKey &&
-    firebaseConfig.projectId &&
-    firebaseConfig.authDomain
-  )
+  const apiKey = firebaseConfig.apiKey
+  const projectId = firebaseConfig.projectId
+  const authDomain = firebaseConfig.authDomain
+
+  // 빈 문자열, undefined, "undefined" 문자열 모두 체크
+  const isValidValue = (val: string | undefined): boolean => {
+    return !!(val && val !== 'undefined' && val.trim() !== '')
+  }
+
+  return isValidValue(apiKey) && isValidValue(projectId) && isValidValue(authDomain)
 }
 
 // Initialize Firebase (singleton pattern)

@@ -10,6 +10,7 @@ export interface BlogPost {
   date: string
   readTime: string
   image: string
+  views: number
   author: {
     name: string
     avatar: string

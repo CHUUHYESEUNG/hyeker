@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, Calendar, Clock, Share2, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, Share2, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { BlogPost } from "@/lib/blog-data"
 import { getBlogDetailImageUrl } from "@/lib/cloudinary"
 import { ReadingProgress } from "@/components/reading-progress"
@@ -70,9 +70,17 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems, all
         >
           <header className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <Badge variant="secondary">{post.category}</Badge>
+              <Link href={`/blog/category/${post.category}`}>
+                <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80 transition-colors">
+                  {post.category}
+                </Badge>
+              </Link>
               {post.tags.slice(0, 3).map((tag) => (
-                <Badge key={tag} variant="outline">#{tag}</Badge>
+                <Link key={tag} href={`/blog/tags/${encodeURIComponent(tag)}`}>
+                  <Badge variant="outline" className="cursor-pointer hover:bg-muted transition-colors">
+                    #{tag}
+                  </Badge>
+                </Link>
               ))}
             </div>
 
@@ -94,6 +102,10 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems, all
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 <span>{post.readTime}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Eye className="h-4 w-4" />
+                <span>{post.views?.toLocaleString() || 0}회 조회</span>
               </div>
               <Button variant="ghost" size="sm" className="gap-2">
                 <Share2 className="h-4 w-4" />

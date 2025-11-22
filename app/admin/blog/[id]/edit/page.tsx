@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -8,9 +8,9 @@ import { MarkdownEditor } from '@/components/admin/markdown-editor'
 import { ImageUploader } from '@/components/admin/image-uploader'
 import { getBlogPost, updateBlogPost, generateSlug, calculateReadTime } from '@/lib/firebase/firestore'
 
-export default function EditBlogPostPage({ params }: { params: { id: string } }) {
+export default function EditBlogPostPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
-  const { id } = params
+  const { id } = use(params)
 
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({

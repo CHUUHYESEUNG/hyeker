@@ -30,9 +30,12 @@ export const metadata: Metadata = {
   creator: "장혜승 (HYEKER)",
   publisher: "HYEKER STUDIO",
   icons: {
-    icon: "/hyeker-terminal-icon.svg",
-    shortcut: "/hyeker-terminal-icon.svg",
-    apple: "/hyeker-terminal-icon.svg"
+    icon: [
+      { url: "/hyeker-terminal-icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/hyeker-terminal-icon.svg", type: "image/svg+xml", sizes: "180x180" },
+    ],
   },
   openGraph: {
     title: "HYEKER STUDIO - Designer & Full-stack Developer",

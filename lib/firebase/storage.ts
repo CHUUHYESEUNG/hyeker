@@ -6,7 +6,7 @@ import {
   uploadBytesResumable,
   UploadTaskSnapshot,
 } from 'firebase/storage'
-import { storage } from '@/lib/util/firebase'
+import { storage, isFirebaseConfigured } from '@/lib/util/firebase'
 
 /**
  * 이미지 업로드 (Blog)
@@ -15,6 +15,10 @@ export const uploadBlogImage = async (
   file: File,
   onProgress?: (progress: number) => void
 ): Promise<string> => {
+  if (!isFirebaseConfigured() || !storage) {
+    throw new Error('Firebase Storage가 설정되지 않았습니다.')
+  }
+
   const timestamp = Date.now()
   const filename = `${timestamp}-${file.name.replace(/\s/g, '-')}`
   const storageRef = ref(storage, `blog/${filename}`)
@@ -53,6 +57,10 @@ export const uploadPortfolioImage = async (
   file: File,
   onProgress?: (progress: number) => void
 ): Promise<string> => {
+  if (!isFirebaseConfigured() || !storage) {
+    throw new Error('Firebase Storage가 설정되지 않았습니다.')
+  }
+
   const timestamp = Date.now()
   const filename = `${timestamp}-${file.name.replace(/\s/g, '-')}`
   const storageRef = ref(storage, `portfolio/${filename}`)
@@ -86,6 +94,11 @@ export const uploadPortfolioImage = async (
  * 이미지 삭제
  */
 export const deleteImage = async (imageUrl: string): Promise<void> => {
+  if (!isFirebaseConfigured() || !storage) {
+    console.warn('Firebase Storage가 설정되지 않았습니다.')
+    return
+  }
+
   try {
     const imageRef = ref(storage, imageUrl)
     await deleteObject(imageRef)

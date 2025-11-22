@@ -16,6 +16,7 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { RelatedPosts } from "@/components/related-posts"
 import { Breadcrumb, type BreadcrumbItem } from "@/components/breadcrumb"
 import { NewsletterForm } from "@/components/newsletter-form"
+import { MarkdownRenderer } from "@/components/markdown-renderer"
 
 // Dynamic import for Giscus to reduce initial bundle size
 const GiscusComments = dynamic(() => import("@/components/giscus-comments").then(mod => ({ default: mod.GiscusComments })), {
@@ -115,46 +116,16 @@ export function BlogPostContent({ post, prevPost, nextPost, breadcrumbItems, all
           <Separator className="mb-8" />
 
           {/* Article Content */}
-          <div className="prose prose-lg dark:prose-invert max-w-none">
+          <div className="mb-8">
+            {/* Excerpt */}
             <div className="bg-muted/30 p-6 rounded-lg border border-border mb-8">
-              <p className="text-lg leading-relaxed m-0">{post.excerpt}</p>
-            </div>
-
-            <div className="space-y-6">
-              <p className="leading-relaxed">{post.content}</p>
-
-              <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg my-8">
-                <p className="text-sm text-muted-foreground m-0">
-                  <strong className="text-primary">Note:</strong> 이 글은 더미 데이터입니다.
-                  실제 블로그 글은 Supabase와 연동하여 관리할 예정입니다.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold mt-8 mb-4">주요 내용</h2>
-              <p className="leading-relaxed">
-                이 글에서는 {post.title.toLowerCase()}에 대한 실전 경험과 인사이트를 공유합니다.
-                {post.category} 분야에서 실무에 바로 적용할 수 있는 노하우를 다룹니다.
-              </p>
-
-              <h3 className="text-xl font-semibold mt-6 mb-3">왜 이 주제를 다루게 되었나?</h3>
-              <p className="leading-relaxed">
-                실무 프로젝트를 진행하면서 겪었던 경험을 바탕으로,
-                같은 고민을 하고 있는 개발자들에게 도움이 되고자 이 글을 작성하게 되었습니다.
-              </p>
-
-              <h3 className="text-xl font-semibold mt-6 mb-3">핵심 포인트</h3>
-              <ul className="space-y-2">
-                {post.tags.map((tag, index) => (
-                  <li key={index}>{tag}에 대한 실전 활용법</li>
-                ))}
-              </ul>
-
-              <h2 className="text-2xl font-bold mt-8 mb-4">결론</h2>
-              <p className="leading-relaxed">
-                이 글을 통해 {post.category} 분야에 대한 이해를 높이고,
-                실전에서 바로 활용할 수 있는 인사이트를 얻어가셨기를 바랍니다.
+              <p className="text-lg leading-relaxed m-0 text-muted-foreground italic">
+                {post.excerpt}
               </p>
             </div>
+
+            {/* Markdown Content */}
+            <MarkdownRenderer content={post.content} />
           </div>
         </m.article>
 

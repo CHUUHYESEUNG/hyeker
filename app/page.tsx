@@ -1,54 +1,64 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { m, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Mail, Github, Linkedin, Instagram, BookOpen, FileText } from "lucide-react"
-import { useCallback, useRef, useState } from "react"
-import type { MouseEvent as ReactMouseEvent } from "react"
-import Lottie from "lottie-react"
-import DesignerAnimation from "@/public/lottie/Designer.json"
+import Image from "next/image";
+import Link from "next/link";
+import { m, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowRight,
+  Mail,
+  Github,
+  Linkedin,
+  Instagram,
+} from "lucide-react";
+import { useCallback, useRef, useState } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
+import Lottie from "lottie-react";
+import DesignerAnimation from "@/public/lottie/Designer.json";
+import GraphAnimation from "@/public/lottie/lottie_2.json";
 
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const skillsRef = useRef<HTMLDivElement>(null)
+  const heroRef = useRef<HTMLDivElement>(null);
+  const skillsRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
-    offset: ["start start", "end start"]
-  })
+    offset: ["start start", "end start"],
+  });
 
   const { scrollYProgress: skillsScrollProgress } = useScroll({
     target: skillsRef,
-    offset: ["start end", "end start"]
-  })
+    offset: ["start end", "end start"],
+  });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const [heroTilt, setHeroTilt] = useState({ rotateX: 0, rotateY: 0 })
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const [heroTilt, setHeroTilt] = useState({ rotateX: 0, rotateY: 0 });
 
   // Skills 섹션 3D 모델 애니메이션
-  const [skillsProgress, setSkillsProgress] = useState(0)
+  const [skillsProgress, setSkillsProgress] = useState(0);
   useMotionValueEvent(skillsScrollProgress, "change", (latest) => {
-    setSkillsProgress(latest)
-  })
+    setSkillsProgress(latest);
+  });
 
-  const handleHeroPointerMove = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
-    if (!heroRef.current) return
-    const rect = heroRef.current.getBoundingClientRect()
-    const relativeX = (event.clientX - rect.left) / rect.width - 0.5
-    const relativeY = (event.clientY - rect.top) / rect.height - 0.5
-    const rotateY = Math.max(-12, Math.min(12, relativeX * 24))
-    const rotateX = Math.max(-12, Math.min(12, -relativeY * 24))
-    setHeroTilt({ rotateX, rotateY })
-  }, [])
+  const handleHeroPointerMove = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>) => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
+      const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
+      const rotateY = Math.max(-12, Math.min(12, relativeX * 24));
+      const rotateX = Math.max(-12, Math.min(12, -relativeY * 24));
+      setHeroTilt({ rotateX, rotateY });
+    },
+    [],
+  );
 
   const handleHeroPointerLeave = useCallback(() => {
-    setHeroTilt({ rotateX: 0, rotateY: 0 })
-  }, [])
+    setHeroTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -60,21 +70,32 @@ export default function Home() {
         className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#05030d] text-white"
       >
         <div className="absolute inset-0">
-          <m.div style={{ opacity, scale, y }} className="pointer-events-none absolute inset-0">
+          <m.div
+            style={{ opacity, scale, y }}
+            className="pointer-events-none absolute inset-0"
+          >
             <m.div
               animate={{
                 rotateX: heroTilt.rotateX * 0.15,
                 rotateY: heroTilt.rotateY * -0.15,
                 x: heroTilt.rotateY * 10,
-                y: heroTilt.rotateX * -10
+                y: heroTilt.rotateX * -10,
               }}
-              transition={{ type: "spring", stiffness: 80, damping: 18, mass: 0.8 }}
+              transition={{
+                type: "spring",
+                stiffness: 80,
+                damping: 18,
+                mass: 0.8,
+              }}
               className="absolute inset-0 flex items-center justify-center will-change-transform"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div
                 className="relative w-screen max-w-[1200px]"
-                style={{ transform: "translateZ(-180px)", willChange: "transform" }}
+                style={{
+                  transform: "translateZ(-180px)",
+                  willChange: "transform",
+                }}
               >
                 <Image
                   src="/hero1.png"
@@ -92,13 +113,21 @@ export default function Home() {
           <div className="absolute -right-1/3 bottom-0 h-[460px] w-[460px] rounded-full bg-[#b48bff]/20 blur-3xl" />
         </div>
 
-        <div className="relative z-10 flex w-full flex-col items-center px-6 py-24" style={{ perspective: "1600px" }}>
+        <div
+          className="relative z-10 flex w-full flex-col items-center px-6 py-24"
+          style={{ perspective: "1600px" }}
+        >
           <m.div
             animate={{
               rotateX: heroTilt.rotateX,
-              rotateY: heroTilt.rotateY
+              rotateY: heroTilt.rotateY,
             }}
-            transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.7 }}
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 18,
+              mass: 0.7,
+            }}
             className="flex flex-col items-center gap-12 mt-20 text-center"
             style={{ transformStyle: "preserve-3d" }}
           >
@@ -157,9 +186,14 @@ export default function Home() {
               rotateX: heroTilt.rotateX * -0.6,
               rotateY: heroTilt.rotateY * -0.6,
               x: heroTilt.rotateY * -4,
-              y: heroTilt.rotateX * 4
+              y: heroTilt.rotateX * 4,
             }}
-            transition={{ type: "spring", stiffness: 100, damping: 16, mass: 0.6 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 16,
+              mass: 0.6,
+            }}
             className="pointer-events-none mt-16 h-[220px] w-[220px] rounded-full border border-white/10 bg-white/5 opacity-60 blur-3xl"
           />
         </div>
@@ -210,8 +244,14 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="grid gap-2 text-sm text-white/65">
-                    <p>패션/브랜드 경험에서 출발해 인터랙션 중심의 프로덕트를 만드는 하이브리드 메이커입니다.</p>
-                    <p>브랜드 감성과 엔지니어링을 연결해 팀이 공감하는 언어와 시스템을 설계합니다.</p>
+                    <p>
+                      패션/브랜드 경험에서 출발해 인터랙션 중심의 프로덕트를
+                      만드는 하이브리드 메이커입니다.
+                    </p>
+                    <p>
+                      브랜드 감성과 엔지니어링을 연결해 팀이 공감하는 언어와
+                      시스템을 설계합니다.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -240,14 +280,16 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="space-y-4 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left"
                 >
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Design Craft</p>
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">
+                    Design Craft
+                  </p>
                   <div className="space-y-4">
                     {[
                       { name: "Figma", level: 90 },
                       { name: "Photoshop", level: 85 },
                       { name: "Illustrator", level: 80 },
                       { name: "After Effects", level: 75 },
-                      { name: "Prototyping", level: 88 }
+                      { name: "Prototyping", level: 88 },
                     ].map((skill, index) => (
                       <div key={skill.name} className="space-y-2">
                         <div className="flex justify-between text-sm">
@@ -259,7 +301,11 @@ export default function Home() {
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
                             viewport={{ once: true }}
-                            transition={{ duration: 1, delay: 0.3 + index * 0.1, ease: "easeOut" }}
+                            transition={{
+                              duration: 1,
+                              delay: 0.3 + index * 0.1,
+                              ease: "easeOut",
+                            }}
                             className="h-full rounded-full bg-gradient-to-r from-[#9d88ff] to-[#b09aff]"
                           />
                         </div>
@@ -274,14 +320,16 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   className="space-y-4 rounded-3xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur text-left"
                 >
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">Engineering</p>
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/45">
+                    Engineering
+                  </p>
                   <div className="space-y-4">
                     {[
                       { name: "React / Next.js", level: 92 },
                       { name: "TypeScript", level: 88 },
                       { name: "Python / FastAPI", level: 82 },
                       { name: "React Native", level: 78 },
-                      { name: "Supabase / DB", level: 80 }
+                      { name: "Supabase / DB", level: 80 },
                     ].map((skill, index) => (
                       <div key={skill.name} className="space-y-2">
                         <div className="flex justify-between text-sm">
@@ -293,7 +341,11 @@ export default function Home() {
                             initial={{ width: 0 }}
                             whileInView={{ width: `${skill.level}%` }}
                             viewport={{ once: true }}
-                            transition={{ duration: 1, delay: 0.4 + index * 0.1, ease: "easeOut" }}
+                            transition={{
+                              duration: 1,
+                              delay: 0.4 + index * 0.1,
+                              ease: "easeOut",
+                            }}
                             className="h-full rounded-full bg-gradient-to-r from-[#7ecbff] to-[#47c4ff]"
                           />
                         </div>
@@ -304,16 +356,30 @@ export default function Home() {
               </div>
 
               <div className="grid gap-4 rounded-3xl border border-white/10 bg-white/[0.05] p-6 text-sm text-white/70 backdrop-blur text-left">
-                <p className="uppercase tracking-[0.35em] text-white/50">Currently</p>
+                <p className="uppercase tracking-[0.35em] text-white/50">
+                  Currently
+                </p>
                 <p>
-                  글로벌 브랜드 캠페인을 경험한 콘텐츠 디자이너에서 개발자, AI 석사를 거쳐 프로덕트 엔지니어로 활동중입니다.
-                  프로덕트 단위의 빠른 MVP로 성과를 예측하고, 사용자 경험을 최우선으로 여기는 제작 방식을 선호합니다.
+                  글로벌 브랜드 캠페인을 경험한 콘텐츠 디자이너에서 개발자, AI
+                  석사를 거쳐 프로덕트 엔지니어로 활동중입니다. 프로덕트 단위의
+                  빠른 MVP로 성과를 예측하고, 사용자 경험을 최우선으로 여기는
+                  제작 방식을 선호합니다.
                 </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                {["Product Strategy", "Design Systems", "AI Assisted Dev", "Motion Narrative", "Brand Tech"].map((tag) => (
-                  <Badge key={tag} variant="outline" className="border-white/25 bg-transparent text-white/60">
+                {[
+                  "Product Strategy",
+                  "Design Systems",
+                  "AI Assisted Dev",
+                  "Motion Narrative",
+                  "Brand Tech",
+                ].map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className="border-white/25 bg-transparent text-white/60"
+                  >
                     #{tag}
                   </Badge>
                 ))}
@@ -324,7 +390,10 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section ref={skillsRef} className="relative overflow-hidden bg-[#04030d] py-32">
+      <section
+        ref={skillsRef}
+        className="relative overflow-hidden bg-[#04030d] py-32"
+      >
         <div className="absolute inset-0">
           <div className="absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-[#8a63ff]/20 blur-3xl" />
           <div className="absolute right-1/4 bottom-1/4 h-[400px] w-[400px] rounded-full bg-[#47c4ff]/15 blur-3xl" />
@@ -344,10 +413,16 @@ export default function Home() {
               Skillscape
               <span className="h-1 w-1 rounded-full bg-[#c8b9ff]" />
             </span>
-            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">프로덕트 A to Z</h2>
+            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">
+              프로덕트 A to Z
+            </h2>
             <div className="space-y-6 mt-4">
               <p className="text-base sm:text-lg text-white/70 leading-relaxed">
-                한 분야에 국한되지 않고, <span className="text-[#c8b9ff]">기획부터 디자인, 개발까지</span> <br /> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
+                한 분야에 국한되지 않고,{" "}
+                <span className="text-[#c8b9ff]">
+                  기획부터 디자인, 개발까지
+                </span>{" "}
+                <br /> 전 과정을 아우르는 하이브리드 역량을 갖추고 있습니다.
               </p>
             </div>
           </m.div>
@@ -382,34 +457,33 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-8 text-white"
             >
-
               <div className="space-y-6">
                 {[
                   {
                     icon: "🎯",
                     title: "기획 & 전략",
-                    desc: "사용자 니즈 파악부터 문제 정의, 솔루션 방향 설정까지 프로덕트의 방향성을 잡습니다."
+                    desc: "사용자 니즈 파악부터 문제 정의, 솔루션 방향 설정까지 프로덕트의 방향성을 잡습니다.",
                   },
                   {
                     icon: "🎨",
                     title: "디자인 시스템",
-                    desc: "Figma와 After Effects로 인터랙션을 스케치하고, 일관된 브랜드 경험을 설계합니다."
+                    desc: "Figma와 After Effects로 인터랙션을 스케치하고, 일관된 브랜드 경험을 설계합니다.",
                   },
                   {
                     icon: "⚡",
                     title: "프론트엔드 개발",
-                    desc: "Next.js, React Native, TypeScript로 반응형 UI를 빠르게 구현하고 검증합니다."
+                    desc: "Next.js, React Native, TypeScript로 반응형 UI를 빠르게 구현하고 검증합니다.",
                   },
                   {
                     icon: "🔧",
                     title: "백엔드 & 인프라",
-                    desc: "FastAPI, Spring Boot, Supabase/AWS로 안정적이고 확장 가능한 서비스를 구축합니다."
+                    desc: "FastAPI, Spring Boot, Supabase/AWS로 안정적이고 확장 가능한 서비스를 구축합니다.",
                   },
                   {
                     icon: "🤖",
                     title: "AI 워크플로우",
-                    desc: "LLM 기반 자동화와 데이터 분석으로 개발 생산성을 극대화합니다."
-                  }
+                    desc: "LLM 기반 자동화와 데이터 분석으로 개발 생산성을 극대화합니다.",
+                  },
                 ].map((item, index) => (
                   <m.div
                     key={item.title}
@@ -431,15 +505,128 @@ export default function Home() {
           </div>
         </div>
         {/* Title Section */}
-          <m.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
-          >
-            <h2 className="mt-12 text-2xl font-semibold leading-10"><span className="text-[#c8b9ff]">단순 실행하는 것을 넘어</span> <br /> 어떻게 사용자 가치로 연결되는지 <br /> 고민하며 프로덕트를 만듭니다.</h2>
-          </m.div>
+        <m.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto mb-20 flex max-w-4xl flex-col items-center text-center text-white"
+        >
+          <h2 className="mt-12 text-2xl font-semibold leading-10">
+            <span className="text-[#c8b9ff]">단순 실행하는 것을 넘어</span>{" "}
+            <br /> 어떻게 사용자 가치로 연결되는지 <br /> 고민하며 프로덕트를
+            만듭니다.
+          </h2>
+        </m.div>
+
+        {/* Research Journey Section - Center Layout */}
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 mt-24 max-w-4xl">
+          <div className="relative flex flex-col items-center gap-8">
+            {/* Top: Lottie Graph Animation */}
+            <m.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="relative flex justify-center items-center"
+            >
+              <div className="relative w-full max-w-[350px]">
+                {/* Glow effect */}
+                <div className="absolute inset-0 rounded-full bg-[#5b35ff]/15 blur-3xl" />
+                {/* Lottie Animation */}
+                <Lottie
+                  animationData={GraphAnimation}
+                  loop={true}
+                  className="w-full h-auto"
+                />
+              </div>
+            </m.div>
+
+            {/* Bottom: Content */}
+            <m.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="space-y-6 text-white text-center"
+            >
+              <div className="space-y-4">
+                <m.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="text-2xl sm:text-3xl font-semibold text-white"
+                >
+                  그래서 AI를 더 깊이 공부했습니다
+                </m.h3>
+
+                <m.p
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                  className="text-sm sm:text-base text-white/70 leading-relaxed max-w-2xl mx-auto"
+                >
+                  프로덕트를 만들며 AI 시대의 흐름을 더 깊이 이해하고 싶었습니다. <br />
+                  그래서 AI 석사 과정을 밟으며 금융 데이터와 딥러닝을 연구했고, <br />
+                  <span className="text-white/60">그 여정을 논문으로 정리했습니다.</span>
+                </m.p>
+              </div>
+
+              <m.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="flex flex-wrap gap-2 justify-center"
+              >
+                {[
+                  "AI/ML",
+                  "Financial Data",
+                  "Deep Learning",
+                ].map((tag, index) => (
+                  <m.div
+                    key={tag}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 + index * 0.05, duration: 0.3 }}
+                  >
+                    <Badge
+                      variant="outline"
+                      className="border-white/20 bg-white/5 text-white/60"
+                    >
+                      #{tag}
+                    </Badge>
+                  </m.div>
+                ))}
+              </m.div>
+
+              <m.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+              >
+                <Button
+                  asChild
+                  size="lg"
+                  className="group/btn h-12 rounded-full border border-white/20 bg-white/10 px-8 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(140,86,255,0.5)] hover:border-[#8c56ff]/40 hover:bg-[#8c56ff]/20"
+                >
+                  <Link
+                    href="https://www.riss.kr/search/detail/DetailView.do?p_mat_type=be54d9b8bc7cdb09&control_no=2f388dda0adcf47fffe0bdc3ef48d419"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    연구 자세히 보기
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                  </Link>
+                </Button>
+              </m.div>
+            </m.div>
+          </div>
+        </div>
       </section>
 
       {/* Portfolio Section */}
@@ -463,7 +650,9 @@ export default function Home() {
               Portfolio
               <span className="h-1 w-1 rounded-full bg-[#c8baff]" />
             </span>
-            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">주요 프로젝트</h2>
+            <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">
+              주요 프로젝트
+            </h2>
             <p className="mt-4 text-base text-white/65">
               Next.js, RN, Supabase 등을 활용한 웹/앱 제작
             </p>
@@ -475,27 +664,46 @@ export default function Home() {
                 id: "maedup",
                 title: "매듭 (Maedup)",
                 tagline: "시니어 프리미엄 라이프스타일 커뮤니티",
-                description: "시니어끼리 인연을 만들고 다양한 활동을 유도하여 사회 참여를 독려하는 라이프스타일 플랫폼",
+                description:
+                  "시니어끼리 인연을 만들고 다양한 활동을 유도하여 사회 참여를 독려하는 라이프스타일 플랫폼",
                 tech: ["Next.js 15", "Supabase", "TypeScript", "Vercel"],
                 links: [
-                  { label: "웹사이트", type: "web", available: true, url: "https://maedup.co.kr" },
+                  {
+                    label: "웹사이트",
+                    type: "web",
+                    available: true,
+                    url: "https://maedup.co.kr",
+                  },
                 ],
                 detail: "/portfolio/app/1",
                 image: "/app_1_maedup.png",
-                type: "mobile"
+                type: "mobile",
               },
               {
                 id: "onyu",
                 title: "온유.ai (Onyu.ai)",
-                tagline: "음성 데이터 기반 AI 오디오북 제작 플랫폼",
-                description: "글쓰기에 어려움을 느끼는 중·장년층과 시니어 세대를 위해 음성 인터뷰를 기반으로 AI가 자서전을 자동 생성하는 플랫폼",
-                tech: ["Next.js 15", "AI/ML", "TypeScript", "Python", "Supabase", "Vercel"],
+                tagline: "생각은 AI가, 결정은 사람이 하는 투자",
+                description:
+                  "AI가 시장 데이터와 사용자 포트폴리오를 분석하여 최적의 투자 전략을 자동으로 생성하는 서비스. 리스크 분석, 타이밍 추천, 분할 매수 전략까지 제공하여 효율적인 투자 의사결정을 지원합니다.",
+                tech: [
+                  "Next.js 15",
+                  "AI/ML",
+                  "TypeScript",
+                  "Python",
+                  "Supabase",
+                  "Vercel",
+                ],
                 links: [
-                  { label: "웹사이트", type: "web", available: true, url: "https://onyu.ai" },
+                  {
+                    label: "웹사이트",
+                    type: "web",
+                    available: true,
+                    url: "https://onyu.ai",
+                  },
                 ],
                 detail: "/portfolio/app/3",
                 image: "/app_3_onyu.png",
-                type: "web"
+                type: "web",
               },
               {
                 id: "terradice",
@@ -503,11 +711,18 @@ export default function Home() {
                 tagline: "매일 바뀌는 질문 기반 일기 앱",
                 description: "일기 작성 중도 포기를 해결하기 위한 랜덤 일기 앱",
                 tech: ["React Native", "Expo"],
-                links: [{ label: "앱 심사 진행중", type: "web", available: true, url: "" }],
+                links: [
+                  {
+                    label: "앱 심사 진행중",
+                    type: "web",
+                    available: true,
+                    url: "",
+                  },
+                ],
                 detail: "/portfolio/app/2",
                 image: "/app_2_terradice.png",
-                type: "mobile"
-              }
+                type: "mobile",
+              },
             ].map((project, index) => (
               <m.article
                 key={project.id}
@@ -517,16 +732,31 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group relative flex h-full flex-col overflow-visible rounded-[32px] border border-white/10 bg-white/[0.05] pb-6 backdrop-blur"
               >
-                <div className={project.type === "web" ? "relative h-[320px]" : "relative h-[320px]"}>
+                <div
+                  className={
+                    project.type === "web"
+                      ? "relative h-[320px]"
+                      : "relative h-[320px]"
+                  }
+                >
                   <div className="absolute inset-0 flex items-center justify-center">
                     <m.div
                       animate={{
                         y: [-12, 12, -12],
                         rotateX: [-4, 4, -4],
-                        rotateY: [2, -2, 2]
+                        rotateY: [2, -2, 2],
                       }}
-                      transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
-                      className={project.type === "web" ? "relative w-full max-w-[442px]" : "relative w-full max-w-[240px]"}
+                      transition={{
+                        duration: 9,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.4,
+                      }}
+                      className={
+                        project.type === "web"
+                          ? "relative w-full max-w-[442px]"
+                          : "relative w-full max-w-[240px]"
+                      }
                       style={{ transformStyle: "preserve-3d" }}
                     >
                       <Image
@@ -543,18 +773,28 @@ export default function Home() {
                     </m.div>
                   </div>
                   <div className="absolute bottom-[-36px] left-6 right-6 z-20 rounded-2xl border border-white/10 bg-black/45 p-4 backdrop-blur-lg shadow-[0_20px_40px_-30px_rgba(120,110,255,0.7)]">
-                    <span className="text-xs uppercase tracking-[0.35em] text-white/55">{project.tagline}</span>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">{project.title}</h3>
+                    <span className="text-xs uppercase tracking-[0.35em] text-white/55">
+                      {project.tagline}
+                    </span>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      {project.title}
+                    </h3>
                   </div>
                 </div>
 
                 <div className="relative z-10 mt-16 flex flex-1 flex-col gap-6 px-6 text-white">
                   <p className="text-sm text-white/70">{project.description}</p>
                   <div>
-                    <p className="text-xs uppercase tracking-[0.4em] text-white/45">Tech Stack</p>
+                    <p className="text-xs uppercase tracking-[0.4em] text-white/45">
+                      Tech Stack
+                    </p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {project.tech.map((tech) => (
-                        <Badge key={tech} variant="outline" className="border-white/20 bg-transparent text-white/65">
+                        <Badge
+                          key={tech}
+                          variant="outline"
+                          className="border-white/20 bg-transparent text-white/65"
+                        >
                           {tech}
                         </Badge>
                       ))}
@@ -562,14 +802,18 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-3">
-                    <p className="text-xs uppercase tracking-[0.35em] text-white/45">Download &amp; Links</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-white/45">
+                      Download &amp; Links
+                    </p>
                     <div className="flex flex-wrap gap-2">
                       {project.links.map((link) => {
-                        const isAvailable = link.available
-                        const label = isAvailable ? link.label : `${link.label} (준비중)`
+                        const isAvailable = link.available;
+                        const label = isAvailable
+                          ? link.label
+                          : `${link.label} (준비중)`;
                         const buttonClasses = isAvailable
-                          ? "border-white/25 bg-white/10 text-white hover:-translate-y-1 hover:bg-white/20"
-                          : "border-white/10 bg-white/[0.04] text-white/40 cursor-not-allowed"
+                          ? "border-white/25 bg-white/10 text-white hover:-translate-y-1 hover:bg-white/20 hover:text-white"
+                          : "border-white/10 bg-white/[0.04] text-white/40 cursor-not-allowed";
 
                         return isAvailable ? (
                           <Button
@@ -579,15 +823,27 @@ export default function Home() {
                             size="sm"
                             className={`rounded-full border ${buttonClasses}`}
                           >
-                            <Link href={link.url} target={link.type === "web" ? "_blank" : undefined} rel="noopener noreferrer">
+                            <Link
+                              href={link.url}
+                              target={
+                                link.type === "web" ? "_blank" : undefined
+                              }
+                              rel="noopener noreferrer"
+                            >
                               {link.label}
                             </Link>
                           </Button>
                         ) : (
-                          <Button key={link.label} variant="outline" size="sm" disabled className={`rounded-full border ${buttonClasses}`}>
+                          <Button
+                            key={link.label}
+                            variant="outline"
+                            size="sm"
+                            disabled
+                            className={`rounded-full border ${buttonClasses}`}
+                          >
                             {label}
                           </Button>
-                        )
+                        );
                       })}
                     </div>
                   </div>
@@ -642,5 +898,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }

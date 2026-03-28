@@ -8,6 +8,31 @@ import { Breadcrumb } from "@/components/breadcrumb"
 
 const timeline = [
   {
+    period: "2025.11 - 2026.03 (4개월)",
+    type: "dev",
+    company: "솔로몬텍",
+    role: "SI개발팀 / 책임",
+    icon: Briefcase,
+    projects: [
+      {
+        name: "Agent 기반 사내 솔루션 개발",
+        description: "IntelliCore 및 App Studio 플랫폼 프론트엔드 개발",
+        tech: ["React.js", "TypeScript", "Redux", "React Flow", "Grapesjs"],
+        link: "https://dev.intellicore.kr/",
+        details: [
+          "프론트엔드 공통 환경 및 아키텍처 설계 - TypeScript·Prettier 가이드라인 수립 및 Redux 기반 전역 상태 관리 도입",
+          "IntelliCore 디자인 시스템 구축 참여 - 공통 UI 레이아웃 구축 및 앱 스튜디오(App Studio) 에디터 핵심 기능 개발",
+          "Data Flow·Logic Flow·Page Builder를 단일 탭으로 통합해 작업 연속성 개선",
+          "플로우 캔버스 구축 (React Flow, Grapesjs 기반) - ERD 엔티티 Edge 연결 안정성 향상 및 웹 페이지 빌더 기능 구현",
+          "Navigator 트리와 Properties 패널을 통합 구현해 유저 컨트롤러 기능 개발",
+          "AI Agent 관리 UI 개발 - Agent·Tool·Property CRUD UI 구현 및 백엔드 API 연동",
+          "고객사 솔루션 데모 구현 (K대학교)",
+          "웹 빌더 Publish 기능 개발 - UI 웹 빌더 작업물을 React.js 프로젝트로 배포하는 Generate 기능 고도화"
+        ]
+      }
+    ]
+  },
+  {
     period: "2025.01 - 현재",
     type: "dev",
     company: "개인 웹/앱 작업",
@@ -16,8 +41,8 @@ const timeline = [
     projects: [
       {
         name: "온유.ai (Onyu.ai)",
-        description: "음성 데이터 기반 AI 오디오북 제작 플랫폼",
-        tech: ["Next.js 15", "App Router", "Supabase", "Vercel"],
+        description: "생각은 AI가, 결정은 사람이 하는 투자 서비스",
+        tech: ["Next.js 15", "App Router", "AI/ML", "Supabase", "Vercel"],
         link: "https://onyu.ai",
         details: []
       },

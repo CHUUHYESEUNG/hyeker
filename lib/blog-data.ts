@@ -30,6 +30,7 @@ export const blogPosts: BlogPost[] = [
     date: "2025-01-15",
     readTime: "8분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -46,6 +47,7 @@ export const blogPosts: BlogPost[] = [
     date: "2025-01-10",
     readTime: "12분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -62,6 +64,7 @@ export const blogPosts: BlogPost[] = [
     date: "2025-01-05",
     readTime: "15분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -78,6 +81,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-12-28",
     readTime: "10분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -94,6 +98,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-12-20",
     readTime: "7분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -110,6 +115,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-12-15",
     readTime: "20분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -126,6 +132,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-12-10",
     readTime: "11분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -142,6 +149,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-11-28",
     readTime: "14분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
@@ -158,6 +166,7 @@ export const blogPosts: BlogPost[] = [
     date: "2024-11-20",
     readTime: "9분",
     image: "/sample1.jpg",
+    views: 0,
     author: {
       name: "장혜승",
       avatar: ""
